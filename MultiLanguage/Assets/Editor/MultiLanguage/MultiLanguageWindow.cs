@@ -33,6 +33,8 @@ namespace Editor.MultiLanguage
             myBool = EditorGUILayout.Toggle("Toggle", myBool);
             myFloat = EditorGUILayout.Slider("Slider", myFloat, -3, 3);
             EditorGUILayout.EndToggleGroup();
+
+            var rules = MultiLanguageAssetsManager.GetRules();
             
             windowRect = GUILayout.Window(0, windowRect, DoMyWindow, "My Window");
         }

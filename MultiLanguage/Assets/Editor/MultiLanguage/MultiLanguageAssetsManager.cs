@@ -15,7 +15,7 @@ namespace Editor.MultiLanguage
         /// <summary>
         /// 多语言根目录
         /// </summary>
-        public const string RootPath = "Assets/MultiLanguage";
+        public const string RootPath = "Assets/Editor/MultiLanguage/";
 
         static MultiLanguageAssetsManager()
         {
