@@ -14,4 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseLanguage:
     language: 0
-  supports: []
+  supports:
+  - language: 0
+  - language: 1
+  - language: 2
+  - language: 3
+  - language: 4
+  - language: 5
+  - language: 6
+  - language: 6
+  - language: 7
