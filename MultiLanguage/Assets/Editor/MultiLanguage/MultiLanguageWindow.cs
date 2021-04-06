@@ -1,5 +1,7 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using Config = Editor.MultiLanguage.MultiLanguageConfig;
 
 namespace Editor.MultiLanguage
 {
@@ -9,12 +11,16 @@ namespace Editor.MultiLanguage
     /// </summary>
     public class MultiLanguageWindow : EditorWindow
     {
-        string myString = "Hello World";
-        bool groupEnabled;
-        bool myBool = true;
-        float myFloat = 1.23f;
-        Rect windowRect = new Rect(20, 20, 120, 50);
+        /// <summary>
+        /// 导出语言开关
+        /// </summary>
+        private Dictionary<Language, bool> _exportSwitchDic;
 
+        /// <summary>
+        /// 选定指定语言
+        /// </summary>
+        private bool _selectExportLang;
+        
         /// <summary>
         /// 打开入口
         /// </summary>
@@ -24,30 +30,49 @@ namespace Editor.MultiLanguage
             EditorWindow.GetWindow(typeof(MultiLanguageWindow));
         }
 
-        private void OnGUI()
+        #region ui逻辑
+
+        /// <summary>
+        /// 通过rule初始化数据
+        /// </summary>
+        private void InitDataByRule()
         {
-            GUILayout.Label("Base Settings", EditorStyles.boldLabel);
-            myString = EditorGUILayout.TextField("Text Field", myString);
-
-            groupEnabled = EditorGUILayout.BeginToggleGroup("Optional Settings", groupEnabled);
-            myBool = EditorGUILayout.Toggle("Toggle", myBool);
-            myFloat = EditorGUILayout.Slider("Slider", myFloat, -3, 3);
-            EditorGUILayout.EndToggleGroup();
-
-            var rules = MultiLanguageAssetsManager.GetRules();
-            
-            windowRect = GUILayout.Window(0, windowRect, DoMyWindow, "My Window");
-        }
-
-        // Make the contents of the window
-        void DoMyWindow(int windowID)
-        {
-            // This button will size to fit the window
-            if (GUILayout.Button("Hello World"))
+            if (_exportSwitchDic == null)
             {
-                // ("Got a click");
-                Debug.Log("Got a click");
+                MultiLanguageRules rules = MultiLanguageAssetsManager.GetRules();
+                _exportSwitchDic = new Dictionary<Language, bool>();
+                var supportLangs = rules.supports;
+                _selectExportLang = false;
+                //默认全量到处
+                for (var i = 0; i < supportLangs.Length; i++)
+                {
+                    _exportSwitchDic.Add(supportLangs[i].language, !_selectExportLang);
+                }
             }
         }
+
+        private void OnGUI()
+        {
+            InitDataByRule();
+            //----------------------------------------------------------
+
+            #region 选择导出语言
+            GUILayout.Label("请选择导出语言", EditorStyles.boldLabel);
+            _selectExportLang = EditorGUILayout.BeginToggleGroup("导出指定语言（默认全导）", _selectExportLang);
+            var tDci = new Dictionary<Language, bool>();
+            foreach (var langExportsKv in _exportSwitchDic)
+            {
+                var value = EditorGUILayout.Toggle(langExportsKv.Key.ToString(), langExportsKv.Value);
+                tDci.Add(langExportsKv.Key, value);
+            }
+            foreach (var langExportsKv in tDci)
+            {
+                _exportSwitchDic[langExportsKv.Key] = langExportsKv.Value;
+            }
+            EditorGUILayout.EndToggleGroup();
+            #endregion
+        }
+
+        #endregion
     }
 }
