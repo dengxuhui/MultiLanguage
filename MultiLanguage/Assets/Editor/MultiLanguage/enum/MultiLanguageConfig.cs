@@ -6,8 +6,16 @@
     public static class MultiLanguageConfig
     {
         /// <summary>
-        /// 默认导出所有支持语言
+        /// 是否默认可选导出语言，不可选就默认全部导出
         /// </summary>
-        public static bool DefaultExportAllSupport = true;
+        public static bool DefaultSelectExportLang = false;
+        /// <summary>
+        /// 默认是否导出翻译需求表
+        /// </summary>
+        public static bool DefaultExportTranslateTable = false;
+        /// <summary>
+        /// 默认是否更新TMP
+        /// </summary>
+        public static bool DefaultUpdateTMP = false;
     }
 }
