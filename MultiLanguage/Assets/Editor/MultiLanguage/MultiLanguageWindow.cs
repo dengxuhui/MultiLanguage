@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Editor.MultiLanguage.func;
 using UnityEditor;
 using UnityEngine;
 using Config = Editor.MultiLanguage.MultiLanguageConfig;
@@ -126,7 +127,9 @@ namespace Editor.MultiLanguage
 
             if (GUILayout.Button("一键导出"))
             {
+                //TODO
                 Debug.Log("start export language....");
+                FuncExport2CSV.Start();
             }
 
             EditorGUILayout.EndToggleGroup();
@@ -153,7 +156,9 @@ namespace Editor.MultiLanguage
 
             if (GUILayout.Button("更新翻译"))
             {
+                //TODO
                 Debug.Log("start update translate....");
+                FuncUpdateTranslate.Start(_translateFeedbackPath);
             }
 
             EditorGUILayout.EndToggleGroup();
@@ -167,7 +172,9 @@ namespace Editor.MultiLanguage
             EditorGUILayout.LabelField("说明：每次导出或更新翻译后需要执行一次拷贝到AssetPackage下，这样运行时才能正确加载到资源");
             if (GUILayout.Button("一键拷贝"))
             {
+                //TODO
                 Debug.Log("start copy csv 2 assetpackage....");
+                FuncCopy2Runtime.Start();
             }
 
             EditorGUILayout.EndToggleGroup();
