@@ -136,7 +136,7 @@ namespace Editor.MultiLanguage
 
             _funcUpdateTranslate =
                 EditorGUILayout.BeginToggleGroup("------------2.更新翻译------------", _funcUpdateTranslate);
-
+            EditorGUILayout.LabelField("说明：以翻译中的字段为准，包括基础语言也直接覆盖，回写完成会输出一个未翻译列表到指定目录下");
             //选择总表
             GUILayout.BeginHorizontal();
             GUILayout.Label("反馈的翻译总表路径：", GUILayout.MaxWidth(120));
