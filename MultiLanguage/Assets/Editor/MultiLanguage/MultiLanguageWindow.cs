@@ -14,12 +14,24 @@ namespace Editor.MultiLanguage
         //------------------功能模块标志位
         //功能导出
         private bool _funcExport = false;
+
+        //更新翻译
+        private bool _funcUpdateTranslate = false;
+        //拷贝资源
+        private bool _funcCopy = false;
         //-------------------
-        
+
+        #region 翻译导入相关
+
+        private string _translateFeedbackPath;
+
+        #endregion
+
         /// <summary>
         /// 导出语言开关
         /// </summary>
         private Dictionary<Language, bool> _exportSwitchDic;
+
         /// <summary>
         /// 选定指定语言
         /// </summary>
@@ -58,7 +70,7 @@ namespace Editor.MultiLanguage
             }
 
             _funcExport = false;
-            
+
             MultiLanguageRules rules = MultiLanguageAssetsManager.GetRules();
             _exportSwitchDic = new Dictionary<Language, bool>();
             var supportLangs = rules.supports;
@@ -76,7 +88,9 @@ namespace Editor.MultiLanguage
         {
             InitDataByRule();
             //----------------------------------------------------------
-            #region 
+
+            #region 导出本地化
+
             _funcExport = EditorGUILayout.BeginToggleGroup("------------1.语言导出------------", _funcExport);
             //选择导出语言
             _selectExportLang = EditorGUILayout.BeginToggleGroup("导出指定语言（默认全导）", _selectExportLang);
@@ -98,10 +112,38 @@ namespace Editor.MultiLanguage
             //TMP字符更新
             _updateTMP = EditorGUILayout.ToggleLeft("是否更新TMP", _updateTMP);
 
-            if (GUILayout.Button("一键导出"))
+            if (GUILayout.Button("一键导出", GUILayout.Width(500)))
             {
                 Debug.Log("start export language....");
             }
+
+            EditorGUILayout.EndToggleGroup();
+
+            #endregion
+
+            #region 翻译回写
+
+            _funcUpdateTranslate =
+                EditorGUILayout.BeginToggleGroup("------------2.更新翻译------------", _funcUpdateTranslate);
+
+            if (GUILayout.Button("更新翻译", GUILayout.Width(500)))
+            {
+                Debug.Log("start update translate....");
+            }
+            EditorGUILayout.EndToggleGroup();
+
+            #endregion
+
+            #region 拷贝到AssetPackage目录下
+            
+            _funcCopy =
+                EditorGUILayout.BeginToggleGroup("------------3.拷贝到运行时------------", _funcCopy);
+            EditorGUILayout.LabelField("说明：每次导出或更新翻译后需要执行一次拷贝到AssetPackage下，这样运行时才能正确加载到资源");
+            if (GUILayout.Button("一键拷贝", GUILayout.Width(500)))
+            {
+                Debug.Log("start copy csv 2 assetpackage....");
+            }
+            
             EditorGUILayout.EndToggleGroup();
             #endregion
         }
