@@ -86,6 +86,7 @@ namespace Editor.MultiLanguage
             }
 
             _exportTranslate = Config.DefaultExportTranslateTable;
+            _updateTMP = Config.DefaultUpdateTMP;
         }
 
         private void SelectTranslateFile()
