@@ -17,5 +17,9 @@
         /// 默认是否更新TMP
         /// </summary>
         public static bool DefaultUpdateTMP = false;
+        /// <summary>
+        /// 默认的翻译表文件夹路径
+        /// </summary>
+        public const string TranslateFolderPrefsKey = "TranslateFBPrefsKey";
     }
 }

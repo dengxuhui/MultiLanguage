@@ -17,6 +17,7 @@ namespace Editor.MultiLanguage
 
         //更新翻译
         private bool _funcUpdateTranslate = false;
+
         //拷贝资源
         private bool _funcCopy = false;
         //-------------------
@@ -24,6 +25,7 @@ namespace Editor.MultiLanguage
         #region 翻译导入相关
 
         private string _translateFeedbackPath;
+        private string _translateFolder;
 
         #endregion
 
@@ -69,6 +71,8 @@ namespace Editor.MultiLanguage
                 return;
             }
 
+            _translateFolder = EditorPrefs.GetString(Config.TranslateFolderPrefsKey);
+
             _funcExport = false;
 
             MultiLanguageRules rules = MultiLanguageAssetsManager.GetRules();
@@ -82,6 +86,13 @@ namespace Editor.MultiLanguage
             }
 
             _exportTranslate = Config.DefaultExportTranslateTable;
+        }
+
+        private void SelectTranslateFile()
+        {
+            _translateFeedbackPath = EditorUtility.OpenFilePanelWithFilters("选择翻译反馈总表（xlsx文件）", _translateFolder,
+                new string[] {"xlsx", "xlsx"});
+            EditorPrefs.SetString(Config.TranslateFolderPrefsKey, _translateFeedbackPath);
         }
 
         private void OnGUI()
@@ -112,7 +123,7 @@ namespace Editor.MultiLanguage
             //TMP字符更新
             _updateTMP = EditorGUILayout.ToggleLeft("是否更新TMP", _updateTMP);
 
-            if (GUILayout.Button("一键导出", GUILayout.Width(500)))
+            if (GUILayout.Button("一键导出"))
             {
                 Debug.Log("start export language....");
             }
@@ -126,25 +137,40 @@ namespace Editor.MultiLanguage
             _funcUpdateTranslate =
                 EditorGUILayout.BeginToggleGroup("------------2.更新翻译------------", _funcUpdateTranslate);
 
-            if (GUILayout.Button("更新翻译", GUILayout.Width(500)))
+            //选择总表
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("反馈的翻译总表路径：", GUILayout.MaxWidth(120));
+            _translateFeedbackPath = GUILayout.TextField(_translateFeedbackPath);
+            if (GUILayout.Button("文件", GUILayout.MaxWidth(60)))
+            {
+                Debug.Log("start select feedback file");
+                SelectTranslateFile();
+            }
+
+            GUILayout.EndHorizontal();
+
+
+            if (GUILayout.Button("更新翻译"))
             {
                 Debug.Log("start update translate....");
             }
+
             EditorGUILayout.EndToggleGroup();
 
             #endregion
 
             #region 拷贝到AssetPackage目录下
-            
+
             _funcCopy =
                 EditorGUILayout.BeginToggleGroup("------------3.拷贝到运行时------------", _funcCopy);
             EditorGUILayout.LabelField("说明：每次导出或更新翻译后需要执行一次拷贝到AssetPackage下，这样运行时才能正确加载到资源");
-            if (GUILayout.Button("一键拷贝", GUILayout.Width(500)))
+            if (GUILayout.Button("一键拷贝"))
             {
                 Debug.Log("start copy csv 2 assetpackage....");
             }
-            
+
             EditorGUILayout.EndToggleGroup();
+
             #endregion
         }
 
