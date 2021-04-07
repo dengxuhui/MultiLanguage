@@ -48,5 +48,6 @@ namespace Editor.MultiLanguage.Scripts.tool
         {
             return Path.Combine(Application.dataPath, path);
         }
+        
     }
 }

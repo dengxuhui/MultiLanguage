@@ -21,5 +21,13 @@
         /// 默认的翻译表文件夹路径
         /// </summary>
         public const string TranslateFolderPrefsKey = "TranslateFBPrefsKey";
+        /// <summary>
+        /// 所有语言的原始文件
+        /// </summary>
+        public const string AllLanguageRawFile = "AllLanguage@Raw.xlsx";
+        /// <summary>
+        /// 导出文件名格式
+        /// </summary>
+        public const string ExportLanguageFormat = "AllLanguage{0}.csv";
     }
 }
