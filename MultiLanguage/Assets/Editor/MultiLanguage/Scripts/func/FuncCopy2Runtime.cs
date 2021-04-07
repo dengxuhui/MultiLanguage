@@ -1,4 +1,4 @@
-﻿namespace Editor.MultiLanguage.func
+﻿namespace Editor.MultiLanguage.Scripts.func
 {
     /// <summary>
     /// 拷贝资源到运行时

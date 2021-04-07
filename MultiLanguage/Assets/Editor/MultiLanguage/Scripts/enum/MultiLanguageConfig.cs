@@ -1,4 +1,4 @@
-﻿namespace Editor.MultiLanguage
+﻿namespace Editor.MultiLanguage.Scripts
 {
     /// <summary>
     /// 多语言工具静态配置

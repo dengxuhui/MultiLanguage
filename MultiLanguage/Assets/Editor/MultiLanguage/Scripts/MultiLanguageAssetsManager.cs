@@ -5,7 +5,7 @@ using UnityEngine;
 // author:Aer
 // https://github.com/dengxuhui/MultiLanguage
 
-namespace Editor.MultiLanguage
+namespace Editor.MultiLanguage.Scripts
 {
     /// <summary>
     /// 多语言资源管理器

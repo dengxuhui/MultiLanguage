@@ -1,4 +1,4 @@
-﻿namespace Editor.MultiLanguage
+﻿namespace Editor.MultiLanguage.Scripts
 {
     public enum Language
     {

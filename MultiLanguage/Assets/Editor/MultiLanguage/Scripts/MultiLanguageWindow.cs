@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Editor.MultiLanguage.func;
+using Editor.MultiLanguage.Scripts.func;
 using UnityEditor;
 using UnityEngine;
-using Config = Editor.MultiLanguage.MultiLanguageConfig;
+using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
 
-namespace Editor.MultiLanguage
+namespace Editor.MultiLanguage.Scripts
 {
     /// <summary>
     /// 多语言控制面板
@@ -129,7 +129,7 @@ namespace Editor.MultiLanguage
             {
                 //TODO
                 Debug.Log("start export language....");
-                FuncExport2CSV.Start();
+                FuncExport2Csv.Start();
             }
 
             EditorGUILayout.EndToggleGroup();

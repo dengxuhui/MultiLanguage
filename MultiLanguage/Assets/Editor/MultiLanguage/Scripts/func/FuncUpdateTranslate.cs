@@ -1,4 +1,4 @@
-﻿namespace Editor.MultiLanguage.func
+﻿namespace Editor.MultiLanguage.Scripts.func
 {
     /// <summary>
     /// 更新翻译
