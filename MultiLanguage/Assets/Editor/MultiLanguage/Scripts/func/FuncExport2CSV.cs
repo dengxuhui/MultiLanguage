@@ -38,8 +38,15 @@ namespace Editor.MultiLanguage.Scripts.func
 
             //如果不存在总表文件，就从现有的Export目录下导入到总表中，并将所有状态设置为已翻译
             var rules = MultiLanguageAssetsManager.GetRules();
-            var supportLan = rules.supports;
             string exportFormat = Path.Combine(fullExportDir, MultiLanguageConfig.ExportLanguageFormat);
+            //先写基础语言，如果连基础语言都没有那就直接返回报错
+            var baseLang = rules.baseLanguage;
+            string baseLangPath = string.Format(exportFormat,
+                string.IsNullOrEmpty(baseLang.abbr) ? baseLang.language.ToString() : baseLang.abbr);
+            
+            
+            
+            var supportLan = rules.supports;
             for (var i = 0; i < supportLan.Length; i++)
             {
                 var lang = supportLan[i];
@@ -50,10 +57,7 @@ namespace Editor.MultiLanguage.Scripts.func
                     continue;
                 }
 
-                using (var stream = File.Open(path, FileMode.Open, FileAccess.Read))
-                {
-                    
-                }
+                var csvTable = CsvOperater.Read(path);
             }
         }
     }
