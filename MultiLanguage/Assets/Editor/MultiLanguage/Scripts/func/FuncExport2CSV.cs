@@ -220,7 +220,16 @@ namespace Editor.MultiLanguage.Scripts.func
             {
                 return;
             }
-            
+
+            if (midwayUse)
+            {
+                //将Using中的所有字段拷贝到Translated文件中
+            }
+            else
+            {
+                //生成一个空的Translated表
+                CsvOperater.WriteEmptySummaryFile(filePath);
+            }
         }
 
         #endregion

@@ -72,13 +72,13 @@ namespace Editor.MultiLanguage.Scripts.tool
                 sr.Close();
                 sr.Dispose();
                 string[] rows = text.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+                
+                CsvTable tbl = new CsvTable();
                 //第一行为文件头
                 if (rows.Length <= 1)
                 {
-                    return null;
+                    return tbl;
                 }
-
-                CsvTable tbl = new CsvTable();
 
                 //文件头
 
@@ -196,6 +196,31 @@ namespace Editor.MultiLanguage.Scripts.tool
                     sw.WriteLine(tbl.ToString(i));
                 }
 
+                sw.Flush();
+                sw.Close();
+                sw.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// 向指定目录写一个空的总表
+        /// </summary>
+        /// <param name="path"></param>
+        public static void WriteEmptySummaryFile(string path)
+        {
+            using (var sw = new StreamWriter(path, false, Encoding.Unicode))
+            {
+                var sb = new StringBuilder();
+                sb.Append("多语言Key");
+                var rules = MultiLanguageAssetsManager.GetRules();
+                var supports = rules.supports;
+                for (var i = 0; i < supports.Length; i++)
+                {
+                    sb.Append("\t");
+                    sb.Append(supports[i].language.ToString());
+                }
+                sw.WriteLine(sb);
+                
                 sw.Flush();
                 sw.Close();
                 sw.Dispose();
