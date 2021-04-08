@@ -258,6 +258,7 @@ namespace Editor.MultiLanguage.Scripts.tool
             }
             set => _fieldInfos[index] = value;
         }
+        
 
         /// <summary>
         /// 获取行数

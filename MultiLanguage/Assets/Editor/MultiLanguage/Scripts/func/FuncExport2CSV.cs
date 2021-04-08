@@ -68,6 +68,33 @@ namespace Editor.MultiLanguage.Scripts.func
 
         #region private method
 
+        #region tool
+
+        /// <summary>
+        /// 搜集所有
+        /// </summary>
+        private static Dictionary<string, string> CollectAllRawFilesToDic()
+        {
+            var rawDic = new Dictionary<string, string>();
+
+            var rules = _rules;
+            var baseSupport = rules.baseLanguage;
+            var rawFiles = Directory.GetFiles(_fullRawDir);
+            for (var i = 0; i < rawFiles.Length; i++)
+            {
+                var tbl = CsvOperater.ReadSingleFile(rawFiles[i], baseSupport.language);
+                for (var i1 = 0; i1 < tbl.Count; i1++)
+                {
+                    var fieldInfo = tbl[i1];
+                    rawDic.Add(fieldInfo.Name, fieldInfo.Contents[baseSupport.language]);
+                }
+            }
+
+            return rawDic;
+        }
+
+        #endregion
+
         #region update 更新写入操作
 
         /// <summary>
@@ -75,6 +102,24 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static void UpdateSummaryUsingFile()
         {
+            //1.更新原始文件：原始文件有的，Using没有的，写进去，原始文件没有的，Using有的，从Using删除
+            var rawFieldDic = CollectAllRawFilesToDic();
+            var filePath = Path.Combine(_fullSummaryDir, Config.CsvNameSummaryUsing);
+            var usingTal = CsvOperater.ReadSummaryFile(filePath);
+            var usingList = new List<string>();
+            for (var i = 0; i < usingTal.Count; i++)
+            {
+                usingList.Add(usingTal[i].Name);
+            }
+
+            foreach (var kv in rawFieldDic)
+            {
+                //存在
+                if (usingList.Remove(kv.Key))
+                {
+                    
+                }
+            }
         }
 
         /// <summary>
