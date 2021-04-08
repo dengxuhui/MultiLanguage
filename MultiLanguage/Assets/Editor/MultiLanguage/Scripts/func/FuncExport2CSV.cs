@@ -18,9 +18,9 @@ namespace Editor.MultiLanguage.Scripts.func
         private static string _fullRawDir = "";
 
         /// <summary>
-        /// 导出文件路径
+        /// 生成文件路径
         /// </summary>
-        private static string _fullExportDir = "";
+        private static string _fullBuildDir = "";
 
         /// <summary>
         /// 合并目录
@@ -31,14 +31,14 @@ namespace Editor.MultiLanguage.Scripts.func
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var relativeRawDir = rules.rawDirectory;
-            var relativeExportDir = rules.exportDirectory;
+            var relativeBuildDir = rules.buildDirectory;
             var relativeMergeDir = rules.mergeDirectory;
             _fullRawDir = FileTool.GetFullPath(relativeRawDir);
-            _fullExportDir = FileTool.GetFullPath(relativeExportDir);
+            _fullBuildDir = FileTool.GetFullPath(relativeBuildDir);
             _fullMergeDir = FileTool.GetFullPath(relativeMergeDir);
             //尝试创建目录
             FileTool.MakeDir(_fullRawDir);
-            FileTool.MakeDir(_fullExportDir);
+            FileTool.MakeDir(_fullBuildDir);
             FileTool.MakeDir(_fullMergeDir);
 
             #region check file
@@ -76,7 +76,7 @@ namespace Editor.MultiLanguage.Scripts.func
 
             #region 检查是否是中途导入
 
-            var files = Directory.GetFiles(_fullExportDir);
+            var files = Directory.GetFiles(_fullBuildDir);
             List<string> needFiles = new List<string>(supports.Length);
             for (var i = 0; i < supports.Length; i++)
             {
@@ -114,7 +114,7 @@ namespace Editor.MultiLanguage.Scripts.func
 
             if (midWayUse)
             {
-                WriteUsingRawFileFromMidwayImport();
+                WriteUsingRawFileFromBuiltFiles();
             }
             else
             {
@@ -125,9 +125,9 @@ namespace Editor.MultiLanguage.Scripts.func
         }
 
         /// <summary>
-        /// 从中途导入的文件写入总表
+        /// 从已编译好的文件中反向生成Raw文件，一般用于中途使用改工具才会用到这个方法
         /// </summary>
-        private static void WriteUsingRawFileFromMidwayImport()
+        private static void WriteUsingRawFileFromBuiltFiles()
         {
             var filePath = Path.Combine(_fullMergeDir, Config.CsvNameMergeUsing);
             if (File.Exists(filePath))
@@ -143,7 +143,7 @@ namespace Editor.MultiLanguage.Scripts.func
                 var language = supports[i].language;
                 var abbr = string.IsNullOrEmpty(supports[i].abbr) ? language.ToString() : supports[i].abbr;
                 var fileName = string.Format(Config.ExportLanguageFormat, abbr);
-                var fullPath = Path.Combine(_fullExportDir, fileName);
+                var fullPath = Path.Combine(_fullBuildDir, fileName);
                 var singleTable = CsvOperater.ReadSingleLangFile(fullPath, language);
                 for (int j = 0; j < singleTable.Count; j++)
                 {
