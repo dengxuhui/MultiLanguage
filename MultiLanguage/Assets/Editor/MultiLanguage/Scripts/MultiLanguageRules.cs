@@ -10,16 +10,16 @@ namespace Editor.MultiLanguage.Scripts
     {
         [Header("文件目录相关设置（相对Assets目录）")]
         [Tooltip("原始文件收集目录，工具会收集该目录下所有文件（包括子目录）中的xlsx文件并收集语言合成基础基础语言表到ExportDirectory下")]
-        public string rawDirectory = "Editor/MultiLanguage/RawAssets/";
-
-        [Tooltip("资源导出目录")] public string exportDirectory = "Editor/MultiLanguage/ExportAssets/";
+        public string rawDirectory = "Editor/MultiLanguage/Assets/RawAssets/";
+        [Tooltip("资源导出目录")] public string exportDirectory = "Editor/MultiLanguage/Assets/ExportAssets/";
+        [Tooltip("合并文件目录")] public string mergeDirectory = "Editor/MultiLanguage/Assets/MergeAssets/";
         [Header("基础语言设置")] public SupportLanguage baseLanguage = new SupportLanguage();
         [Header("支持语言列表配置")] public SupportLanguage[] supports = new SupportLanguage[0];
+
         /// <summary>
         /// 当前翻译的版本号，用于回写文件时进行比对，高版本号可以冲掉低版本号的翻译
         /// </summary>
-        [HideInInspector]
-        public int translateVersion = 0;
+        [HideInInspector] public int translateVersion = 0;
     }
 
     /// <summary>

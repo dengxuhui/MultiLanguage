@@ -22,16 +22,24 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static string _fullExportDir = "";
 
+        /// <summary>
+        /// 合并目录
+        /// </summary>
+        private static string _fullMergeDir = "";
+
         public static void Start()
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var relativeRawDir = rules.rawDirectory;
             var relativeExportDir = rules.exportDirectory;
+            var relativeMergeDir = rules.mergeDirectory;
             _fullRawDir = FileTool.GetFullPath(relativeRawDir);
             _fullExportDir = FileTool.GetFullPath(relativeExportDir);
+            _fullMergeDir = FileTool.GetFullPath(relativeMergeDir);
             //尝试创建目录
             FileTool.MakeDir(_fullRawDir);
             FileTool.MakeDir(_fullExportDir);
+            FileTool.MakeDir(_fullMergeDir);
 
             #region check file
 
@@ -54,7 +62,7 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static void CheckUsingRawFile()
         {
-            var filePath = Path.Combine(_fullRawDir, Config.CsvNameMergeUsing);
+            var filePath = Path.Combine(_fullMergeDir, Config.CsvNameMergeUsing);
             if (File.Exists(filePath))
             {
                 return;
@@ -119,7 +127,7 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static void WriteUsingRawFileFromMidwayImport()
         {
-            var filePath = Path.Combine(_fullRawDir, Config.CsvNameMergeUsing);
+            var filePath = Path.Combine(_fullMergeDir, Config.CsvNameMergeUsing);
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
@@ -170,7 +178,7 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static void CheckTranslatedRawFile()
         {
-            var filePath = Path.Combine(_fullRawDir, Config.CsvNameMergeTranslated);
+            var filePath = Path.Combine(_fullMergeDir, Config.CsvNameMergeTranslated);
             if (File.Exists(filePath))
             {
                 return;
