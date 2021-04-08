@@ -30,12 +30,9 @@ namespace Editor.MultiLanguage.Scripts.func
         public static void Start()
         {
             var rules = MultiLanguageAssetsManager.GetRules();
-            var relativeRawDir = rules.rawDirectory;
-            var relativeBuildDir = rules.buildDirectory;
-            var relativeSummaryDir = rules.summaryDirectory;
-            _fullRawDir = FileTool.GetFullPath(relativeRawDir);
-            _fullBuildDir = FileTool.GetFullPath(relativeBuildDir);
-            _fullSummaryDir = FileTool.GetFullPath(relativeSummaryDir);
+            _fullRawDir = FileTool.GetFullPath(rules.rawDirectory);
+            _fullBuildDir = FileTool.GetFullPath(rules.buildDirectory);
+            _fullSummaryDir = FileTool.GetFullPath(rules.summaryDirectory);
             //尝试创建目录
             FileTool.MakeDir(_fullRawDir);
             FileTool.MakeDir(_fullBuildDir);
@@ -197,6 +194,7 @@ namespace Editor.MultiLanguage.Scripts.func
                         {
                             continue;
                         }
+
                         fieldInfo.Contents.Add(language, content);
                     }
                 }
@@ -224,6 +222,9 @@ namespace Editor.MultiLanguage.Scripts.func
             if (midwayUse)
             {
                 //将Using中的所有字段拷贝到Translated文件中
+                var usingFilePath = Path.Combine(_fullSummaryDir, Config.CsvNameSummaryUsing);
+                var csvTable = CsvOperater.ReadSummaryFile(usingFilePath);
+                CsvOperater.WriteSummaryFile(csvTable, filePath);
             }
             else
             {
