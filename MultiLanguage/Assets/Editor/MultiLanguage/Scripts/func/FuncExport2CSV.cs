@@ -135,9 +135,9 @@ namespace Editor.MultiLanguage.Scripts.func
                 var fileName = string.Format(Config.ExportLanguageFormat, abbr);
                 var fullPath = Path.Combine(_fullExportDir, fileName);
                 var singleTable = CsvOperater.ReadSingleLangFile(fullPath, language);
-                var fieldInfo = saveTable[i];
                 for (int j = 0; j < singleTable.Count; j++)
                 {
+                    var fieldInfo = saveTable[j];
                     var singleFieldInfo = singleTable[j];
                     if (fieldInfo == null)
                     {

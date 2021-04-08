@@ -16,5 +16,14 @@ MonoBehaviour:
   exportDirectory: Editor/MultiLanguage/Assets/ExportAssets/
   baseLanguage:
     language: 0
-    abbr: 
-  supports: []
+    abbr: CN
+  supports:
+  - language: 0
+    abbr: CN
+  - language: 1
+    abbr: CNTraditional
+  - language: 2
+    abbr: EN
+  - language: 4
+    abbr: Japan
+  translateVersion: 0

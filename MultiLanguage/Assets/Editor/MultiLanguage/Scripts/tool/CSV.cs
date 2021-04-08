@@ -211,7 +211,7 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// <summary>
         /// 所有字段信息
         /// </summary>
-        private List<CsvFieldInfo> _fieldInfos;
+        private readonly List<CsvFieldInfo> _fieldInfos = new List<CsvFieldInfo>(64);
 
         /// <summary>
         /// 获取字段信息
@@ -244,11 +244,6 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// <param name="fieldInfo"></param>
         public void AddField(CsvFieldInfo fieldInfo)
         {
-            if (_fieldInfos == null)
-            {
-                _fieldInfos = new List<CsvFieldInfo>(64);
-            }
-
             _fieldInfos.Add(fieldInfo);
         }
 
