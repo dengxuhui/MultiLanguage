@@ -44,6 +44,10 @@ namespace Editor.MultiLanguage.Scripts.func
             var midwayUse = CheckSummaryUsingFile();
             CheckSummaryTranslatedFile(midwayUse);
 
+            //TODO 差量更新，更新规则：
+            //1.更新原始文件：原始文件有的，Using没有的，写进去，原始文件没有的，Using有的，从Using删除
+            //2.更新翻译需求表：Using中有的，已翻译文件中没有的，需要翻译，已翻译文件中有的，Using没有的，从已翻译中删除（被弃用：将这个已翻译的字段放到DiscardCache文件中，用于后续有需求的话从里面找回）
+            
             #endregion
 
             //最后刷新一下资源

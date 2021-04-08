@@ -35,6 +35,10 @@
         /// </summary>
         public const string CsvNameSummaryTranslated = "Translated@Summary.csv";
         /// <summary>
+        /// 被丢弃字段缓存
+        /// </summary>
+        public const string CsvNameDiscardCache = "DiscardCache@Summary.csv";
+        /// <summary>
         /// 翻译需求表
         /// </summary>
         public const string CsvNameSummaryTranslating = "翻译需求_Version@{0}.csv";
