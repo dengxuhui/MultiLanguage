@@ -9,10 +9,10 @@ namespace Editor.MultiLanguage.Scripts
     public class MultiLanguageRules : ScriptableObject
     {
         [Header("文件目录相关设置（相对Assets目录）")]
-        [Tooltip("原始文件收集目录，工具会收集该目录下所有文件（包括子目录）中的xlsx文件并收集语言合成基础基础语言表到ExportDirectory下")]
-        public string rawDirectory = "Editor/MultiLanguage/Assets/RawAssets/";
-        [Tooltip("资源导出目录")] public string buildDirectory = "Editor/MultiLanguage/Assets/BuildAssets/";
-        [Tooltip("合并文件目录")] public string mergeDirectory = "Editor/MultiLanguage/Assets/MergeAssets/";
+        [Tooltip("各种语言存储的原始文件")]
+        public string rawDirectory = "Editor/MultiLanguage/Assets/Raw/";
+        [Tooltip("各个语言生成后导出的目录")] public string buildDirectory = "Editor/MultiLanguage/Assets/Build/";
+        [Tooltip("汇总文件目录")] public string summaryDirectory = "Editor/MultiLanguage/Assets/Summary/";
         [Header("基础语言设置")] public SupportLanguage baseLanguage = new SupportLanguage();
         [Header("支持语言列表配置")] public SupportLanguage[] supports = new SupportLanguage[0];
 

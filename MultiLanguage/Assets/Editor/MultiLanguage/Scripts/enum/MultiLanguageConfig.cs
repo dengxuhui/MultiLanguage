@@ -29,19 +29,19 @@
         /// <summary>
         /// 当前使用中的语言总档
         /// </summary>
-        public const string CsvNameMergeUsing = "MergeUsing@Raw.csv";
+        public const string CsvNameSummaryUsing = "Using@Summary.csv";
         /// <summary>
         /// 已翻译的语言总档
         /// </summary>
-        public const string CsvNameMergeTranslated = "MergeTranslated@Raw.csv";
+        public const string CsvNameSummaryTranslated = "Translated@Summary.csv";
         /// <summary>
         /// 翻译需求表
         /// </summary>
-        public const string CsvNameMergeTranslating = "翻译需求_Version@{0}.csv";
+        public const string CsvNameSummaryTranslating = "翻译需求_Version@{0}.csv";
         /// <summary>
-        /// 导出文件名格式
+        /// 生成多语言文件名格式
         /// </summary>
-        public const string ExportLanguageFormat = "AllLanguage{0}.csv";
+        public const string BuildLanguageFormat = "AllLanguage{0}.csv";
         #endregion
     }
 }

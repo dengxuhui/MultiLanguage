@@ -18,7 +18,7 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// <param name="path"></param>
         /// <param name="language"></param>
         /// <returns>CsvTable</returns>
-        public static CsvTable ReadSingleLangFile(string path, Language language)
+        public static CsvTable ReadSingleFile(string path, Language language)
         {
             using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
@@ -63,7 +63,7 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static CsvTable ReadMergeLangFile(string path)
+        public static CsvTable ReadSummaryFile(string path)
         {
             using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
@@ -124,7 +124,7 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// </summary>
         /// <param name="tbl"></param>
         /// <param name="path"></param>
-        public static void WriteSingleLangFile(CsvTable tbl, string path)
+        public static void WriteSingleFile(CsvTable tbl, string path)
         {
             using (var sw = new StreamWriter(path, false, Encoding.Unicode))
             {
@@ -144,7 +144,7 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// </summary>
         /// <param name="tbl"></param>
         /// <param name="path"></param>
-        public static void WriteMergeLangFile(CsvTable tbl, string path)
+        public static void WriteSummaryFile(CsvTable tbl, string path)
         {
             if (tbl.Count <= 0)
             {

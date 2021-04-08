@@ -25,27 +25,27 @@ namespace Editor.MultiLanguage.Scripts.func
         /// <summary>
         /// 合并目录
         /// </summary>
-        private static string _fullMergeDir = "";
+        private static string _fullSummaryDir = "";
 
         public static void Start()
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var relativeRawDir = rules.rawDirectory;
             var relativeBuildDir = rules.buildDirectory;
-            var relativeMergeDir = rules.mergeDirectory;
+            var relativeSummaryDir = rules.summaryDirectory;
             _fullRawDir = FileTool.GetFullPath(relativeRawDir);
             _fullBuildDir = FileTool.GetFullPath(relativeBuildDir);
-            _fullMergeDir = FileTool.GetFullPath(relativeMergeDir);
+            _fullSummaryDir = FileTool.GetFullPath(relativeSummaryDir);
             //尝试创建目录
             FileTool.MakeDir(_fullRawDir);
             FileTool.MakeDir(_fullBuildDir);
-            FileTool.MakeDir(_fullMergeDir);
+            FileTool.MakeDir(_fullSummaryDir);
 
             #region check file
 
             //顺序执行
-            var midwayUse = CheckUsingRawFile();
-            CheckTranslatedRawFile(midwayUse);
+            var midwayUse = CheckSummaryUsingFile();
+            CheckSummaryTranslatedFile(midwayUse);
 
             #endregion
 
@@ -60,9 +60,9 @@ namespace Editor.MultiLanguage.Scripts.func
         /// <summary>
         /// 检查当前正在使用的总表文件
         /// </summary>
-        private static bool CheckUsingRawFile()
+        private static bool CheckSummaryUsingFile()
         {
-            var filePath = Path.Combine(_fullMergeDir, Config.CsvNameMergeUsing);
+            var filePath = Path.Combine(_fullSummaryDir, Config.CsvNameSummaryUsing);
             if (File.Exists(filePath))
             {
                 return false;
@@ -81,7 +81,7 @@ namespace Editor.MultiLanguage.Scripts.func
             for (var i = 0; i < supports.Length; i++)
             {
                 var abbr = string.IsNullOrEmpty(supports[i].abbr) ? supports[i].language.ToString() : supports[i].abbr;
-                var fileName = string.Format(Config.ExportLanguageFormat, abbr);
+                var fileName = string.Format(Config.BuildLanguageFormat, abbr);
                 needFiles.Add(fileName);
             }
 
@@ -114,11 +114,11 @@ namespace Editor.MultiLanguage.Scripts.func
 
             if (midWayUse)
             {
-                WriteUsingRawFileFromBuiltFiles();
+                WriteSummaryUsingFileFromBuiltFiles();
             }
             else
             {
-                WriteUsingRawFileFromRawFiles();
+                WriteSummaryUsingFileFromRawFiles();
             }
 
             return midWayUse;
@@ -127,9 +127,9 @@ namespace Editor.MultiLanguage.Scripts.func
         /// <summary>
         /// 从已编译好的文件中反向生成Raw文件，一般用于中途使用改工具才会用到这个方法
         /// </summary>
-        private static void WriteUsingRawFileFromBuiltFiles()
+        private static void WriteSummaryUsingFileFromBuiltFiles()
         {
-            var filePath = Path.Combine(_fullMergeDir, Config.CsvNameMergeUsing);
+            var filePath = Path.Combine(_fullSummaryDir, Config.CsvNameSummaryUsing);
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
@@ -142,9 +142,9 @@ namespace Editor.MultiLanguage.Scripts.func
             {
                 var language = supports[i].language;
                 var abbr = string.IsNullOrEmpty(supports[i].abbr) ? language.ToString() : supports[i].abbr;
-                var fileName = string.Format(Config.ExportLanguageFormat, abbr);
+                var fileName = string.Format(Config.BuildLanguageFormat, abbr);
                 var fullPath = Path.Combine(_fullBuildDir, fileName);
-                var singleTable = CsvOperater.ReadSingleLangFile(fullPath, language);
+                var singleTable = CsvOperater.ReadSingleFile(fullPath, language);
                 for (int j = 0; j < singleTable.Count; j++)
                 {
                     var fieldInfo = saveTable[j];
@@ -160,15 +160,15 @@ namespace Editor.MultiLanguage.Scripts.func
                 }
             }
 
-            CsvOperater.WriteMergeLangFile(saveTable, filePath);
+            CsvOperater.WriteSummaryFile(saveTable, filePath);
         }
 
         /// <summary>
         /// 从原始文件写入当前使用中的csv总表,正常用于初始都是走的这个文件~
         /// </summary>
-        private static void WriteUsingRawFileFromRawFiles()
+        private static void WriteSummaryUsingFileFromRawFiles()
         {
-            var filePath = Path.Combine(_fullMergeDir, Config.CsvNameMergeUsing);
+            var filePath = Path.Combine(_fullSummaryDir, Config.CsvNameSummaryUsing);
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
@@ -182,7 +182,7 @@ namespace Editor.MultiLanguage.Scripts.func
             for (var i = 0; i < rawFiles.Length; i++)
             {
                 var fileName = Path.GetFileNameWithoutExtension(rawFiles[i]);
-                var singleTable = CsvOperater.ReadSingleLangFile(rawFiles[i], baseSupport.language);
+                var singleTable = CsvOperater.ReadSingleFile(rawFiles[i], baseSupport.language);
                 for (var j = 0; j < singleTable.Count; j++)
                 {
                     var fieldInfo = singleTable[j];
@@ -202,7 +202,7 @@ namespace Editor.MultiLanguage.Scripts.func
                 }
             }
 
-            CsvOperater.WriteMergeLangFile(saveTable, filePath);
+            CsvOperater.WriteSummaryFile(saveTable, filePath);
         }
 
         #endregion
@@ -213,9 +213,9 @@ namespace Editor.MultiLanguage.Scripts.func
         /// <summary>
         /// 检查已翻译表
         /// </summary>
-        private static void CheckTranslatedRawFile(bool midwayUse)
+        private static void CheckSummaryTranslatedFile(bool midwayUse)
         {
-            var filePath = Path.Combine(_fullMergeDir, Config.CsvNameMergeTranslated);
+            var filePath = Path.Combine(_fullSummaryDir, Config.CsvNameSummaryTranslated);
             if (File.Exists(filePath))
             {
                 return;
