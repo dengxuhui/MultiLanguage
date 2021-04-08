@@ -208,8 +208,6 @@ namespace Editor.MultiLanguage.Scripts.tool
     /// </summary>
     public class CsvTable
     {
-        public static readonly CsvFieldInfo Empty = new CsvFieldInfo();
-
         /// <summary>
         /// 所有字段信息
         /// </summary>
@@ -229,7 +227,7 @@ namespace Editor.MultiLanguage.Scripts.tool
                 }
                 else
                 {
-                    return Empty;
+                    return null;
                 }
             }
             set => _fieldInfos[index] = value;

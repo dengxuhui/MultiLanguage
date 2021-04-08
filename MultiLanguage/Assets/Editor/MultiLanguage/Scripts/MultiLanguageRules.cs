@@ -15,6 +15,11 @@ namespace Editor.MultiLanguage.Scripts
         [Tooltip("资源导出目录")] public string exportDirectory = "Editor/MultiLanguage/ExportAssets/";
         [Header("基础语言设置")] public SupportLanguage baseLanguage = new SupportLanguage();
         [Header("支持语言列表配置")] public SupportLanguage[] supports = new SupportLanguage[0];
+        /// <summary>
+        /// 当前翻译的版本号，用于回写文件时进行比对，高版本号可以冲掉低版本号的翻译
+        /// </summary>
+        [HideInInspector]
+        public int translateVersion = 0;
     }
 
     /// <summary>
