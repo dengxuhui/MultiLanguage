@@ -28,14 +28,14 @@ namespace Editor.MultiLanguage.Scripts.tool
                 sr.Close();
                 sr.Dispose();
 
+                CsvTable tbl = new CsvTable();
                 string[] rows = text.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
                 if (rows.Length <= 0)
                 {
-                    return null;
+                    return tbl;
                 }
 
 
-                CsvTable tbl = new CsvTable();
                 for (var i = 0; i < rows.Length; i++)
                 {
                     var row = rows[i];
@@ -113,6 +113,7 @@ namespace Editor.MultiLanguage.Scripts.tool
                         var lang = paresLangSeq[j - 1];
                         fieldInfo.Contents.Add(lang, kv[j]);
                     }
+                    tbl.AddField(fieldInfo);
                 }
 
                 return tbl;
