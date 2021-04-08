@@ -33,11 +33,5 @@ namespace Editor.MultiLanguage.Scripts
         /// </summary>
         [Tooltip("简写用于导出文件后缀,如果为空字符串就直接用语言名字为文件后缀")]
         public string abbr = "";
-
-        /// <summary>
-        /// csv文件中显示的头
-        /// </summary>
-        [Tooltip("在总表AllLanguage@Raw.csv文件中语言头显示什么，如果控制符就以Language宏为标题")]
-        public string csvHeader = "";
     }
 }

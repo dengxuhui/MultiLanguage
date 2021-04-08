@@ -8,6 +8,7 @@ namespace Editor.MultiLanguage.Scripts.tool
 {
     /// <summary>
     /// csv文件操作工具
+    /// 说明：SingleFile指的是单独的语言文件，MergeFile是合并多个语言的文件，包含文件头，单独文件只有键值对组成的文件
     /// </summary>
     public static class CsvOperater
     {
@@ -71,13 +72,50 @@ namespace Editor.MultiLanguage.Scripts.tool
                 sr.Close();
                 sr.Dispose();
                 string[] rows = text.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
-                if (rows.Length <= 0)
+                //第一行为文件头
+                if (rows.Length <= 1)
                 {
                     return null;
                 }
+
                 CsvTable tbl = new CsvTable();
-                //TODO 
-                return null;
+
+                //文件头
+
+                #region 解析文件头
+
+                var header = rows[0];
+                var headerKv = header.Split('\t');
+                Language[] paresLangSeq = new Language[headerKv.Length - 1];
+                for (int i = 1; i < headerKv.Length; i++)
+                {
+                    Enum.TryParse<Language>(headerKv[i], out var result);
+                    paresLangSeq[i - 1] = result;
+                }
+
+                #endregion
+
+                for (var i = 1; i < rows.Length; i++)
+                {
+                    var row = rows[i];
+                    var kv = row.Split('\t');
+                    //字段名为空
+                    if (kv.Length < 2 || string.IsNullOrEmpty(kv[0]))
+                    {
+                        continue;
+                    }
+
+                    var fieldInfo = new CsvFieldInfo();
+                    var name = kv[0];
+                    fieldInfo.Name = name;
+                    for (int j = 1; j < kv.Length; j++)
+                    {
+                        var lang = paresLangSeq[j - 1];
+                        fieldInfo.Contents.Add(lang, kv[j]);
+                    }
+                }
+
+                return tbl;
             }
         }
 
@@ -112,9 +150,11 @@ namespace Editor.MultiLanguage.Scripts.tool
             {
                 return;
             }
+
             using (var sw = new StreamWriter(path, false, Encoding.Unicode))
             {
                 #region 写文件头
+
                 var src = tbl[0];
                 var sb = new StringBuilder();
                 sb.Append("多语言Key");
@@ -138,9 +178,7 @@ namespace Editor.MultiLanguage.Scripts.tool
                         return;
                     }
 
-                    var header = string.IsNullOrEmpty(supportLang.csvHeader)
-                        ? supportLang.language.ToString()
-                        : supportLang.csvHeader;
+                    var header = supportLang.language.ToString();
                     sb.Append("\t");
                     sb.Append(header);
                 }
@@ -150,7 +188,9 @@ namespace Editor.MultiLanguage.Scripts.tool
                 {
                     sw.WriteLine(headerStr);
                 }
+
                 #endregion
+
                 for (var i = 0; i < tbl.Count; i++)
                 {
                     sw.WriteLine(tbl.ToString(i));
