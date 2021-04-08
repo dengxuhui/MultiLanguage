@@ -44,8 +44,8 @@ namespace Editor.MultiLanguage.Scripts.func
             #region check file
 
             //顺序执行
-            CheckUsingRawFile();
-            CheckTranslatedRawFile();
+            var midwayUse = CheckUsingRawFile();
+            CheckTranslatedRawFile(midwayUse);
 
             #endregion
 
@@ -60,12 +60,12 @@ namespace Editor.MultiLanguage.Scripts.func
         /// <summary>
         /// 检查当前正在使用的总表文件
         /// </summary>
-        private static void CheckUsingRawFile()
+        private static bool CheckUsingRawFile()
         {
             var filePath = Path.Combine(_fullMergeDir, Config.CsvNameMergeUsing);
             if (File.Exists(filePath))
             {
-                return;
+                return false;
             }
 
             //合并档写文件 这里分两种情况：1.首次使用的时候直接把所有分表合并为一个使用表2.之前已经使用过一段时间存在翻译的文件，这里需要特殊处理把Single文件合并为正在使用的文件
@@ -98,7 +98,7 @@ namespace Editor.MultiLanguage.Scripts.func
             }
 
             //缺失文件
-            if (needFiles.Count > 0)
+            if (midWayUse && needFiles.Count > 0)
             {
                 var sb = new StringBuilder();
                 for (var i = 0; i < needFiles.Count; i++)
@@ -120,6 +120,8 @@ namespace Editor.MultiLanguage.Scripts.func
             {
                 WriteUsingRawFileFromRawFiles();
             }
+
+            return midWayUse;
         }
 
         /// <summary>
@@ -162,10 +164,45 @@ namespace Editor.MultiLanguage.Scripts.func
         }
 
         /// <summary>
-        /// 从原始文件写入当前使用中的csv总表
+        /// 从原始文件写入当前使用中的csv总表,正常用于初始都是走的这个文件~
         /// </summary>
         private static void WriteUsingRawFileFromRawFiles()
         {
+            var filePath = Path.Combine(_fullMergeDir, Config.CsvNameMergeUsing);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            var rules = MultiLanguageAssetsManager.GetRules();
+            var supports = rules.supports;
+            var baseSupport = rules.baseLanguage;
+            var rawFiles = Directory.GetFiles(_fullRawDir);
+            var saveTable = new CsvTable();
+            for (var i = 0; i < rawFiles.Length; i++)
+            {
+                var fileName = Path.GetFileNameWithoutExtension(rawFiles[i]);
+                var singleTable = CsvOperater.ReadSingleLangFile(rawFiles[i], baseSupport.language);
+                for (var j = 0; j < singleTable.Count; j++)
+                {
+                    var fieldInfo = singleTable[j];
+                    fieldInfo.Name = FileTool.GenerateUniqueKeyByFileName(fileName, fieldInfo.Name);
+                    saveTable.AddField(fieldInfo);
+                    fieldInfo.Contents.TryGetValue(baseSupport.language, out var content);
+                    //重复写入字段 与基础语言一致
+                    for (int k = 0; k < supports.Length; k++)
+                    {
+                        var language = supports[k].language;
+                        if (language == baseSupport.language)
+                        {
+                            continue;
+                        }
+                        fieldInfo.Contents.Add(language, content);
+                    }
+                }
+            }
+
+            CsvOperater.WriteMergeLangFile(saveTable, filePath);
         }
 
         #endregion
@@ -176,13 +213,14 @@ namespace Editor.MultiLanguage.Scripts.func
         /// <summary>
         /// 检查已翻译表
         /// </summary>
-        private static void CheckTranslatedRawFile()
+        private static void CheckTranslatedRawFile(bool midwayUse)
         {
             var filePath = Path.Combine(_fullMergeDir, Config.CsvNameMergeTranslated);
             if (File.Exists(filePath))
             {
                 return;
             }
+            
         }
 
         #endregion

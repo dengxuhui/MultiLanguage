@@ -48,6 +48,16 @@ namespace Editor.MultiLanguage.Scripts.tool
         {
             return Path.Combine(Application.dataPath, path);
         }
-        
+
+        /// <summary>
+        /// 通过文件名生成唯一key
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GenerateUniqueKeyByFileName(string filename,string key)
+        {
+            return filename + "_" + key;
+        }
     }
 }

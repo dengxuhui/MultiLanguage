@@ -211,7 +211,7 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// <summary>
         /// 所有字段信息
         /// </summary>
-        private readonly List<CsvFieldInfo> _fieldInfos = new List<CsvFieldInfo>(64);
+        private readonly List<CsvFieldInfo> _fieldInfos = new List<CsvFieldInfo>();
 
         /// <summary>
         /// 获取字段信息
