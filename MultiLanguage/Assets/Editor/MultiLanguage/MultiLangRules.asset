@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: MultiLangRules
   m_EditorClassIdentifier: 
   rawDirectory: Editor/MultiLanguage/Assets/RawAssets/
-  exportDirectory: Editor/MultiLanguage/Assets/ExportAssets/
+  buildDirectory: Editor/MultiLanguage/Assets/BuildAssets/
+  summaryDirectory: Editor/MultiLanguage/Assets/Summary/
   baseLanguage:
     language: 0
     abbr: CN

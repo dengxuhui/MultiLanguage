@@ -127,9 +127,9 @@ namespace Editor.MultiLanguage.Scripts
 
             if (GUILayout.Button("一键导出"))
             {
-                //TODO
-                Debug.Log("start export language....");
-                FuncExport2Csv.Start();
+                Debug.Log("start build language....");
+                FuncExport2Csv.Start(_exportTranslate, _updateTMP, _exportSwitchDic);
+                Debug.Log("complete build language....");
             }
 
             EditorGUILayout.EndToggleGroup();

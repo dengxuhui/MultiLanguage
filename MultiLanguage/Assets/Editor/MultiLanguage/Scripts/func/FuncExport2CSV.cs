@@ -27,12 +27,22 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static string _fullSummaryDir = "";
 
-        public static void Start()
+        /// <summary>
+        /// 多语言规则设置文件数据
+        /// </summary>
+        private static MultiLanguageRules _rules;
+
+        public static void Start(bool exportTranslate, bool updateTMP, Dictionary<Language, bool> buildLanguages)
         {
-            var rules = MultiLanguageAssetsManager.GetRules();
-            _fullRawDir = FileTool.GetFullPath(rules.rawDirectory);
-            _fullBuildDir = FileTool.GetFullPath(rules.buildDirectory);
-            _fullSummaryDir = FileTool.GetFullPath(rules.summaryDirectory);
+            #region 初始化数据
+
+            _rules = MultiLanguageAssetsManager.GetRules();
+            _fullRawDir = FileTool.GetFullPath(_rules.rawDirectory);
+            _fullBuildDir = FileTool.GetFullPath(_rules.buildDirectory);
+            _fullSummaryDir = FileTool.GetFullPath(_rules.summaryDirectory);
+
+            #endregion
+
             //尝试创建目录
             FileTool.MakeDir(_fullRawDir);
             FileTool.MakeDir(_fullBuildDir);
@@ -47,7 +57,9 @@ namespace Editor.MultiLanguage.Scripts.func
             //TODO 差量更新，更新规则：
             //1.更新原始文件：原始文件有的，Using没有的，写进去，原始文件没有的，Using有的，从Using删除
             //2.更新翻译需求表：Using中有的，已翻译文件中没有的，需要翻译，已翻译文件中有的，Using没有的，从已翻译中删除（被弃用：将这个已翻译的字段放到DiscardCache文件中，用于后续有需求的话从里面找回）
-            
+            UpdateSummaryUsingFile();
+            UpdateSummaryTranslateFile();
+
             #endregion
 
             //最后刷新一下资源
@@ -56,7 +68,32 @@ namespace Editor.MultiLanguage.Scripts.func
 
         #region private method
 
-        #region using csv 使用中的总表操作相关
+        #region update 更新写入操作
+
+        /// <summary>
+        /// 更新使用
+        /// </summary>
+        private static void UpdateSummaryUsingFile()
+        {
+        }
+
+        /// <summary>
+        /// 更新翻译表
+        /// </summary>
+        private static void UpdateSummaryTranslateFile()
+        {
+        }
+
+        /// <summary>
+        /// build 语言表
+        /// </summary>
+        private static void BuildLanguageFiles()
+        {
+        }
+
+        #endregion
+
+        #region using csv 检查操作
 
         /// <summary>
         /// 检查当前正在使用的总表文件
@@ -70,7 +107,7 @@ namespace Editor.MultiLanguage.Scripts.func
             }
 
             //合并档写文件 这里分两种情况：1.首次使用的时候直接把所有分表合并为一个使用表2.之前已经使用过一段时间存在翻译的文件，这里需要特殊处理把Single文件合并为正在使用的文件
-            var rules = MultiLanguageAssetsManager.GetRules();
+            var rules = _rules;
             var supports = rules.supports;
 
             bool midWayUse = false;
@@ -136,7 +173,7 @@ namespace Editor.MultiLanguage.Scripts.func
                 File.Delete(filePath);
             }
 
-            var rules = MultiLanguageAssetsManager.GetRules();
+            var rules = _rules;
             var supports = rules.supports;
             var saveTable = new CsvTable();
             for (var i = 0; i < supports.Length; i++)
@@ -175,7 +212,7 @@ namespace Editor.MultiLanguage.Scripts.func
                 File.Delete(filePath);
             }
 
-            var rules = MultiLanguageAssetsManager.GetRules();
+            var rules = _rules;
             var supports = rules.supports;
             var baseSupport = rules.baseLanguage;
             var rawFiles = Directory.GetFiles(_fullRawDir);
@@ -209,8 +246,7 @@ namespace Editor.MultiLanguage.Scripts.func
 
         #endregion
 
-
-        #region 已翻译的总表操作相关
+        #region translated csv 检查操作
 
         /// <summary>
         /// 检查已翻译表
