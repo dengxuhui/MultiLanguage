@@ -1,4 +1,6 @@
-﻿namespace Editor.MultiLanguage.Scripts
+﻿using System.Collections.Generic;
+
+namespace Editor.MultiLanguage.Scripts
 {
     /// <summary>
     /// 多语言工具静态配置
@@ -25,6 +27,7 @@
         /// 所有语言的原始文件
         /// </summary>
         public const string AllLanguageRawFile = "AllLanguage@Raw.xlsx";
+
         /// <summary>
         /// 导出文件名格式
         /// </summary>

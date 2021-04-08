@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using UnityEditor;
 
 namespace Editor.MultiLanguage.Scripts.tool
 {
@@ -11,11 +12,12 @@ namespace Editor.MultiLanguage.Scripts.tool
     public static class CsvOperater
     {
         /// <summary>
-        /// 读取csv文件转换为CsvTable
+        /// 读取单个语言表
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="language"></param>
         /// <returns>CsvTable</returns>
-        public static CsvTable Read(string path)
+        public static CsvTable ReadSingleLangFile(string path, Language language)
         {
             using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
@@ -37,16 +39,17 @@ namespace Editor.MultiLanguage.Scripts.tool
                 {
                     var row = rows[i];
                     var kv = row.Split('\t');
-                    if (kv.Length != 2 || kv[0] == "")
+                    //字段名为空
+                    if (kv.Length < 2 || string.IsNullOrEmpty(kv[0]))
                     {
                         continue;
                     }
 
-                    var fieldInfo = new CsvFieldInfo
-                    {
-                        Key = kv[0],
-                        Value = kv[1]
-                    };
+                    var name = kv[0];
+                    var content = kv[1];
+                    var fieldInfo = new CsvFieldInfo {Name = name};
+                    fieldInfo.Contents.Add(language, content);
+
                     tbl.AddField(fieldInfo);
                 }
 
@@ -55,11 +58,35 @@ namespace Editor.MultiLanguage.Scripts.tool
         }
 
         /// <summary>
+        /// 读取合并后的所有语言合并档
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static CsvTable ReadMergeLangFile(string path)
+        {
+            using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                var sr = new StreamReader(stream);
+                var text = sr.ReadToEnd();
+                sr.Close();
+                sr.Dispose();
+                string[] rows = text.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+                if (rows.Length <= 0)
+                {
+                    return null;
+                }
+                CsvTable tbl = new CsvTable();
+                //TODO 
+                return null;
+            }
+        }
+
+        /// <summary>
         /// 在指定路径写csv文件，如果存在直接覆盖
         /// </summary>
         /// <param name="tbl"></param>
         /// <param name="path"></param>
-        public static void Write(CsvTable tbl, string path)
+        public static void WriteSingleLangFile(CsvTable tbl, string path)
         {
             using (var sw = new StreamWriter(path, false, Encoding.Unicode))
             {
@@ -67,7 +94,68 @@ namespace Editor.MultiLanguage.Scripts.tool
                 {
                     sw.WriteLine(tbl.ToString(i));
                 }
-                
+
+                sw.Flush();
+                sw.Close();
+                sw.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// 写总表数据，总表有文件头
+        /// </summary>
+        /// <param name="tbl"></param>
+        /// <param name="path"></param>
+        public static void WriteMergeLangFile(CsvTable tbl, string path)
+        {
+            if (tbl.Count <= 0)
+            {
+                return;
+            }
+            using (var sw = new StreamWriter(path, false, Encoding.Unicode))
+            {
+                #region 写文件头
+                var src = tbl[0];
+                var sb = new StringBuilder();
+                sb.Append("多语言Key");
+                var rules = MultiLanguageAssetsManager.GetRules();
+                var supports = rules.supports;
+                foreach (var fieldInfoContent in src.Contents)
+                {
+                    SupportLanguage supportLang = null;
+                    for (var i = 0; i < supports.Length; i++)
+                    {
+                        if (supports[i].language == fieldInfoContent.Key)
+                        {
+                            supportLang = supports[i];
+                            break;
+                        }
+                    }
+
+                    if (supportLang == null)
+                    {
+                        EditorUtility.DisplayDialog("写入错误", "支持语言与写入table字段数不匹配，请检查", "OK");
+                        return;
+                    }
+
+                    var header = string.IsNullOrEmpty(supportLang.csvHeader)
+                        ? supportLang.language.ToString()
+                        : supportLang.csvHeader;
+                    sb.Append("\t");
+                    sb.Append(header);
+                }
+
+                var headerStr = sb.ToString();
+                if (!string.IsNullOrEmpty(headerStr))
+                {
+                    sw.WriteLine(headerStr);
+                }
+                #endregion
+                for (var i = 0; i < tbl.Count; i++)
+                {
+                    sw.WriteLine(tbl.ToString(i));
+                }
+
                 sw.Flush();
                 sw.Close();
                 sw.Dispose();
@@ -134,9 +222,14 @@ namespace Editor.MultiLanguage.Scripts.tool
         public string ToString(int index)
         {
             var sb = new StringBuilder();
-            sb.Append(_fieldInfos[index].Key);
-            sb.Append("\t");
-            sb.Append(_fieldInfos[index].Value);
+            var fieldInfo = _fieldInfos[index];
+            sb.Append(fieldInfo.Name);
+            foreach (var fieldInfoContent in fieldInfo.Contents)
+            {
+                sb.Append("\t");
+                sb.Append(fieldInfoContent.Value);
+            }
+
             return sb.ToString();
         }
     }

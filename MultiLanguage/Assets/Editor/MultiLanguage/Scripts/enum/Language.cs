@@ -41,7 +41,6 @@ namespace Editor.MultiLanguage.Scripts
         Turkish,
     }
 
-
     /// <summary>
     /// 字段状态
     /// </summary>
@@ -53,44 +52,17 @@ namespace Editor.MultiLanguage.Scripts
     }
     
     /// <summary>
-    /// xlsx中的字段信息
-    /// </summary>
-    public struct ExcelFieldInfo
-    {
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        public string CreateDate;
-        /// <summary>
-        /// 修改时间
-        /// </summary>
-        public string ModifyDate;
-        /// <summary>
-        /// 字段状态
-        /// </summary>
-        public string FieldState;
-        /// <summary>
-        /// 键
-        /// </summary>
-        public string Key;
-        /// <summary>
-        /// 值
-        /// </summary>
-        public string Value;
-    }
-
-    /// <summary>
     /// csv中字段信息
     /// </summary>
-    public struct CsvFieldInfo
+    public class CsvFieldInfo
     {
         /// <summary>
         /// 键
         /// </summary>
-        public string Key;
+        public string Name;
         /// <summary>
-        /// 值
+        /// 列，有多少语言就有多少列
         /// </summary>
-        public string Value;
+        public readonly Dictionary<Language, string> Contents = new Dictionary<Language, string>();
     }
 }

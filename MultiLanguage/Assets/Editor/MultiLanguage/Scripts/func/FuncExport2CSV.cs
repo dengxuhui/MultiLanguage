@@ -43,9 +43,8 @@ namespace Editor.MultiLanguage.Scripts.func
             var baseLang = rules.baseLanguage;
             string baseLangPath = string.Format(exportFormat,
                 string.IsNullOrEmpty(baseLang.abbr) ? baseLang.language.ToString() : baseLang.abbr);
-            
-            
-            
+
+
             var supportLan = rules.supports;
             for (var i = 0; i < supportLan.Length; i++)
             {
@@ -57,7 +56,7 @@ namespace Editor.MultiLanguage.Scripts.func
                     continue;
                 }
 
-                var csvTable = CsvOperater.Read(path);
+                var csvTable = CsvOperater.ReadSingleLangFile(path, lang.language);
             }
         }
     }
