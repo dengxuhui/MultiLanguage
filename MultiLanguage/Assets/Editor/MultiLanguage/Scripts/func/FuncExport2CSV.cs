@@ -37,7 +37,7 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static MultiLanguageRules _rules;
 
-        public static void Start(bool exportTranslate, bool updateTMP, Dictionary<Language, bool> buildLanguages)
+        public static void Start(bool exportTranslate, bool updateTMP)
         {
             #region 初始化数据
 

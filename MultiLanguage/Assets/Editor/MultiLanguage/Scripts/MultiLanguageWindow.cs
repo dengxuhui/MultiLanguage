@@ -31,24 +31,14 @@ namespace Editor.MultiLanguage.Scripts
         #endregion
 
         /// <summary>
-        /// 导出语言开关
-        /// </summary>
-        private Dictionary<Language, bool> _exportSwitchDic;
-
-        /// <summary>
-        /// 选定指定语言
-        /// </summary>
-        private bool _selectExportLang;
-
-        /// <summary>
         /// 是否导出翻译表
         /// </summary>
-        private bool _exportTranslate;
+        private bool _exportTranslate = Config.DefaultExportTranslateTable;
 
         /// <summary>
         /// 是否更新tmp字符
         /// </summary>
-        private bool _updateTMP;
+        private bool _updateTMP = Config.DefaultUpdateTMP;
 
         /// <summary>
         /// 打开入口
@@ -61,35 +51,6 @@ namespace Editor.MultiLanguage.Scripts
 
         #region ui逻辑
 
-        /// <summary>
-        /// 通过rule初始化数据
-        /// </summary>
-        private void InitDataByRule()
-        {
-            //开发阶段使用判断
-            if (_exportSwitchDic != null)
-            {
-                return;
-            }
-
-            _translateFolder = EditorPrefs.GetString(Config.TranslateFolderPrefsKey);
-
-            _funcExport = false;
-
-            MultiLanguageRules rules = MultiLanguageAssetsManager.GetRules();
-            _exportSwitchDic = new Dictionary<Language, bool>();
-            var supportLangs = rules.supports;
-            _selectExportLang = Config.DefaultSelectExportLang;
-            //默认全量导出
-            for (var i = 0; i < supportLangs.Length; i++)
-            {
-                _exportSwitchDic.Add(supportLangs[i].language, !_selectExportLang);
-            }
-
-            _exportTranslate = Config.DefaultExportTranslateTable;
-            _updateTMP = Config.DefaultUpdateTMP;
-        }
-
         private void SelectTranslateFile()
         {
             _translateFeedbackPath = EditorUtility.OpenFilePanelWithFilters("选择翻译反馈总表（xlsx文件）", _translateFolder,
@@ -99,27 +60,11 @@ namespace Editor.MultiLanguage.Scripts
 
         private void OnGUI()
         {
-            InitDataByRule();
             //----------------------------------------------------------
 
             #region 导出本地化
 
             _funcExport = EditorGUILayout.BeginToggleGroup("------------1.语言导出------------", _funcExport);
-            //选择导出语言
-            _selectExportLang = EditorGUILayout.BeginToggleGroup("导出指定语言（默认全导）", _selectExportLang);
-            var tDci = new Dictionary<Language, bool>();
-            foreach (var langExportsKv in _exportSwitchDic)
-            {
-                var value = EditorGUILayout.Toggle(langExportsKv.Key.ToString(), langExportsKv.Value);
-                tDci.Add(langExportsKv.Key, value);
-            }
-
-            foreach (var langExportsKv in tDci)
-            {
-                _exportSwitchDic[langExportsKv.Key] = langExportsKv.Value;
-            }
-
-            EditorGUILayout.EndToggleGroup();
             //翻译需求
             _exportTranslate = EditorGUILayout.ToggleLeft("是否导出翻译需求表", _exportTranslate);
             //TMP字符更新
@@ -128,8 +73,9 @@ namespace Editor.MultiLanguage.Scripts
             if (GUILayout.Button("一键导出"))
             {
                 Debug.Log("start build language....");
-                FuncExport2Csv.Start(_exportTranslate, _updateTMP, _exportSwitchDic);
+                FuncExport2Csv.Start(_exportTranslate, _updateTMP);
                 Debug.Log("complete build language....");
+                EditorUtility.DisplayDialog("完成", "一键导出完成", "OK");
             }
 
             EditorGUILayout.EndToggleGroup();
