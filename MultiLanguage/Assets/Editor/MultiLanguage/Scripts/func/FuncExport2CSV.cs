@@ -78,14 +78,19 @@ namespace Editor.MultiLanguage.Scripts.func
 
             var rules = _rules;
             var baseSupport = rules.baseLanguage;
-            var rawFiles = Directory.GetFiles(_fullRawDir);
+            var rawFiles = FileTool.GetAllCsvFiles(_fullRawDir);
             for (var i = 0; i < rawFiles.Length; i++)
             {
                 var tbl = CsvOperater.ReadSingleFile(rawFiles[i], baseSupport.language);
+                var fileName = Path.GetFileNameWithoutExtension(rawFiles[i]);
                 for (var i1 = 0; i1 < tbl.Count; i1++)
                 {
                     var fieldInfo = tbl[i1];
-                    rawDic.Add(fieldInfo.Name, fieldInfo.GetValue(baseSupport.language));
+                    var key = FileTool.GenerateUniqueKeyByFileName(fileName, fieldInfo.Name);
+                    if (!rawDic.ContainsKey(key))
+                    {
+                        rawDic.Add(key, fieldInfo.GetValue(baseSupport.language));       
+                    }
                 }
             }
 
@@ -186,7 +191,7 @@ namespace Editor.MultiLanguage.Scripts.func
 
             #region 检查是否是中途导入
 
-            var files = Directory.GetFiles(_fullBuildDir);
+            var files = FileTool.GetAllCsvFiles(_fullBuildDir);
             List<string> needFiles = new List<string>(supports.Length);
             for (var i = 0; i < supports.Length; i++)
             {
@@ -287,7 +292,7 @@ namespace Editor.MultiLanguage.Scripts.func
             var rules = _rules;
             var supports = rules.supports;
             var baseSupport = rules.baseLanguage;
-            var rawFiles = Directory.GetFiles(_fullRawDir);
+            var rawFiles = FileTool.GetAllCsvFiles(_fullRawDir);
             var saveTable = new CsvTable();
             for (var i = 0; i < rawFiles.Length; i++)
             {

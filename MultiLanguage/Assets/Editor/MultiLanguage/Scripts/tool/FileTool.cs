@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -55,9 +56,36 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// <param name="filename"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static string GenerateUniqueKeyByFileName(string filename,string key)
+        public static string GenerateUniqueKeyByFileName(string filename, string key)
         {
             return filename + "_" + key;
+        }
+
+        /// <summary>
+        /// 获取目录下所有csv文件
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        public static string[] GetAllCsvFiles(string dir)
+        {
+            var list = new List<string>();
+            if (!Directory.Exists(dir))
+            {
+                //避免判空
+                return list.ToArray();
+            }
+
+            var files = Directory.GetFiles(dir);
+            for (var i = 0; i < files.Length; i++)
+            {
+                var extension = Path.GetExtension(files[i]);
+                if (string.Equals(extension, ".csv", StringComparison.OrdinalIgnoreCase))
+                {
+                    list.Add(files[i]);
+                }
+            }
+
+            return list.ToArray();
         }
     }
 }
