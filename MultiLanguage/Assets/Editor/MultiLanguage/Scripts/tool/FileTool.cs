@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace Editor.MultiLanguage.Scripts.tool
 {
@@ -58,7 +59,15 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// <returns></returns>
         public static string GenerateUniqueKeyByFileName(string filename, string key)
         {
-            return filename + "_" + key;
+            Config.FieldFormatDic.TryGetValue(filename, out var format);
+            if (string.IsNullOrEmpty(format))
+            {
+                return filename + "_" + key;
+            }
+            else
+            {
+                return string.Format(format, key);
+            }
         }
 
         /// <summary>
