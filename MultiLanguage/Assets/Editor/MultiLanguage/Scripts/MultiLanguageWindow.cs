@@ -40,6 +40,16 @@ namespace Editor.MultiLanguage.Scripts
         private bool _updateTMP = Config.DefaultUpdateTMP;
 
         /// <summary>
+        /// 更新ui
+        /// </summary>
+        private bool _updateUI = true;
+
+        /// <summary>
+        /// 更新配置
+        /// </summary>
+        private bool _updateConfig = true;
+
+        /// <summary>
         /// 打开入口
         /// </summary>
         [MenuItem("Window/MultiLanguage", false, 0)]
@@ -64,6 +74,8 @@ namespace Editor.MultiLanguage.Scripts
             #region 导出本地化
 
             _funcExport = EditorGUILayout.BeginToggleGroup("------------1.语言导出------------", _funcExport);
+            _updateUI = EditorGUILayout.ToggleLeft("是否检查UI更新", _updateUI);
+            _updateConfig = EditorGUILayout.ToggleLeft("是否检查Conf更新", _updateConfig);
             //翻译需求
             _exportTranslate = EditorGUILayout.ToggleLeft("是否导出翻译需求表", _exportTranslate);
             //TMP字符更新
@@ -72,7 +84,7 @@ namespace Editor.MultiLanguage.Scripts
             if (GUILayout.Button("一键导出"))
             {
                 Debug.Log("start build language....");
-                FuncExport2Csv.Start(_exportTranslate, _updateTMP);
+                FuncExport2Csv.Start(_exportTranslate, _updateTMP, _updateUI, _updateConfig);
                 Debug.Log("complete build language....");
                 EditorUtility.DisplayDialog("完成", "一键导出完成", "OK");
             }

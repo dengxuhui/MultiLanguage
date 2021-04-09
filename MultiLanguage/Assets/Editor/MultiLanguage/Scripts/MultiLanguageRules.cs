@@ -8,7 +8,15 @@ namespace Editor.MultiLanguage.Scripts
     /// </summary>
     public class MultiLanguageRules : ScriptableObject
     {
-        // [Header("文件目录相关设置（相对Assets目录）")] 
+        [Header("文件目录相关设置（相对Assets父级目录）")]
+        [Tooltip("ui根目录")]
+        public string uiPrefabDirectory = "";
+        [Tooltip("配置根目录")]
+        public string configDirectory = "";
+        /// <summary>
+        /// 忽略数据
+        /// </summary>
+        public IgnoreData[] ignoreDataArray = new IgnoreData[0];
         
         [Header("基础语言设置")] public SupportLanguage baseLanguage = new SupportLanguage();
         [Header("支持语言列表配置")] public SupportLanguage[] supports = new SupportLanguage[0];
@@ -46,5 +54,36 @@ namespace Editor.MultiLanguage.Scripts
         /// </summary>
         [Tooltip("简写用于导出文件后缀,如果为空字符串就直接用语言名字为文件后缀")]
         public string abbr = "";
+    }
+
+    /// <summary>
+    /// 文件忽略
+    /// </summary>
+    [Serializable]
+    public class IgnoreData
+    {
+        /// <summary>
+        /// 类型
+        /// </summary>
+        public IgnoreType ignoreType;
+        /// <summary>
+        /// 路径
+        /// </summary>
+        public string path;
+    }
+
+    /// <summary>
+    /// 忽略类型
+    /// </summary>
+    public enum IgnoreType
+    {
+        /// <summary>
+        /// 按目录忽略
+        /// </summary>
+        Directory,
+        /// <summary>
+        /// 按文件忽略
+        /// </summary>
+        File,
     }
 }

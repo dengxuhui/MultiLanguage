@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine.Experimental.PlayerLoop;
 
 namespace Editor.MultiLanguage.Scripts
 {
@@ -57,6 +58,11 @@ namespace Editor.MultiLanguage.Scripts
         /// 生成多语言文件名格式
         /// </summary>
         public const string BuildLanguageFormat = "AllLanguage{0}.csv";
+
+        /// <summary>
+        /// ui csv源文件
+        /// </summary>
+        public const string CsvNameRawUI = "UILanguage.csv";
 
         #endregion
 

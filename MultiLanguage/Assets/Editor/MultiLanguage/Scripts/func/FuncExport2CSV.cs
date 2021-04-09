@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Editor.MultiLanguage.Scripts.tool;
+using TMPro;
 using UnityEditor;
+using UnityEngine;
 using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace Editor.MultiLanguage.Scripts.func
@@ -37,9 +40,10 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static MultiLanguageRules _rules;
 
-        public static void Start(bool exportTranslate, bool updateTMP)
+        public static void Start(bool exportTranslate, bool updateTMP, bool updateUI, bool updateConfig)
         {
-            Progress(0,"处理数据");
+            Progress(0, "处理数据");
+
             #region 初始化数据
 
             _rules = MultiLanguageAssetsManager.GetRules();
@@ -50,30 +54,38 @@ namespace Editor.MultiLanguage.Scripts.func
 
             #endregion
 
-            Progress(0.05f,"创建目录");
+            Progress(0.05f, "创建目录");
             //尝试创建目录
             FileTool.MakeDir(_fullRawDir);
             FileTool.MakeDir(_fullBuildDir);
             FileTool.MakeDir(_fullSummaryDir);
             FileTool.MakeDir(_fullTranslatingDir);
 
-            #region check file
 
-            Progress(0.1f,"检查总表");
+            Progress(0.1f, "检查总表");
             //顺序执行
             var midwayUse = CheckSummaryUsingFile();
             CheckSummaryTranslatedFile(midwayUse);
 
+
+            if (updateUI)
+            {
+                UpdateRawUiFile();
+            }
+
+            if (updateConfig)
+            {
+                UpdateRawConfigFile();
+            }
+
             //1.更新原始文件：原始文件有的，Using没有的，写进去，原始文件没有的，Using有的，从Using删除
             //2.更新翻译需求表：Using中有的，已翻译文件中没有的，需要翻译，已翻译文件中有的，Using没有的，从已翻译中删除（被弃用：将这个已翻译的字段放到DiscardCache文件中，用于后续有需求的话从里面找回）
-            Progress(0.4f,"更新总表");
+            Progress(0.4f, "更新总表");
             var usingTbl = UpdateSummaryUsingFile();
             if (exportTranslate)
             {
                 UpdateSummaryTranslateFile(usingTbl);
             }
-
-            #endregion
 
             //最后刷新一下资源
             AssetDatabase.Refresh();
@@ -271,6 +283,103 @@ namespace Editor.MultiLanguage.Scripts.func
         }
 
         /// <summary>
+        /// 更新原始ui文件
+        /// </summary>
+        private static void UpdateRawUiFile()
+        {
+            if (!Directory.Exists(_rules.uiPrefabDirectory))
+            {
+                return;
+            }
+
+            var uiStrDic = new Dictionary<string, string>();
+            var uiFiles = FileTool.GetAllUiFiles(_rules.uiPrefabDirectory);
+            for (var i = 0; i < uiFiles.Length; i++)
+            {
+                var filePath = uiFiles[i];
+                var uiName = Path.GetFileNameWithoutExtension(filePath);
+                if (filePath == null) continue;
+                var szBuildFileSrc = filePath.Replace(Application.dataPath, "Assets");
+                var go = AssetDatabase.LoadAssetAtPath(szBuildFileSrc, typeof(object)) as GameObject;
+                Progress(0.6f, $"导出ui字符串中，检索:{uiName}...");
+                if (go == null)
+                {
+                    Debug.LogErrorFormat("failed to load asset:{0}", szBuildFileSrc);
+                    continue;
+                }
+
+                var tfs = go.GetComponentsInChildren<TMP_Text>(true);
+                foreach (var t in tfs)
+                {
+                    if (t.name.Length > 2 &&
+                        ((t.name.Substring(0, 2) == "m_") && (t.name.Substring(0, 3) != "m_z"))) continue;
+                    var keyName = go.name + "_" + t.name;
+                    if (string.IsNullOrEmpty(t.text)) continue;
+                    t.text = t.text.Trim('\n', '\r');
+                    if (!uiStrDic.ContainsKey(keyName))
+                    {
+                        uiStrDic.Add(keyName, t.text);
+                        Debug.LogFormat("-> 搜集 {0} = {1}", keyName, t.text);
+                    }
+                    else
+                    {
+                        Debug.LogWarningFormat("-> 字符串名冲突 key = {0} , string = {1}", keyName, t.text);
+                    }
+                }
+            }
+
+            var savePath = Path.Combine(_fullRawDir, Config.CsvNameRawUI);
+            var table = new CsvTable();
+            foreach (var kv in uiStrDic)
+            {
+                var field = new CsvFieldInfo {Name = kv.Key};
+                field.Add(_rules.baseLanguage.language, kv.Value);
+                table.AddField(field);
+            }
+
+            CsvOperater.WriteSingleFile(table, savePath);
+        }
+
+        /// <summary>
+        /// 更新原始配置文件
+        /// </summary>
+        private static void UpdateRawConfigFile()
+        {
+            if (!Directory.Exists(_rules.configDirectory))
+            {
+                return;
+            }
+
+            var fullPath = Path.Combine(Path.GetDirectoryName(Application.dataPath), _rules.configDirectory);
+            var allFiles = FileTool.GetAllConfigFiles(fullPath);
+            var ignoreList = _rules.ignoreDataArray.ToList();
+            for (var i = 0; i < allFiles.Length; i++)
+            {
+                var filePath = allFiles[i];
+                var directoryName = Path.GetDirectoryName(filePath)?.Replace("\\","/");
+                var valid = true;
+                for (var j = 0; j < ignoreList.Count; j++)
+                {
+                    var data = ignoreList[j];
+                    if (data.ignoreType == IgnoreType.File && filePath == data.path)
+                    {
+                        valid = false;
+                        break;
+                    }
+                    else if (data.ignoreType == IgnoreType.Directory)
+                    {
+                        // var dir = 
+                    }
+                }
+
+                if (!valid)
+                {
+                    continue;
+                }
+            }
+        }
+
+        /// <summary>
         /// build 语言表
         /// </summary>
         private static void BuildLanguageFiles()
@@ -377,6 +486,7 @@ namespace Editor.MultiLanguage.Scripts.func
                     {
                         continue;
                     }
+
                     var fieldInfo = saveTable[index];
                     if (fieldInfo == null)
                     {

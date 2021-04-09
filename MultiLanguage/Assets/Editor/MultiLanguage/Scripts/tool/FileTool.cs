@@ -77,24 +77,27 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// <returns></returns>
         public static string[] GetAllCsvFiles(string dir)
         {
-            var list = new List<string>();
-            if (!Directory.Exists(dir))
-            {
-                //避免判空
-                return list.ToArray();
-            }
+            return Directory.GetFiles(dir, "*.csv", SearchOption.AllDirectories);
+        }
 
-            var files = Directory.GetFiles(dir);
-            for (var i = 0; i < files.Length; i++)
-            {
-                var extension = Path.GetExtension(files[i]);
-                if (string.Equals(extension, ".csv", StringComparison.OrdinalIgnoreCase))
-                {
-                    list.Add(files[i]);
-                }
-            }
+        /// <summary>
+        /// 获取所有ui文件
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        public static string[] GetAllUiFiles(string dir)
+        {
+            return Directory.GetFiles(dir, "*.prefab", SearchOption.AllDirectories);
+        }
 
-            return list.ToArray();
+        /// <summary>
+        /// 获取所有配置文件集合
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        public static string[] GetAllConfigFiles(string dir)
+        {
+            return Directory.GetFiles(dir, "*.xlsx", SearchOption.AllDirectories);
         }
     }
 }
