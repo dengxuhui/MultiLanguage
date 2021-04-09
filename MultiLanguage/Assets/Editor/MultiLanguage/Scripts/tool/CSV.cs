@@ -49,7 +49,7 @@ namespace Editor.MultiLanguage.Scripts.tool
                     var name = kv[0];
                     var content = kv[1];
                     var fieldInfo = new CsvFieldInfo {Name = name};
-                    fieldInfo.Contents.Add(language, content);
+                    fieldInfo.Add(language, content);
 
                     tbl.AddField(fieldInfo);
                 }
@@ -72,7 +72,7 @@ namespace Editor.MultiLanguage.Scripts.tool
                 sr.Close();
                 sr.Dispose();
                 string[] rows = text.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
-                
+
                 CsvTable tbl = new CsvTable();
                 //第一行为文件头
                 if (rows.Length <= 1)
@@ -111,8 +111,9 @@ namespace Editor.MultiLanguage.Scripts.tool
                     for (int j = 1; j < kv.Length; j++)
                     {
                         var lang = paresLangSeq[j - 1];
-                        fieldInfo.Contents.Add(lang, kv[j]);
+                        fieldInfo.Add(lang, kv[j]);
                     }
+
                     tbl.AddField(fieldInfo);
                 }
 
@@ -161,12 +162,12 @@ namespace Editor.MultiLanguage.Scripts.tool
                 sb.Append("多语言Key");
                 var rules = MultiLanguageAssetsManager.GetRules();
                 var supports = rules.supports;
-                foreach (var fieldInfoContent in src.Contents)
+                src.Walk((Language lang, string content) =>
                 {
                     SupportLanguage supportLang = null;
                     for (var i = 0; i < supports.Length; i++)
                     {
-                        if (supports[i].language == fieldInfoContent.Key)
+                        if (supports[i].language == lang)
                         {
                             supportLang = supports[i];
                             break;
@@ -182,7 +183,7 @@ namespace Editor.MultiLanguage.Scripts.tool
                     var header = supportLang.language.ToString();
                     sb.Append("\t");
                     sb.Append(header);
-                }
+                });
 
                 var headerStr = sb.ToString();
                 if (!string.IsNullOrEmpty(headerStr))
@@ -220,8 +221,9 @@ namespace Editor.MultiLanguage.Scripts.tool
                     sb.Append("\t");
                     sb.Append(supports[i].language.ToString());
                 }
+
                 sw.WriteLine(sb);
-                
+
                 sw.Flush();
                 sw.Close();
                 sw.Dispose();
@@ -258,7 +260,7 @@ namespace Editor.MultiLanguage.Scripts.tool
             }
             set => _fieldInfos[index] = value;
         }
-        
+
 
         /// <summary>
         /// 获取行数
@@ -284,11 +286,11 @@ namespace Editor.MultiLanguage.Scripts.tool
             var sb = new StringBuilder();
             var fieldInfo = _fieldInfos[index];
             sb.Append(fieldInfo.Name);
-            foreach (var fieldInfoContent in fieldInfo.Contents)
+            fieldInfo.Walk((Language lang, string content) =>
             {
                 sb.Append("\t");
-                sb.Append(fieldInfoContent.Value);
-            }
+                sb.Append(content);
+            });
 
             return sb.ToString();
         }

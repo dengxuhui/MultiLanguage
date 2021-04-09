@@ -86,7 +86,7 @@ namespace Editor.MultiLanguage.Scripts.func
                 for (var i1 = 0; i1 < tbl.Count; i1++)
                 {
                     var fieldInfo = tbl[i1];
-                    rawDic.Add(fieldInfo.Name, fieldInfo.Contents[baseSupport.language]);
+                    rawDic.Add(fieldInfo.Name, fieldInfo.GetValue(baseSupport.language));
                 }
             }
 
@@ -106,20 +106,39 @@ namespace Editor.MultiLanguage.Scripts.func
             var rawFieldDic = CollectAllRawFilesToDic();
             var filePath = Path.Combine(_fullSummaryDir, Config.CsvNameSummaryUsing);
             var usingTal = CsvOperater.ReadSummaryFile(filePath);
+            //提取所有using中的key值
             var usingList = new List<string>();
             for (var i = 0; i < usingTal.Count; i++)
             {
                 usingList.Add(usingTal[i].Name);
             }
 
+            var supports = _rules.supports;
+            int addCnt = 0;
             foreach (var kv in rawFieldDic)
             {
                 //存在
                 if (usingList.Remove(kv.Key))
                 {
-                    
+                    continue;
                 }
+
+                addCnt++;
+                var fieldInfo = new CsvFieldInfo {Name = kv.Key};
+                for (var i = 0; i < supports.Length; i++)
+                {
+                    fieldInfo.Add(supports[i].language, kv.Value);
+                }
+
+                usingTal.AddField(fieldInfo);
             }
+
+            if (addCnt <= 0)
+            {
+                return;
+            }
+
+            CsvOperater.WriteSummaryFile(usingTal, filePath);
         }
 
         /// <summary>
@@ -238,8 +257,8 @@ namespace Editor.MultiLanguage.Scripts.func
                         saveTable.AddField(fieldInfo);
                     }
 
-                    singleFieldInfo.Contents.TryGetValue(language, out var content);
-                    fieldInfo.Contents.Add(language, content);
+                    singleFieldInfo.TryGetValue(language, out var content);
+                    fieldInfo.Add(language, content);
                 }
             }
 
@@ -271,7 +290,7 @@ namespace Editor.MultiLanguage.Scripts.func
                     var fieldInfo = singleTable[j];
                     fieldInfo.Name = FileTool.GenerateUniqueKeyByFileName(fileName, fieldInfo.Name);
                     saveTable.AddField(fieldInfo);
-                    fieldInfo.Contents.TryGetValue(baseSupport.language, out var content);
+                    fieldInfo.TryGetValue(baseSupport.language, out var content);
                     //重复写入字段 与基础语言一致
                     for (int k = 0; k < supports.Length; k++)
                     {
@@ -281,7 +300,7 @@ namespace Editor.MultiLanguage.Scripts.func
                             continue;
                         }
 
-                        fieldInfo.Contents.Add(language, content);
+                        fieldInfo.Add(language, content);
                     }
                 }
             }
