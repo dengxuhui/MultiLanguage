@@ -13,6 +13,8 @@ namespace Editor.MultiLanguage.Scripts
         public string rawDirectory = "Editor/MultiLanguage/Assets/Raw/";
         [Tooltip("各个语言生成后导出的目录")] public string buildDirectory = "Editor/MultiLanguage/Assets/Build/";
         [Tooltip("汇总文件目录")] public string summaryDirectory = "Editor/MultiLanguage/Assets/Summary/";
+        [Tooltip("翻译中的目录")]
+        public string translatingDirectory = "Editor/MultiLanguage/Assets/Translating/";
         [Header("基础语言设置")] public SupportLanguage baseLanguage = new SupportLanguage();
         [Header("支持语言列表配置")] public SupportLanguage[] supports = new SupportLanguage[0];
 

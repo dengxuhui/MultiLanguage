@@ -47,7 +47,7 @@ namespace Editor.MultiLanguage.Scripts
         /// 被丢弃字段缓存
         /// </summary>
         public const string CsvNameDiscardCache = "DiscardCache@Summary.csv";
-
+        
         /// <summary>
         /// 翻译需求表
         /// </summary>

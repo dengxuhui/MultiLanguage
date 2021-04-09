@@ -20,6 +20,10 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// <returns>CsvTable</returns>
         public static CsvTable ReadSingleFile(string path, Language language)
         {
+            if (!File.Exists(path))
+            {
+                return new CsvTable();
+            }
             using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 var sr = new StreamReader(stream);
@@ -65,6 +69,10 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// <returns></returns>
         public static CsvTable ReadSummaryFile(string path)
         {
+            if (!File.Exists(path))
+            {
+                return new CsvTable();
+            }
             using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 var sr = new StreamReader(stream);
@@ -261,6 +269,24 @@ namespace Editor.MultiLanguage.Scripts.tool
             set => _fieldInfos[index] = value;
         }
 
+        /// <summary>
+        /// 是否包含字段
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        public bool Contains(CsvFieldInfo field)
+        {
+            for (var i = 0; i < _fieldInfos.Count; i++)
+            {
+                if (_fieldInfos[i].Name == field.Name)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
 
         /// <summary>
         /// 获取行数
@@ -274,6 +300,11 @@ namespace Editor.MultiLanguage.Scripts.tool
         public void AddField(CsvFieldInfo fieldInfo)
         {
             _fieldInfos.Add(fieldInfo);
+        }
+
+        public void RemoveAt(int index)
+        {
+            _fieldInfos.RemoveAt(index);
         }
 
         /// <summary>
