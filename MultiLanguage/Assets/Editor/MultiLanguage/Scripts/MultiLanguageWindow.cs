@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Editor.MultiLanguage.Scripts.func;
+﻿using Editor.MultiLanguage.Scripts.func;
 using UnityEditor;
 using UnityEngine;
 using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
@@ -46,7 +45,7 @@ namespace Editor.MultiLanguage.Scripts
         [MenuItem("Window/MultiLanguage", false, 0)]
         static void Init()
         {
-            EditorWindow.GetWindow(typeof(MultiLanguageWindow));
+            GetWindow(typeof(MultiLanguageWindow));
         }
 
         #region ui逻辑

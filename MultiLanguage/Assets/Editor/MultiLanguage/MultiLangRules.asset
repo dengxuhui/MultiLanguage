@@ -12,9 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce947308742476c924025bd0f34d202, type: 3}
   m_Name: MultiLangRules
   m_EditorClassIdentifier: 
-  rawDirectory: Editor/MultiLanguage/Assets/RawAssets/
-  buildDirectory: Editor/MultiLanguage/Assets/BuildAssets/
-  summaryDirectory: Editor/MultiLanguage/Assets/Summary/
   baseLanguage:
     language: 0
     abbr: CN
@@ -27,4 +24,8 @@ MonoBehaviour:
     abbr: EN
   - language: 4
     abbr: Japan
-  translateVersion: 0
+  translateVersion: 7
+  rawDirectory: Editor/MultiLanguage/Assets/Raw/
+  buildDirectory: Editor/MultiLanguage/Assets/Build/
+  summaryDirectory: Editor/MultiLanguage/Assets/Summary/
+  translatingDirectory: Editor/MultiLanguage/Assets/Translating/
