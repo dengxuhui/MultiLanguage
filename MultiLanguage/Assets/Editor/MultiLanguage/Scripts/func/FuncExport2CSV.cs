@@ -39,6 +39,7 @@ namespace Editor.MultiLanguage.Scripts.func
 
         public static void Start(bool exportTranslate, bool updateTMP)
         {
+            Progress(0,"处理数据");
             #region 初始化数据
 
             _rules = MultiLanguageAssetsManager.GetRules();
@@ -49,6 +50,7 @@ namespace Editor.MultiLanguage.Scripts.func
 
             #endregion
 
+            Progress(0.05f,"创建目录");
             //尝试创建目录
             FileTool.MakeDir(_fullRawDir);
             FileTool.MakeDir(_fullBuildDir);
@@ -57,25 +59,33 @@ namespace Editor.MultiLanguage.Scripts.func
 
             #region check file
 
+            Progress(0.1f,"检查总表");
             //顺序执行
             var midwayUse = CheckSummaryUsingFile();
             CheckSummaryTranslatedFile(midwayUse);
 
             //1.更新原始文件：原始文件有的，Using没有的，写进去，原始文件没有的，Using有的，从Using删除
             //2.更新翻译需求表：Using中有的，已翻译文件中没有的，需要翻译，已翻译文件中有的，Using没有的，从已翻译中删除（被弃用：将这个已翻译的字段放到DiscardCache文件中，用于后续有需求的话从里面找回）
+            Progress(0.4f,"更新总表");
             var usingTbl = UpdateSummaryUsingFile();
             if (exportTranslate)
             {
-                UpdateSummaryTranslateFile(usingTbl);                
+                UpdateSummaryTranslateFile(usingTbl);
             }
 
             #endregion
 
             //最后刷新一下资源
             AssetDatabase.Refresh();
+            EditorUtility.ClearProgressBar();
         }
 
         #region private method
+
+        private static void Progress(float progress, string info = "")
+        {
+            EditorUtility.DisplayProgressBar("Building Language", info, progress);
+        }
 
         #region tool
 
@@ -227,6 +237,7 @@ namespace Editor.MultiLanguage.Scripts.func
                         {
                             writeTable.AddField(needTransList[i]);
                         }
+
                         CsvOperater.WriteSummaryFile(writeTable, writeFilePath);
                         _rules.translateVersion++;
                     }
