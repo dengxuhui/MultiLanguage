@@ -54,11 +54,10 @@ namespace Editor.MultiLanguage.Scripts.func
             var midwayUse = CheckSummaryUsingFile();
             CheckSummaryTranslatedFile(midwayUse);
 
-            //TODO 差量更新，更新规则：
             //1.更新原始文件：原始文件有的，Using没有的，写进去，原始文件没有的，Using有的，从Using删除
             //2.更新翻译需求表：Using中有的，已翻译文件中没有的，需要翻译，已翻译文件中有的，Using没有的，从已翻译中删除（被弃用：将这个已翻译的字段放到DiscardCache文件中，用于后续有需求的话从里面找回）
-            UpdateSummaryUsingFile();
-            UpdateSummaryTranslateFile();
+            var usingTbl = UpdateSummaryUsingFile();
+            UpdateSummaryTranslateFile(usingTbl);
 
             #endregion
 
@@ -100,7 +99,7 @@ namespace Editor.MultiLanguage.Scripts.func
         /// <summary>
         /// 更新使用
         /// </summary>
-        private static void UpdateSummaryUsingFile()
+        private static CsvTable UpdateSummaryUsingFile()
         {
             //1.更新原始文件：原始文件有的，Using没有的，写进去，原始文件没有的，Using有的，从Using删除
             var rawFieldDic = CollectAllRawFilesToDic();
@@ -133,19 +132,28 @@ namespace Editor.MultiLanguage.Scripts.func
                 usingTal.AddField(fieldInfo);
             }
 
-            if (addCnt <= 0)
+            if (addCnt > 0)
             {
-                return;
+                CsvOperater.WriteSummaryFile(usingTal, filePath);
             }
 
-            CsvOperater.WriteSummaryFile(usingTal, filePath);
+            return usingTal;
         }
 
         /// <summary>
         /// 更新翻译表
         /// </summary>
-        private static void UpdateSummaryTranslateFile()
+        private static void UpdateSummaryTranslateFile(CsvTable usingTbl)
         {
+            //2.更新翻译需求表：Using中有的，已翻译文件中没有的，需要翻译，已翻译文件中有的，Using没有的，从已翻译中删除（被弃用：将这个已翻译的字段放到DiscardCache文件中，用于后续有需求的话从里面找回）
+            var needTransList = new List<CsvFieldInfo>();
+            var discardList = new List<CsvFieldInfo>();
+            var translatedPath = Path.Combine(_fullSummaryDir, Config.CsvNameSummaryTranslated);
+            var translatedTbl = CsvOperater.ReadSummaryFile(translatedPath);
+            // for (int i = 0; i < UPPER; i++)
+            // {
+            //     
+            // }
         }
 
         /// <summary>
