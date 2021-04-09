@@ -47,7 +47,7 @@ namespace Editor.MultiLanguage.Scripts
         /// 被丢弃字段缓存
         /// </summary>
         public const string CsvNameDiscardCache = "DiscardCache@Summary.csv";
-        
+
         /// <summary>
         /// 翻译需求表
         /// </summary>
@@ -76,6 +76,14 @@ namespace Editor.MultiLanguage.Scripts
             {
                 "UILanguage", "UILanguage_mKeyValue_{0}"
             }
+        };
+
+        /// <summary>
+        /// 历史遗留问题 创建一个黑名单来排除原始文件中出现这几个key值直接删除
+        /// </summary>
+        public static readonly List<string> BlackRawKey = new List<string>()
+        {
+            "Key Name", "KeyName", "string"
         };
 
         #endregion

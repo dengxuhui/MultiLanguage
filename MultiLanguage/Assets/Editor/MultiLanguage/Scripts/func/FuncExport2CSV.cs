@@ -369,10 +369,15 @@ namespace Editor.MultiLanguage.Scripts.func
                 var fileName = string.Format(Config.BuildLanguageFormat, abbr);
                 var fullPath = Path.Combine(_fullBuildDir, fileName);
                 var singleTable = CsvOperater.ReadSingleFile(fullPath, language);
+                var index = 0;
                 for (int j = 0; j < singleTable.Count; j++)
                 {
-                    var fieldInfo = saveTable[j];
                     var singleFieldInfo = singleTable[j];
+                    if (Config.BlackRawKey.Contains(singleFieldInfo.Name))
+                    {
+                        continue;
+                    }
+                    var fieldInfo = saveTable[index];
                     if (fieldInfo == null)
                     {
                         fieldInfo = new CsvFieldInfo {Name = singleFieldInfo.Name};
@@ -381,6 +386,7 @@ namespace Editor.MultiLanguage.Scripts.func
 
                     singleFieldInfo.TryGetValue(language, out var content);
                     fieldInfo.Add(language, content);
+                    index++;
                 }
             }
 
