@@ -3,7 +3,7 @@
     /// <summary>
     /// 拷贝资源到运行时
     /// </summary>
-    public static class FuncCopy2Runtime
+    public static class FuncCopyAssets
     {
         public static void Start()
         {

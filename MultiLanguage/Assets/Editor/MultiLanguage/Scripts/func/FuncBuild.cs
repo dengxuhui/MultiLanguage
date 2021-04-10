@@ -12,7 +12,7 @@ namespace Editor.MultiLanguage.Scripts.func
     /// <summary>
     /// 导出翻译到csv文件
     /// </summary>
-    public static class FuncExport2Csv
+    public static class FuncBuild
     {
         /// <summary>
         /// 原始文件路径
@@ -39,7 +39,7 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static MultiLanguageRules _rules;
 
-        public static void Start(bool exportTranslate, bool updateTMP, bool updateUI, bool updateConfig)
+        public static void Start(bool exportTranslate, bool updateTmp, bool updateFromPrefab, bool updateFromXlsx)
         {
             Progress(0, "处理数据");
 
@@ -67,21 +67,20 @@ namespace Editor.MultiLanguage.Scripts.func
             CheckSummaryTranslatedFile(midwayUse);
 
 
-            if (updateUI)
+            if (updateFromPrefab)
             {
-                UpdateRawUiFile();
+                UpdatePrefabRawFile();
             }
 
-            if (updateConfig)
+            if (updateFromXlsx)
             {
-                UpdateRawConfigFile();
+                UpdateXlsxRawFile();
             }
 
             //1.更新原始文件：原始文件有的，Using没有的，写进去，原始文件没有的，Using有的，从Using删除
             //2.更新翻译需求表：Using中有的，已翻译文件中没有的，需要翻译，已翻译文件中有的，Using没有的，从已翻译中删除（被弃用：将这个已翻译的字段放到DiscardCache文件中，用于后续有需求的话从里面找回）
             Progress(0.4f, "更新总表");
             var usingTbl = UpdateSummaryUsingFile();
-            BuildLanguageFiles(usingTbl);
 
             //更新翻译需求表
             if (exportTranslate)
@@ -90,10 +89,12 @@ namespace Editor.MultiLanguage.Scripts.func
             }
 
             //如果需要更新tmp
-            if (updateTMP)
+            if (updateTmp)
             {
                 UpdateTMP_Asset(usingTbl);
             }
+            
+            BuildLanguageFiles(usingTbl);
 
             //最后刷新一下资源
             AssetDatabase.Refresh();
@@ -311,7 +312,7 @@ namespace Editor.MultiLanguage.Scripts.func
         /// <summary>
         /// 更新原始ui文件
         /// </summary>
-        private static void UpdateRawUiFile()
+        private static void UpdatePrefabRawFile()
         {
             var uiStrDic = CollectPrefabs.Collect(Progress);
             if (uiStrDic == null || uiStrDic.Count <= 0)
@@ -335,7 +336,7 @@ namespace Editor.MultiLanguage.Scripts.func
         /// <summary>
         /// 更新原始配置文件
         /// </summary>
-        private static void UpdateRawConfigFile()
+        private static void UpdateXlsxRawFile()
         {
             var xlsxStrDic = CollectXlsxs.Collect(Progress);
             if (xlsxStrDic == null || xlsxStrDic.Count <= 0)

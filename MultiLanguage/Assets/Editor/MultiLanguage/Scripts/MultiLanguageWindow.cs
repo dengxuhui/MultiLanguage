@@ -85,7 +85,7 @@ namespace Editor.MultiLanguage.Scripts
             if (GUILayout.Button("一键导出"))
             {
                 Debug.Log("start build language....");
-                FuncExport2Csv.Start(_exportTranslate, _updateTMP_Asset, _updateFromPrefab, _updateFromXlsx);
+                FuncBuild.Start(_exportTranslate, _updateTMP_Asset, _updateFromPrefab, _updateFromXlsx);
                 Debug.Log("complete build language....");
                 EditorUtility.DisplayDialog("完成", "一键导出完成", "OK");
             }
@@ -116,7 +116,7 @@ namespace Editor.MultiLanguage.Scripts
             {
                 //TODO
                 Debug.Log("start update translate....");
-                FuncUpdateTranslate.Start(_translateFeedbackPath);
+                FuncTranslateReplace.Start(_translateFeedbackPath);
             }
 
             EditorGUILayout.EndToggleGroup();
@@ -132,7 +132,7 @@ namespace Editor.MultiLanguage.Scripts
             {
                 //TODO
                 Debug.Log("start copy csv 2 assetpackage....");
-                FuncCopy2Runtime.Start();
+                FuncCopyAssets.Start();
             }
 
             EditorGUILayout.EndToggleGroup();
