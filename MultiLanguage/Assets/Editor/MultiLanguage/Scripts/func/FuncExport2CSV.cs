@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Xml;
 using Editor.MultiLanguage.Scripts.func.exporter;
 using Editor.MultiLanguage.Scripts.tool;
-using Excel;
-using TMPro;
 using UnityEditor;
-using UnityEditorInternal;
-using UnityEngine;
 using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace Editor.MultiLanguage.Scripts.func
@@ -99,7 +91,7 @@ namespace Editor.MultiLanguage.Scripts.func
             //如果需要更新tmp
             if (updateTMP)
             {
-                
+                UpdateTMP_Asset(usingTbl);
             }
 
             //最后刷新一下资源
@@ -147,6 +139,54 @@ namespace Editor.MultiLanguage.Scripts.func
         #endregion
 
         #region update 更新写入操作
+
+        private static void UpdateTMP_Asset(CsvTable usingTbl)
+        {
+            //先生成字符集
+            var sdfFontDic = new Dictionary<SdfFont, Dictionary<char, char>>();
+            for (var i = 0; i < usingTbl.Count; i++)
+            {
+                var fieldInfo = usingTbl[i];
+                fieldInfo.Walk((lang, content) =>
+                {
+                    var sdfFont = LanguageTool.GetSdfFontByLanguage(_rules, lang);
+                    sdfFontDic.TryGetValue(sdfFont, out var charDic);
+                    if (charDic == null)
+                    {
+                        charDic = new Dictionary<char, char>();
+                        sdfFontDic.Add(sdfFont, charDic);
+                    }
+
+                    var charArray = content.ToCharArray();
+                    for (var i1 = 0; i1 < charArray.Length; i1++)
+                    {
+                        var cc = charArray[i1];
+                        if (!charDic.ContainsKey(cc))
+                        {
+                            charDic.Add(cc, cc);
+                        }
+                    }
+                });
+            }
+
+            var saveFullPath = FileTool.GetFullPath(_rules.fontDirectory);
+            FileTool.MakeDir(saveFullPath);
+
+            foreach (var kv in sdfFontDic)
+            {
+                Config.SdfCharFileNameDic.TryGetValue(kv.Key, out var f);
+                var sdfFileName = $"{f}{Config.SdfCharFileExtension}";
+                var sdfFp = Path.Combine(saveFullPath, sdfFileName);
+                var writeStr = kv.Value.ToString();
+                using (var sw = new StreamWriter(sdfFp, false, Encoding.Unicode))
+                {
+                    sw.WriteLine(writeStr);
+                    sw.Flush();
+                    sw.Close();
+                    sw.Dispose();
+                }
+            }
+        }
 
         /// <summary>
         /// 更新使用

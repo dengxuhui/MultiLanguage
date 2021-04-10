@@ -72,7 +72,7 @@ namespace Editor.MultiLanguage.Scripts
         /// <summary>
         /// 字体名
         /// </summary>
-        public static readonly Dictionary<SdfFont, string> FontNameDic = new Dictionary<SdfFont, string>()
+        public static readonly Dictionary<SdfFont, string> SdfCharFileNameDic = new Dictionary<SdfFont, string>()
         {
             {
                 SdfFont.Common, "sdf_common"
@@ -81,6 +81,15 @@ namespace Editor.MultiLanguage.Scripts
                 SdfFont.Thai, "sdf_thai"
             }
         };
+
+        /// <summary>
+        /// sdf字符集扩展名
+        /// </summary>
+        public static readonly string SdfCharFileExtension = ".txt";
+        /// <summary>
+        /// sdf字符集资源扩展名
+        /// </summary>
+        public static readonly string SdfAssetFileExtension = ".asset";
 
         #endregion
 
