@@ -117,7 +117,7 @@ namespace Editor.MultiLanguage.Scripts.func
             var rawDic = new Dictionary<string, string>();
 
             var rules = _rules;
-            var baseSupport = rules.baseLanguage;
+            var baseSupport = rules.supports[rules.basicSupportIndex];
             var rawFiles = FileTool.GetCSVs(_fullRawDir);
             for (var i = 0; i < rawFiles.Length; i++)
             {
@@ -349,10 +349,11 @@ namespace Editor.MultiLanguage.Scripts.func
 
             var savePath = Path.Combine(_fullRawDir, Config.CsvNameRawUi);
             var table = new CsvTable();
+            var basicSupport = _rules.supports[_rules.basicSupportIndex];
             foreach (var kv in uiStrDic)
             {
                 var field = new CsvFieldInfo {Name = kv.Key};
-                field.Add(_rules.baseLanguage.language, kv.Value);
+                field.Add(basicSupport.language, kv.Value);
                 table.AddField(field);
             }
 
@@ -372,10 +373,11 @@ namespace Editor.MultiLanguage.Scripts.func
 
             var savePath = Path.Combine(_fullRawDir, Config.CsvNameRawConfig);
             var table = new CsvTable();
+            var baseSupport = _rules.supports[_rules.basicSupportIndex];
             foreach (var kv in xlsxStrDic)
             {
                 var field = new CsvFieldInfo {Name = kv.Key};
-                field.Add(_rules.baseLanguage.language, kv.Value);
+                field.Add(baseSupport.language, kv.Value);
                 table.AddField(field);
             }
 
@@ -545,7 +547,7 @@ namespace Editor.MultiLanguage.Scripts.func
 
             var rules = _rules;
             var supports = rules.supports;
-            var baseSupport = rules.baseLanguage;
+            var baseSupport = rules.supports[rules.basicSupportIndex];
             var rawFiles = FileTool.GetCSVs(_fullRawDir);
             var saveTable = new CsvTable();
             for (var i = 0; i < rawFiles.Length; i++)

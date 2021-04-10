@@ -17,10 +17,10 @@ namespace Editor.MultiLanguage.Scripts
         /// 忽略数据
         /// </summary>
         public IgnoreData[] ignoreDataArray = new IgnoreData[0];
-        
-        [Header("基础语言设置")] public SupportLanguage baseLanguage = new SupportLanguage();
-        [Header("支持语言列表配置")] public SupportLanguage[] supports = new SupportLanguage[0];
 
+        [Header("支持语言列表配置")] public SupportLanguage[] supports = new SupportLanguage[0];
+        [Header("基础语言在Supports数组中索引")] public int basicSupportIndex = 0;
+        
         #region 隐藏属性
         /// <summary>
         /// 当前翻译的版本号，用于回写文件时进行比对，高版本号可以冲掉低版本号的翻译
