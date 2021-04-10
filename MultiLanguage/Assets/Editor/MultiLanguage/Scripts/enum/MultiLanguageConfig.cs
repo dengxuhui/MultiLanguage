@@ -62,11 +62,15 @@ namespace Editor.MultiLanguage.Scripts
         /// <summary>
         /// ui csv源文件
         /// </summary>
-        public const string CsvNameRawUI = "UILanguage.csv";
+        public const string CsvNameRawUi = "UILanguage.csv";
+        /// <summary>
+        /// xlsx 配置表源文件
+        /// </summary>
+        public const string CsvNameRawConfig = "UI";
 
         #endregion
 
-        #region 前缀设置
+        #region 前后缀设置
 
         /// <summary>
         /// 字段格式化字符串，主要用于兼用老版本的多语言导出工具
@@ -91,6 +95,11 @@ namespace Editor.MultiLanguage.Scripts
         {
             "Key Name", "KeyName", "string"
         };
+        
+        /// <summary>
+        /// 配置档中的多语言key值
+        /// </summary>
+        public const string XlsxMultiLanguageKey = "lang";
 
         #endregion
     }

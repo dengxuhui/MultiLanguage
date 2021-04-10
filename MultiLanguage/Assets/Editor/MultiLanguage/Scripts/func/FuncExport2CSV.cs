@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using Editor.MultiLanguage.Scripts.func.exporter;
 using Editor.MultiLanguage.Scripts.tool;
+using Excel;
 using TMPro;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
 
@@ -82,6 +88,9 @@ namespace Editor.MultiLanguage.Scripts.func
             //2.更新翻译需求表：Using中有的，已翻译文件中没有的，需要翻译，已翻译文件中有的，Using没有的，从已翻译中删除（被弃用：将这个已翻译的字段放到DiscardCache文件中，用于后续有需求的话从里面找回）
             Progress(0.4f, "更新总表");
             var usingTbl = UpdateSummaryUsingFile();
+            //TODO Build各个语言 
+            
+            //更新翻译需求表
             if (exportTranslate)
             {
                 UpdateSummaryTranslateFile(usingTbl);
@@ -287,48 +296,13 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static void UpdateRawUiFile()
         {
-            if (!Directory.Exists(_rules.uiPrefabDirectory))
+            var uiStrDic = UILanguageExporter.Run(Progress);
+            if (uiStrDic == null || uiStrDic.Count <= 0)
             {
                 return;
             }
 
-            var uiStrDic = new Dictionary<string, string>();
-            var uiFiles = FileTool.GetAllUiFiles(_rules.uiPrefabDirectory);
-            for (var i = 0; i < uiFiles.Length; i++)
-            {
-                var filePath = uiFiles[i];
-                var uiName = Path.GetFileNameWithoutExtension(filePath);
-                if (filePath == null) continue;
-                var szBuildFileSrc = filePath.Replace(Application.dataPath, "Assets");
-                var go = AssetDatabase.LoadAssetAtPath(szBuildFileSrc, typeof(object)) as GameObject;
-                Progress(0.6f, $"导出ui字符串中，检索:{uiName}...");
-                if (go == null)
-                {
-                    Debug.LogErrorFormat("failed to load asset:{0}", szBuildFileSrc);
-                    continue;
-                }
-
-                var tfs = go.GetComponentsInChildren<TMP_Text>(true);
-                foreach (var t in tfs)
-                {
-                    if (t.name.Length > 2 &&
-                        ((t.name.Substring(0, 2) == "m_") && (t.name.Substring(0, 3) != "m_z"))) continue;
-                    var keyName = go.name + "_" + t.name;
-                    if (string.IsNullOrEmpty(t.text)) continue;
-                    t.text = t.text.Trim('\n', '\r');
-                    if (!uiStrDic.ContainsKey(keyName))
-                    {
-                        uiStrDic.Add(keyName, t.text);
-                        Debug.LogFormat("-> 搜集 {0} = {1}", keyName, t.text);
-                    }
-                    else
-                    {
-                        Debug.LogWarningFormat("-> 字符串名冲突 key = {0} , string = {1}", keyName, t.text);
-                    }
-                }
-            }
-
-            var savePath = Path.Combine(_fullRawDir, Config.CsvNameRawUI);
+            var savePath = Path.Combine(_fullRawDir, Config.CsvNameRawUi);
             var table = new CsvTable();
             foreach (var kv in uiStrDic)
             {
@@ -345,38 +319,22 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static void UpdateRawConfigFile()
         {
-            if (!Directory.Exists(_rules.configDirectory))
+            var xlsxStrDic = XlsxLanguageExporter.Run(Progress);
+            if (xlsxStrDic == null || xlsxStrDic.Count <= 0)
             {
                 return;
             }
 
-            var fullPath = Path.Combine(Path.GetDirectoryName(Application.dataPath), _rules.configDirectory);
-            var allFiles = FileTool.GetAllConfigFiles(fullPath);
-            var ignoreList = _rules.ignoreDataArray.ToList();
-            for (var i = 0; i < allFiles.Length; i++)
+            var savePath = Path.Combine(_fullRawDir, Config.CsvNameRawConfig);
+            var table = new CsvTable();
+            foreach (var kv in xlsxStrDic)
             {
-                var filePath = allFiles[i];
-                var directoryName = Path.GetDirectoryName(filePath)?.Replace("\\","/");
-                var valid = true;
-                for (var j = 0; j < ignoreList.Count; j++)
-                {
-                    var data = ignoreList[j];
-                    if (data.ignoreType == IgnoreType.File && filePath == data.path)
-                    {
-                        valid = false;
-                        break;
-                    }
-                    else if (data.ignoreType == IgnoreType.Directory)
-                    {
-                        // var dir = 
-                    }
-                }
-
-                if (!valid)
-                {
-                    continue;
-                }
+                var field = new CsvFieldInfo {Name = kv.Key};
+                field.Add(_rules.baseLanguage.language, kv.Value);
+                table.AddField(field);
             }
+
+            CsvOperater.WriteSingleFile(table, savePath);
         }
 
         /// <summary>
