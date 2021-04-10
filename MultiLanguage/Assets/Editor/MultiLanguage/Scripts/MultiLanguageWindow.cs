@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
+// ReSharper disable All
 
 namespace Editor.MultiLanguage.Scripts
 {
@@ -13,13 +14,13 @@ namespace Editor.MultiLanguage.Scripts
     {
         //------------------功能模块标志位
         //功能导出
-        private bool _funcExport = false;
+        private bool _funcBuild = false;
 
         //更新翻译
-        private bool _funcUpdateTranslate = false;
+        private bool _funcTranslateReplace = false;
 
         //拷贝资源
-        private bool _funcCopy = false;
+        private bool _funcCopyAssets = false;
         //-------------------
 
         #region 翻译导入相关
@@ -32,22 +33,22 @@ namespace Editor.MultiLanguage.Scripts
         /// <summary>
         /// 是否导出翻译表
         /// </summary>
-        private bool _exportTranslate = Config.DefaultExportTranslateTable;
+        private bool _exportTranslate = false;
 
         /// <summary>
         /// 是否更新tmp字符
         /// </summary>
-        private bool _updateTMP = Config.DefaultUpdateTMP;
+        private bool _updateTMP_Asset = false;
 
         /// <summary>
         /// 更新ui
         /// </summary>
-        private bool _updateUI = true;
+        private bool _updateFromPrefab = true;
 
         /// <summary>
         /// 更新配置
         /// </summary>
-        private bool _updateConfig = true;
+        private bool _updateFromXlsx = true;
 
         /// <summary>
         /// 打开入口
@@ -73,18 +74,18 @@ namespace Editor.MultiLanguage.Scripts
 
             #region 导出本地化
 
-            _funcExport = EditorGUILayout.BeginToggleGroup("------------1.语言导出------------", _funcExport);
-            _updateUI = EditorGUILayout.ToggleLeft("是否检查UI更新", _updateUI);
-            _updateConfig = EditorGUILayout.ToggleLeft("是否检查Conf更新", _updateConfig);
+            _funcBuild = EditorGUILayout.BeginToggleGroup("------------1.语言导出------------", _funcBuild);
+            _updateFromPrefab = EditorGUILayout.ToggleLeft("是否更新Prefab源文件", _updateFromPrefab);
+            _updateFromXlsx = EditorGUILayout.ToggleLeft("是否更新Xlsx源文件", _updateFromXlsx);
             //翻译需求
             _exportTranslate = EditorGUILayout.ToggleLeft("是否导出翻译需求表", _exportTranslate);
             //TMP字符更新
-            _updateTMP = EditorGUILayout.ToggleLeft("是否更新TMP", _updateTMP);
+            _updateTMP_Asset = EditorGUILayout.ToggleLeft("是否更新TMP", _updateTMP_Asset);
 
             if (GUILayout.Button("一键导出"))
             {
                 Debug.Log("start build language....");
-                FuncExport2Csv.Start(_exportTranslate, _updateTMP, _updateUI, _updateConfig);
+                FuncExport2Csv.Start(_exportTranslate, _updateTMP_Asset, _updateFromPrefab, _updateFromXlsx);
                 Debug.Log("complete build language....");
                 EditorUtility.DisplayDialog("完成", "一键导出完成", "OK");
             }
@@ -95,8 +96,8 @@ namespace Editor.MultiLanguage.Scripts
 
             #region 翻译回写
 
-            _funcUpdateTranslate =
-                EditorGUILayout.BeginToggleGroup("------------2.更新翻译------------", _funcUpdateTranslate);
+            _funcTranslateReplace =
+                EditorGUILayout.BeginToggleGroup("------------2.更新翻译------------", _funcTranslateReplace);
             EditorGUILayout.LabelField("说明：以翻译中的字段为准，包括基础语言也直接覆盖，回写完成会输出一个未翻译列表到指定目录下");
             //选择总表
             GUILayout.BeginHorizontal();
@@ -124,8 +125,8 @@ namespace Editor.MultiLanguage.Scripts
 
             #region 拷贝到AssetPackage目录下
 
-            _funcCopy =
-                EditorGUILayout.BeginToggleGroup("------------3.拷贝到运行时------------", _funcCopy);
+            _funcCopyAssets =
+                EditorGUILayout.BeginToggleGroup("------------3.拷贝到运行时------------", _funcCopyAssets);
             EditorGUILayout.LabelField("说明：每次导出或更新翻译后需要执行一次拷贝到AssetPackage下，这样运行时才能正确加载到资源");
             if (GUILayout.Button("一键拷贝"))
             {

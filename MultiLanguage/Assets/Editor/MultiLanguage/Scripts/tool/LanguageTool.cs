@@ -4,12 +4,12 @@ namespace Editor.MultiLanguage.Scripts.tool
 {
     public static class LanguageTool
     {
-        public static SdfFont GetSdfFontByLanguage(MultiLanguageRules rules,Language language)
+        public static TMP_Font GetSdfFontByLanguage(MultiLanguageRules rules,Language language)
         {
             if (rules == null || rules.supports.Length <= 0)
             {
                 Debug.LogError("Get sdf font config error,language rules config not exist supports language array");
-                return SdfFont.Common;
+                return TMP_Font.Common;
             }
 
             var supports = rules.supports;
@@ -17,11 +17,11 @@ namespace Editor.MultiLanguage.Scripts.tool
             {
                 if (supports[i].language == language)
                 {
-                    return supports[i].sdfFont;
+                    return supports[i].tmpFont;
                 }
             }
             Debug.LogError($"Can not find [{language.ToString()}] in multi language support language array!!!!");
-            return SdfFont.Common;
+            return TMP_Font.Common;
         }
     }
 }

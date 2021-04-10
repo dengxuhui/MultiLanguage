@@ -7,25 +7,6 @@ namespace Editor.MultiLanguage.Scripts
     /// </summary>
     public static class MultiLanguageConfig
     {
-        #region 窗口设置
-
-        /// <summary>
-        /// 是否默认可选导出语言，不可选就默认全部导出
-        /// </summary>
-        public static bool DefaultSelectExportLang = false;
-
-        /// <summary>
-        /// 默认是否导出翻译需求表
-        /// </summary>
-        public static bool DefaultExportTranslateTable = false;
-
-        /// <summary>
-        /// 默认是否更新TMP
-        /// </summary>
-        public static bool DefaultUpdateTMP = false;
-
-        #endregion
-
         /// <summary>
         /// 默认的翻译表文件夹路径
         /// </summary>
@@ -71,13 +52,13 @@ namespace Editor.MultiLanguage.Scripts
         /// <summary>
         /// 字体名
         /// </summary>
-        public static readonly Dictionary<SdfFont, string> SdfCharFileNameDic = new Dictionary<SdfFont, string>()
+        public static readonly Dictionary<TMP_Font, string> SdfCharFileNameDic = new Dictionary<TMP_Font, string>()
         {
             {
-                SdfFont.Common, "sdf_common"
+                TMP_Font.Common, "sdf_common"
             },
             {
-                SdfFont.Thai, "sdf_thai"
+                TMP_Font.Thai, "sdf_thai"
             }
         };
 

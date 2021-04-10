@@ -144,7 +144,7 @@ namespace Editor.MultiLanguage.Scripts.func
         private static void UpdateTMP_Asset(CsvTable usingTbl)
         {
             //先生成字符集
-            var sdfFontDic = new Dictionary<SdfFont, Dictionary<char, char>>();
+            var sdfFontDic = new Dictionary<TMP_Font, Dictionary<char, char>>();
             for (var i = 0; i < usingTbl.Count; i++)
             {
                 var fieldInfo = usingTbl[i];

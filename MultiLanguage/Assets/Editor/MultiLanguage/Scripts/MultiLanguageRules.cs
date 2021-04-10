@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+// ReSharper disable All
 
 namespace Editor.MultiLanguage.Scripts
 {
@@ -61,7 +62,7 @@ namespace Editor.MultiLanguage.Scripts
         /// 导出的font  xxx.asset
         /// </summary>
         [Tooltip("分类字体，新增字体需要定义宏，然后在Config中配置sdf字体文件名")]
-        public SdfFont sdfFont;
+        public TMP_Font tmpFont;
     }
 
     /// <summary>
@@ -98,7 +99,7 @@ namespace Editor.MultiLanguage.Scripts
     /// <summary>
     /// sdf字体导出文件
     /// </summary>
-    public enum SdfFont
+    public enum TMP_Font
     {
         /// <summary>
         /// 通用字体
