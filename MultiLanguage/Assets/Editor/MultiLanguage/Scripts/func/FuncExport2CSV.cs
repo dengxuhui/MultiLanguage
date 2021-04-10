@@ -150,12 +150,12 @@ namespace Editor.MultiLanguage.Scripts.func
                 var fieldInfo = usingTbl[i];
                 fieldInfo.Walk((lang, content) =>
                 {
-                    var sdfFont = LanguageTool.GetSdfFontByLanguage(_rules, lang);
-                    sdfFontDic.TryGetValue(sdfFont, out var charDic);
+                    var tmpFont = TMP_AssetTool.GetTMP_Font(lang);
+                    sdfFontDic.TryGetValue(tmpFont, out var charDic);
                     if (charDic == null)
                     {
                         charDic = new Dictionary<char, char>();
-                        sdfFontDic.Add(sdfFont, charDic);
+                        sdfFontDic.Add(tmpFont, charDic);
                     }
 
                     var charArray = content.ToCharArray();
