@@ -6,14 +6,14 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor.MultiLanguage.Scripts.func.exporter
+namespace Editor.MultiLanguage.Scripts.func.collector
 {
     /// <summary>
-    /// ui语言导出工具
+    /// prefab收集器
     /// </summary>
-    public static class UILanguageExporter
+    public static class CollectPrefabs
     {
-        public static Dictionary<string, string> Run(Action<float, string> progressCb = null)
+        public static Dictionary<string, string> Collect(Action<float, string> progressCb = null)
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var directory = Path.GetDirectoryName(Application.dataPath);

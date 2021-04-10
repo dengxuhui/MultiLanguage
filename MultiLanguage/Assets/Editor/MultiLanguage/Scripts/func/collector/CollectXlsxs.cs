@@ -8,14 +8,14 @@ using Excel;
 using UnityEngine;
 using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
 
-namespace Editor.MultiLanguage.Scripts.func.exporter
+namespace Editor.MultiLanguage.Scripts.func.collector
 {
     /// <summary>
-    /// 配置语言导出工具
+    /// 配置表收集器
     /// </summary>
-    public static class XlsxLanguageExporter
+    public static class CollectXlsxs
     {
-        public static Dictionary<string, string> Run(Action<float, string> progressCb = null)
+        public static Dictionary<string, string> Collect(Action<float, string> progressCb = null)
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var rootDir = Path.GetDirectoryName(Application.dataPath);
@@ -33,7 +33,7 @@ namespace Editor.MultiLanguage.Scripts.func.exporter
             var xlsxStrDic = new Dictionary<string, string>();
             var allXlsxArray = FileTool.GetXlsxs(dir);
             var allXlsxList = allXlsxArray.ToList();
-            FilterXlsxPaths(ref allXlsxList, rules, rootDir);
+            FilterXlsxPaths(ref allXlsxList, rootDir);
             for (var i = 0; i < allXlsxList.Count; i++)
             {
                 var path = allXlsxList[i];
@@ -139,10 +139,10 @@ namespace Editor.MultiLanguage.Scripts.func.exporter
         /// 过滤筛选出忽略的文件路径
         /// </summary>
         /// <param name="files"></param>
-        /// <param name="rules"></param>
         /// <param name="root"></param>
-        private static void FilterXlsxPaths(ref List<string> files, MultiLanguageRules rules, string root)
+        private static void FilterXlsxPaths(ref List<string> files, string root)
         {
+            var rules = MultiLanguageAssetsManager.GetRules();
             var ignoreArray = rules.ignoreDataArray;
             var pathIgnoreList = new List<string>();
             var dirIgnoreList = new List<string>();

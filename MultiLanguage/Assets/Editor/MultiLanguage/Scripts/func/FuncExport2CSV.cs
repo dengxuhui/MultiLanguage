@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using Editor.MultiLanguage.Scripts.func.exporter;
+using Editor.MultiLanguage.Scripts.func.collector;
 using Editor.MultiLanguage.Scripts.tool;
 using UnityEditor;
 using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
@@ -109,34 +109,6 @@ namespace Editor.MultiLanguage.Scripts.func
 
         #region tool
 
-        /// <summary>
-        /// 搜集所有
-        /// </summary>
-        private static Dictionary<string, string> CollectAllRawFilesToDic()
-        {
-            var rawDic = new Dictionary<string, string>();
-
-            var rules = _rules;
-            var baseSupport = rules.supports[rules.basicSupportIndex];
-            var rawFiles = FileTool.GetCSVs(_fullRawDir);
-            for (var i = 0; i < rawFiles.Length; i++)
-            {
-                var tbl = CsvOperater.ReadSingleFile(rawFiles[i], baseSupport.language);
-                var fileName = Path.GetFileNameWithoutExtension(rawFiles[i]);
-                for (var i1 = 0; i1 < tbl.Count; i1++)
-                {
-                    var fieldInfo = tbl[i1];
-                    var key = FileTool.FromRawKeyToSummaryKey(fileName, fieldInfo.Name);
-                    if (!rawDic.ContainsKey(key))
-                    {
-                        rawDic.Add(key, fieldInfo.GetValue(baseSupport.language));
-                    }
-                }
-            }
-
-            return rawDic;
-        }
-
         #endregion
 
         #region update 更新写入操作
@@ -193,7 +165,7 @@ namespace Editor.MultiLanguage.Scripts.func
         private static CsvTable UpdateSummaryUsingFile()
         {
             //1.更新原始文件：原始文件有的，Using没有的，写进去，原始文件没有的，Using有的，从Using删除
-            var rawFieldDic = CollectAllRawFilesToDic();
+            var rawFieldDic = CollectRawFiles.Collect();
             var filePath = Path.Combine(_fullSummaryDir, Config.CsvNameSummaryUsing);
             var usingTal = CsvOperater.ReadSummaryFile(filePath);
             //提取所有using中的key值
@@ -341,7 +313,7 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static void UpdateRawUiFile()
         {
-            var uiStrDic = UILanguageExporter.Run(Progress);
+            var uiStrDic = CollectPrefabs.Collect(Progress);
             if (uiStrDic == null || uiStrDic.Count <= 0)
             {
                 return;
@@ -365,7 +337,7 @@ namespace Editor.MultiLanguage.Scripts.func
         /// </summary>
         private static void UpdateRawConfigFile()
         {
-            var xlsxStrDic = XlsxLanguageExporter.Run(Progress);
+            var xlsxStrDic = CollectXlsxs.Collect(Progress);
             if (xlsxStrDic == null || xlsxStrDic.Count <= 0)
             {
                 return;
