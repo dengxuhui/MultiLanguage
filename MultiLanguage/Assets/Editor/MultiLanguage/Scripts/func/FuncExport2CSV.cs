@@ -354,7 +354,7 @@ namespace Editor.MultiLanguage.Scripts.func
                 var support = supports[i];
                 for (var i1 = 0; i1 < usingTbl.Count; i1++)
                 {
-                    var src = usingTbl[i];
+                    var src = usingTbl[i1];
                     var field = new CsvFieldInfo
                     {
                         Name = src.Name
