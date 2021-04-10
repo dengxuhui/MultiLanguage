@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine.Experimental.PlayerLoop;
 
 namespace Editor.MultiLanguage.Scripts
 {

@@ -29,7 +29,7 @@ namespace Editor.MultiLanguage.Scripts.func.exporter
             }
 
             var uiStrDic = new Dictionary<string, string>();
-            var uiFiles = FileTool.GetAllUiFiles(prefabDir);
+            var uiFiles = FileTool.GetPrefabs(prefabDir);
             for (var i = 0; i < uiFiles.Length; i++)
             {
                 var filePath = uiFiles[i];

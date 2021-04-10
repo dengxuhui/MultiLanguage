@@ -55,10 +55,10 @@ namespace Editor.MultiLanguage.Scripts.func
 
             Progress(0.05f, "创建目录");
             //尝试创建目录
-            FileTool.MakeDir(_fullRawDir);
-            FileTool.MakeDir(_fullBuildDir);
-            FileTool.MakeDir(_fullSummaryDir);
-            FileTool.MakeDir(_fullTranslatingDir);
+            FileTool.TryMakeDir(_fullRawDir);
+            FileTool.TryMakeDir(_fullBuildDir);
+            FileTool.TryMakeDir(_fullSummaryDir);
+            FileTool.TryMakeDir(_fullTranslatingDir);
 
 
             Progress(0.1f, "检查总表");
@@ -118,7 +118,7 @@ namespace Editor.MultiLanguage.Scripts.func
 
             var rules = _rules;
             var baseSupport = rules.baseLanguage;
-            var rawFiles = FileTool.GetAllCsvFiles(_fullRawDir);
+            var rawFiles = FileTool.GetCSVs(_fullRawDir);
             for (var i = 0; i < rawFiles.Length; i++)
             {
                 var tbl = CsvOperater.ReadSingleFile(rawFiles[i], baseSupport.language);
@@ -126,7 +126,7 @@ namespace Editor.MultiLanguage.Scripts.func
                 for (var i1 = 0; i1 < tbl.Count; i1++)
                 {
                     var fieldInfo = tbl[i1];
-                    var key = FileTool.GenerateUniqueKeyByFileName(fileName, fieldInfo.Name);
+                    var key = FileTool.FromRawKeyToSummaryKey(fileName, fieldInfo.Name);
                     if (!rawDic.ContainsKey(key))
                     {
                         rawDic.Add(key, fieldInfo.GetValue(baseSupport.language));
@@ -169,7 +169,7 @@ namespace Editor.MultiLanguage.Scripts.func
             }
 
             var saveFullPath = FileTool.GetFullPath(_rules.fontDirectory);
-            FileTool.MakeDir(saveFullPath);
+            FileTool.TryMakeDir(saveFullPath);
 
             foreach (var kv in sdfFontDic)
             {
@@ -265,7 +265,7 @@ namespace Editor.MultiLanguage.Scripts.func
 
             if (needTransList.Count > 0)
             {
-                var files = FileTool.GetAllCsvFiles(_fullTranslatingDir);
+                var files = FileTool.GetCSVs(_fullTranslatingDir);
                 var translatingDic = new Dictionary<string, CsvFieldInfo>();
                 if (files.Length > 0)
                 {
@@ -438,7 +438,7 @@ namespace Editor.MultiLanguage.Scripts.func
 
             #region 检查是否是中途导入
 
-            var files = FileTool.GetAllCsvFiles(_fullBuildDir);
+            var files = FileTool.GetCSVs(_fullBuildDir);
             List<string> needFiles = new List<string>(supports.Length);
             for (var i = 0; i < supports.Length; i++)
             {
@@ -546,7 +546,7 @@ namespace Editor.MultiLanguage.Scripts.func
             var rules = _rules;
             var supports = rules.supports;
             var baseSupport = rules.baseLanguage;
-            var rawFiles = FileTool.GetAllCsvFiles(_fullRawDir);
+            var rawFiles = FileTool.GetCSVs(_fullRawDir);
             var saveTable = new CsvTable();
             for (var i = 0; i < rawFiles.Length; i++)
             {
@@ -555,7 +555,7 @@ namespace Editor.MultiLanguage.Scripts.func
                 for (var j = 0; j < singleTable.Count; j++)
                 {
                     var fieldInfo = singleTable[j];
-                    fieldInfo.Name = FileTool.GenerateUniqueKeyByFileName(fileName, fieldInfo.Name);
+                    fieldInfo.Name = FileTool.FromRawKeyToSummaryKey(fileName, fieldInfo.Name);
                     saveTable.AddField(fieldInfo);
                     fieldInfo.TryGetValue(baseSupport.language, out var content);
                     //重复写入字段 与基础语言一致

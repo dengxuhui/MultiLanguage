@@ -31,7 +31,7 @@ namespace Editor.MultiLanguage.Scripts.func.exporter
             }
 
             var xlsxStrDic = new Dictionary<string, string>();
-            var allXlsxArray = FileTool.GetAllConfigFiles(dir);
+            var allXlsxArray = FileTool.GetXlsxs(dir);
             var allXlsxList = allXlsxArray.ToList();
             FilterXlsxPaths(ref allXlsxList, rules, rootDir);
             for (var i = 0; i < allXlsxList.Count; i++)
