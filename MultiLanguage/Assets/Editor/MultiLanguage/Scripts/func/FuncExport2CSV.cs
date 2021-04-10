@@ -88,8 +88,8 @@ namespace Editor.MultiLanguage.Scripts.func
             //2.更新翻译需求表：Using中有的，已翻译文件中没有的，需要翻译，已翻译文件中有的，Using没有的，从已翻译中删除（被弃用：将这个已翻译的字段放到DiscardCache文件中，用于后续有需求的话从里面找回）
             Progress(0.4f, "更新总表");
             var usingTbl = UpdateSummaryUsingFile();
-            //TODO Build各个语言 
-            
+            BuildLanguageFiles(usingTbl);
+
             //更新翻译需求表
             if (exportTranslate)
             {
@@ -340,8 +340,34 @@ namespace Editor.MultiLanguage.Scripts.func
         /// <summary>
         /// build 语言表
         /// </summary>
-        private static void BuildLanguageFiles()
+        private static void BuildLanguageFiles(CsvTable usingTbl)
         {
+            if (usingTbl == null || usingTbl.Count <= 0)
+            {
+                return;
+            }
+
+            var supports = _rules.supports;
+            for (var i = 0; i < supports.Length; i++)
+            {
+                var langTbl = new CsvTable();
+                var support = supports[i];
+                for (var i1 = 0; i1 < usingTbl.Count; i1++)
+                {
+                    var src = usingTbl[i];
+                    var field = new CsvFieldInfo
+                    {
+                        Name = src.Name
+                    };
+                    field.Add(support.language, src.GetValue(support.language));
+                    langTbl.AddField(field);
+                }
+
+                var savePath = Path.Combine(_fullBuildDir,
+                    string.Format(Config.BuildLanguageFormat,
+                        string.IsNullOrEmpty(support.abbr) ? support.language.ToString() : support.abbr));
+                CsvOperater.WriteSingleFile(langTbl, savePath);
+            }
         }
 
         #endregion
