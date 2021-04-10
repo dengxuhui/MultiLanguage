@@ -96,6 +96,12 @@ namespace Editor.MultiLanguage.Scripts.func
                 UpdateSummaryTranslateFile(usingTbl);
             }
 
+            //如果需要更新tmp
+            if (updateTMP)
+            {
+                
+            }
+
             //最后刷新一下资源
             AssetDatabase.Refresh();
             EditorUtility.ClearProgressBar();

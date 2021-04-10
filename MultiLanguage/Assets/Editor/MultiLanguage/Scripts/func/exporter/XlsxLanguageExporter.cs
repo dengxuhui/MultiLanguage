@@ -17,13 +17,13 @@ namespace Editor.MultiLanguage.Scripts.func.exporter
     {
         public static Dictionary<string, string> Run(Action<float, string> progressCb = null)
         {
+            var rules = MultiLanguageAssetsManager.GetRules();
             var rootDir = Path.GetDirectoryName(Application.dataPath);
-            if (string.IsNullOrEmpty(rootDir))
+            if (string.IsNullOrEmpty(rootDir) || string.IsNullOrEmpty(rules.configDirectory))
             {
                 return null;
             }
 
-            var rules = MultiLanguageAssetsManager.GetRules();
             var dir = Path.Combine(rootDir, rules.configDirectory);
             if (!Directory.Exists(dir))
             {
@@ -199,6 +199,7 @@ namespace Editor.MultiLanguage.Scripts.func.exporter
                 }
             }
         }
+
         #endregion
     }
 }

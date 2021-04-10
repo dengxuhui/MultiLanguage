@@ -17,7 +17,7 @@ namespace Editor.MultiLanguage.Scripts.func.exporter
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var directory = Path.GetDirectoryName(Application.dataPath);
-            if (string.IsNullOrEmpty(directory))
+            if (string.IsNullOrEmpty(directory) || string.IsNullOrEmpty(rules.uiPrefabDirectory))
             {
                 return null;
             }
