@@ -114,9 +114,9 @@ namespace Editor.MultiLanguage.Scripts
 
             if (GUILayout.Button("更新翻译"))
             {
-                //TODO
                 Debug.Log("start update translate....");
                 FuncTranslateReplace.Start(_translateFeedbackPath);
+                Debug.Log("complete replace translate....");
             }
 
             EditorGUILayout.EndToggleGroup();
@@ -130,9 +130,9 @@ namespace Editor.MultiLanguage.Scripts
             EditorGUILayout.LabelField("说明：每次导出或更新翻译后需要执行一次拷贝到AssetPackage下，这样运行时才能正确加载到资源");
             if (GUILayout.Button("一键拷贝"))
             {
-                //TODO
                 Debug.Log("start copy csv 2 assetpackage....");
                 FuncCopyAssets.Start();
+                Debug.Log("complete copy csv 2 assetpackage....");
             }
 
             EditorGUILayout.EndToggleGroup();
