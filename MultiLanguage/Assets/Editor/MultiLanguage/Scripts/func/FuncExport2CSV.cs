@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Editor.MultiLanguage.Scripts.func.exporter;
 using Editor.MultiLanguage.Scripts.tool;
@@ -161,10 +162,8 @@ namespace Editor.MultiLanguage.Scripts.func
                     for (var i1 = 0; i1 < charArray.Length; i1++)
                     {
                         var cc = charArray[i1];
-                        if (!charDic.ContainsKey(cc))
-                        {
-                            charDic.Add(cc, cc);
-                        }
+                        if (charDic.ContainsKey(cc)) continue;
+                        charDic.Add(cc, cc);
                     }
                 });
             }
@@ -177,7 +176,7 @@ namespace Editor.MultiLanguage.Scripts.func
                 Config.SdfCharFileNameDic.TryGetValue(kv.Key, out var f);
                 var sdfFileName = $"{f}{Config.SdfCharFileExtension}";
                 var sdfFp = Path.Combine(saveFullPath, sdfFileName);
-                var writeStr = kv.Value.ToString();
+                var writeStr = string.Join("", kv.Value.Values.ToArray());
                 using (var sw = new StreamWriter(sdfFp, false, Encoding.Unicode))
                 {
                     sw.WriteLine(writeStr);
