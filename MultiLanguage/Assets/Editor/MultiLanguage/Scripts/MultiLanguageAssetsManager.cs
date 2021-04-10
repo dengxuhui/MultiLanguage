@@ -13,18 +13,19 @@ namespace Editor.MultiLanguage.Scripts
     public static class MultiLanguageAssetsManager
     {
         /// <summary>
-        /// 多语言根目录
+        /// 多语言规则
         /// </summary>
-        public const string RootPath = "Assets/Editor/MultiLanguage/";
-
+        private static readonly MultiLanguageRules Rules;
+        
         static MultiLanguageAssetsManager()
         {
             //初始化检验目录
+            Rules = GetAsset<MultiLanguageRules>("Assets/Editor/MultiLanguage/MultiLangRules.asset");
         }
 
         internal static MultiLanguageRules GetRules()
         {
-            return GetAsset<MultiLanguageRules>(RootPath + "MultiLangRules.asset");
+            return Rules;
         }
 
         private static T GetAsset<T>(string path) where T : ScriptableObject
