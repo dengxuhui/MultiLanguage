@@ -63,10 +63,24 @@ namespace Editor.MultiLanguage.Scripts
         /// ui csv源文件
         /// </summary>
         public const string CsvNameRawUi = "UILanguage.csv";
+
         /// <summary>
         /// xlsx 配置表源文件
         /// </summary>
         public const string CsvNameRawConfig = "UI";
+
+        /// <summary>
+        /// 字体名
+        /// </summary>
+        public static readonly Dictionary<SdfFont, string> FontNameDic = new Dictionary<SdfFont, string>()
+        {
+            {
+                SdfFont.Common, "sdf_common"
+            },
+            {
+                SdfFont.Thai, "sdf_thai"
+            }
+        };
 
         #endregion
 
@@ -95,7 +109,7 @@ namespace Editor.MultiLanguage.Scripts
         {
             "Key Name", "KeyName", "string"
         };
-        
+
         /// <summary>
         /// 配置档中的多语言key值
         /// </summary>

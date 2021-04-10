@@ -35,6 +35,9 @@ namespace Editor.MultiLanguage.Scripts
         public string summaryDirectory = "Editor/MultiLanguage/Assets/Summary/";
         [HideInInspector]
         public string translatingDirectory = "Editor/MultiLanguage/Assets/Translating/";
+        [HideInInspector]
+        public string fontDirectory = "Editor/MultiLanguage/Assets/Font/";
+
         #endregion
     }
 
@@ -54,6 +57,11 @@ namespace Editor.MultiLanguage.Scripts
         /// </summary>
         [Tooltip("简写用于导出文件后缀,如果为空字符串就直接用语言名字为文件后缀")]
         public string abbr = "";
+        /// <summary>
+        /// 导出的font  xxx.asset
+        /// </summary>
+        [Tooltip("分类字体，新增字体需要定义宏，然后在Config中配置sdf字体文件名")]
+        public SdfFont sdfFont;
     }
 
     /// <summary>
@@ -85,5 +93,20 @@ namespace Editor.MultiLanguage.Scripts
         /// 按文件忽略
         /// </summary>
         File,
+    }
+
+    /// <summary>
+    /// sdf字体导出文件
+    /// </summary>
+    public enum SdfFont
+    {
+        /// <summary>
+        /// 通用字体
+        /// </summary>
+        Common,
+        /// <summary>
+        /// 泰语
+        /// </summary>
+        Thai,
     }
 }
