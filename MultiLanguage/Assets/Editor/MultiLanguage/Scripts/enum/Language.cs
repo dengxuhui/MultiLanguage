@@ -79,9 +79,9 @@ namespace Editor.MultiLanguage.Scripts
         /// </summary>
         /// <param name="language"></param>
         /// <param name="content"></param>
-        public void Add(Language language, string content)
+        public void SetValue(Language language, string content)
         {
-            _contents.Add(language, content);
+            _contents[language] = content;
         }
 
         public void TryGetValue(Language language, out string content)

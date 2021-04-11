@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using Editor.MultiLanguage.Scripts.func.Builder;
 using Editor.MultiLanguage.Scripts.func.collector;
 using Editor.MultiLanguage.Scripts.tool;
 using UnityEditor;
@@ -94,7 +95,7 @@ namespace Editor.MultiLanguage.Scripts.func
                 UpdateTMP_Asset(usingTbl);
             }
             
-            BuildLanguageFiles(usingTbl);
+            AllLanguageBuilder.BuildAll(usingTbl);
 
             //最后刷新一下资源
             AssetDatabase.Refresh();
@@ -190,7 +191,7 @@ namespace Editor.MultiLanguage.Scripts.func
                 var fieldInfo = new CsvFieldInfo {Name = kv.Key};
                 for (var i = 0; i < supports.Length; i++)
                 {
-                    fieldInfo.Add(supports[i].language, kv.Value);
+                    fieldInfo.SetValue(supports[i].language, kv.Value);
                 }
 
                 usingTal.AddField(fieldInfo);
@@ -326,7 +327,7 @@ namespace Editor.MultiLanguage.Scripts.func
             foreach (var kv in uiStrDic)
             {
                 var field = new CsvFieldInfo {Name = kv.Key};
-                field.Add(basicSupport.language, kv.Value);
+                field.SetValue(basicSupport.language, kv.Value);
                 table.AddField(field);
             }
 
@@ -350,44 +351,11 @@ namespace Editor.MultiLanguage.Scripts.func
             foreach (var kv in xlsxStrDic)
             {
                 var field = new CsvFieldInfo {Name = kv.Key};
-                field.Add(baseSupport.language, kv.Value);
+                field.SetValue(baseSupport.language, kv.Value);
                 table.AddField(field);
             }
 
             CsvOperater.WriteSingleFile(table, savePath);
-        }
-
-        /// <summary>
-        /// build 语言表
-        /// </summary>
-        private static void BuildLanguageFiles(CsvTable usingTbl)
-        {
-            if (usingTbl == null || usingTbl.Count <= 0)
-            {
-                return;
-            }
-
-            var supports = _rules.supports;
-            for (var i = 0; i < supports.Length; i++)
-            {
-                var langTbl = new CsvTable();
-                var support = supports[i];
-                for (var i1 = 0; i1 < usingTbl.Count; i1++)
-                {
-                    var src = usingTbl[i1];
-                    var field = new CsvFieldInfo
-                    {
-                        Name = src.Name
-                    };
-                    field.Add(support.language, src.GetValue(support.language));
-                    langTbl.AddField(field);
-                }
-
-                var savePath = Path.Combine(_fullBuildDir,
-                    string.Format(Config.BuildLanguageFormat,
-                        string.IsNullOrEmpty(support.abbr) ? support.language.ToString() : support.abbr));
-                CsvOperater.WriteSingleFile(langTbl, savePath);
-            }
         }
 
         #endregion
@@ -499,7 +467,7 @@ namespace Editor.MultiLanguage.Scripts.func
                     }
 
                     singleFieldInfo.TryGetValue(language, out var content);
-                    fieldInfo.Add(language, content);
+                    fieldInfo.SetValue(language, content);
                     index++;
                 }
             }
@@ -542,7 +510,7 @@ namespace Editor.MultiLanguage.Scripts.func
                             continue;
                         }
 
-                        fieldInfo.Add(language, content);
+                        fieldInfo.SetValue(language, content);
                     }
                 }
             }

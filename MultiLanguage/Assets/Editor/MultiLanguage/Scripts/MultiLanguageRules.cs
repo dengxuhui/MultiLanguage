@@ -37,6 +37,9 @@ namespace Editor.MultiLanguage.Scripts
 
         [HideInInspector] public string rawDirectory = "Editor/MultiLanguage/Assets/Raw/";
         [HideInInspector] public string buildDirectory = "Editor/MultiLanguage/Assets/Build/";
+        /// <summary>
+        /// 
+        /// </summary>
         [HideInInspector] public string summaryDirectory = "Editor/MultiLanguage/Assets/Summary/";
         [HideInInspector] public string translatingDirectory = "Editor/MultiLanguage/Assets/Translating/";
         [HideInInspector] public string fontDirectory = "Editor/MultiLanguage/Assets/Font/";

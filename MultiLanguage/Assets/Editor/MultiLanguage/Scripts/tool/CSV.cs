@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using UnityEditor;
 
@@ -24,6 +25,7 @@ namespace Editor.MultiLanguage.Scripts.tool
             {
                 return new CsvTable();
             }
+
             using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 var sr = new StreamReader(stream);
@@ -53,7 +55,7 @@ namespace Editor.MultiLanguage.Scripts.tool
                     var name = kv[0];
                     var content = kv[1];
                     var fieldInfo = new CsvFieldInfo {Name = name};
-                    fieldInfo.Add(language, content);
+                    fieldInfo.SetValue(language, content);
 
                     tbl.AddField(fieldInfo);
                 }
@@ -73,6 +75,7 @@ namespace Editor.MultiLanguage.Scripts.tool
             {
                 return new CsvTable();
             }
+
             using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 var sr = new StreamReader(stream);
@@ -119,7 +122,7 @@ namespace Editor.MultiLanguage.Scripts.tool
                     for (int j = 1; j < kv.Length; j++)
                     {
                         var lang = paresLangSeq[j - 1];
-                        fieldInfo.Add(lang, kv[j]);
+                        fieldInfo.SetValue(lang, kv[j]);
                     }
 
                     tbl.AddField(fieldInfo);
@@ -305,6 +308,25 @@ namespace Editor.MultiLanguage.Scripts.tool
         public void RemoveAt(int index)
         {
             _fieldInfos.RemoveAt(index);
+        }
+
+        /// <summary>
+        /// 转换为字典
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, CsvFieldInfo> ToDictionary()
+        {
+            var fieldDic = new Dictionary<string, CsvFieldInfo>();
+            for (var i = 0; i < _fieldInfos.Count; i++)
+            {
+                var fieldInfo = _fieldInfos[i];
+                if (!fieldDic.ContainsKey(fieldInfo.Name))
+                {
+                    fieldDic.Add(fieldInfo.Name, fieldInfo);
+                }
+            }
+
+            return fieldDic;
         }
 
         /// <summary>
