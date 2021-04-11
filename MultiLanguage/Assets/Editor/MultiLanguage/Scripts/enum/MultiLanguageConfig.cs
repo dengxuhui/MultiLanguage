@@ -51,7 +51,7 @@ namespace MultiLanguage.Scripts
         /// <summary>
         /// xlsx 配置表源文件
         /// </summary>
-        public const string CsvNameRawConfig = "UI";
+        public const string CsvNameRawConfig = "AllConfLanguage.csv";
 
         /// <summary>
         /// 字体名

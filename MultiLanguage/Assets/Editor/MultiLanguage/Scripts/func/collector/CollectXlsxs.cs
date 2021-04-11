@@ -198,7 +198,8 @@ namespace MultiLanguage.Scripts.func.collector
                     continue;
                 }
                 xlsxDir = xlsxDir.Replace("\\", "/");
-
+                xlsxPath = xlsxPath.Replace("\\", "/");
+                
                 var valid = true;
                 //按具体文件名忽略
                 for (var j = 0; j < pathIgnoreList.Count; j++)
