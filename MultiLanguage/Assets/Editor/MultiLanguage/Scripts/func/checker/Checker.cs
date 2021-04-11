@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Editor.MultiLanguage.Scripts.tool;
+using MultiLanguage.Scripts.tool;
 using UnityEditor;
-using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
+using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
-namespace Editor.MultiLanguage.Scripts.func.checker
+namespace MultiLanguage.Scripts.func.checker
 {
     /// <summary>
     /// 检查器，主要检查总表文件以及已翻译文件
@@ -43,7 +43,7 @@ namespace Editor.MultiLanguage.Scripts.func.checker
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var fullSummaryDir = FileTool.GetFullPath(rules.summaryDirectory);
-            var filePath = Path.Combine(fullSummaryDir, Config.CsvNameSummaryUsing);
+            var filePath = Path.Combine(fullSummaryDir, MultiLanguageConfig.CsvNameSummaryUsing);
             if (File.Exists(filePath))
             {
                 return false;
@@ -62,7 +62,7 @@ namespace Editor.MultiLanguage.Scripts.func.checker
             for (var i = 0; i < supports.Length; i++)
             {
                 var abbr = string.IsNullOrEmpty(supports[i].abbr) ? supports[i].language.ToString() : supports[i].abbr;
-                var fileName = string.Format(Config.BuildLanguageFormat, abbr);
+                var fileName = string.Format(MultiLanguageConfig.BuildLanguageFormat, abbr);
                 needFiles.Add(fileName);
             }
 
@@ -112,7 +112,7 @@ namespace Editor.MultiLanguage.Scripts.func.checker
         {
             var rule = MultiLanguageAssetsManager.GetRules();
             var fullSummaryDir = FileTool.GetFullPath(rule.summaryDirectory);
-            var filePath = Path.Combine(fullSummaryDir, Config.CsvNameSummaryTranslated);
+            var filePath = Path.Combine(fullSummaryDir, MultiLanguageConfig.CsvNameSummaryTranslated);
             if (File.Exists(filePath))
             {
                 return;
@@ -121,7 +121,7 @@ namespace Editor.MultiLanguage.Scripts.func.checker
             if (midwayUse)
             {
                 //将Using中的所有字段拷贝到Translated文件中
-                var usingFilePath = Path.Combine(fullSummaryDir, Config.CsvNameSummaryUsing);
+                var usingFilePath = Path.Combine(fullSummaryDir, MultiLanguageConfig.CsvNameSummaryUsing);
                 var csvTable = CsvOperater.ReadSummaryFile(usingFilePath);
                 CsvOperater.WriteSummaryFile(csvTable, filePath);
             }
@@ -139,7 +139,7 @@ namespace Editor.MultiLanguage.Scripts.func.checker
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var fullSummaryDir = FileTool.GetFullPath(rules.summaryDirectory);
-            var filePath = Path.Combine(fullSummaryDir, Config.CsvNameSummaryUsing);
+            var filePath = Path.Combine(fullSummaryDir, MultiLanguageConfig.CsvNameSummaryUsing);
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
@@ -152,14 +152,14 @@ namespace Editor.MultiLanguage.Scripts.func.checker
             {
                 var language = supports[i].language;
                 var abbr = string.IsNullOrEmpty(supports[i].abbr) ? language.ToString() : supports[i].abbr;
-                var fileName = string.Format(Config.BuildLanguageFormat, abbr);
+                var fileName = string.Format(MultiLanguageConfig.BuildLanguageFormat, abbr);
                 var fullPath = Path.Combine(fullBuildDir, fileName);
                 var singleTable = CsvOperater.ReadSingleFile(fullPath, language);
                 var index = 0;
                 for (int j = 0; j < singleTable.Count; j++)
                 {
                     var singleFieldInfo = singleTable[j];
-                    if (Config.BlackRawKey.Contains(singleFieldInfo.Name))
+                    if (MultiLanguageConfig.BlackRawKey.Contains(singleFieldInfo.Name))
                     {
                         continue;
                     }
@@ -187,7 +187,7 @@ namespace Editor.MultiLanguage.Scripts.func.checker
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var fullSummaryDir = FileTool.GetFullPath(rules.summaryDirectory);
-            var filePath = Path.Combine(fullSummaryDir, Config.CsvNameSummaryUsing);
+            var filePath = Path.Combine(fullSummaryDir, MultiLanguageConfig.CsvNameSummaryUsing);
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);

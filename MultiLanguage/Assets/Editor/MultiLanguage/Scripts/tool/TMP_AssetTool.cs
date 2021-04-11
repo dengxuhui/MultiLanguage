@@ -9,9 +9,9 @@ using TMPro;
 using TMPro.EditorUtilities;
 using UnityEditor;
 using UnityEngine;
-using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
+using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
-namespace Editor.MultiLanguage.Scripts.tool
+namespace MultiLanguage.Scripts.tool
 {
     /// <summary>
     /// text mesh pro字体相关工具
@@ -89,8 +89,8 @@ namespace Editor.MultiLanguage.Scripts.tool
 
             foreach (var kv in sdfFontDic)
             {
-                Config.SdfCharFileNameDic.TryGetValue(kv.Key, out var f);
-                var sdfFileName = $"{f}{Config.SdfCharFileExtension}";
+                MultiLanguageConfig.SdfCharFileNameDic.TryGetValue(kv.Key, out var f);
+                var sdfFileName = $"{f}{MultiLanguageConfig.SdfCharFileExtension}";
                 var sdfFp = Path.Combine(saveFullPath, sdfFileName);
                 var writeStr = string.Join("", kv.Value.Values.ToArray());
                 using (var sw = new StreamWriter(sdfFp, false, Encoding.Unicode))

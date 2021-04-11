@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using Editor.MultiLanguage.Scripts.tool;
-using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
+using MultiLanguage.Scripts.tool;
+using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
-namespace Editor.MultiLanguage.Scripts.func.builder
+namespace MultiLanguage.Scripts.func.builder
 {
     /// <summary>
     /// 所有语言导出工具
@@ -40,7 +40,7 @@ namespace Editor.MultiLanguage.Scripts.func.builder
                 }
 
                 var savePath = Path.Combine(fullBuildDir,
-                    string.Format(Config.BuildLanguageFormat,
+                    string.Format(MultiLanguageConfig.BuildLanguageFormat,
                         string.IsNullOrEmpty(support.abbr) ? support.language.ToString() : support.abbr));
                 CsvOperater.WriteSingleFile(langTbl, savePath);
             }

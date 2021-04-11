@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Editor.MultiLanguage.Scripts.tool;
+using MultiLanguage.Scripts.tool;
 
-namespace Editor.MultiLanguage.Scripts.func.collector
+namespace MultiLanguage.Scripts.func.collector
 {
     /// <summary>
     /// 原始raw文件字符收集器

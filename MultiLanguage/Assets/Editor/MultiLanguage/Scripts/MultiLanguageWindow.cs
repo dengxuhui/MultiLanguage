@@ -1,10 +1,10 @@
-﻿using Editor.MultiLanguage.Scripts.func;
+﻿using MultiLanguage.Scripts.func;
 using UnityEditor;
 using UnityEngine;
-using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
+using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 // ReSharper disable All
 
-namespace Editor.MultiLanguage.Scripts
+namespace MultiLanguage.Scripts
 {
     /// <summary>
     /// 多语言控制面板
@@ -65,7 +65,7 @@ namespace Editor.MultiLanguage.Scripts
         {
             _translateFeedbackPath = EditorUtility.OpenFilePanelWithFilters("选择翻译反馈总表（.csv文件）", _translateFolder,
                 new string[] {"csv"});
-            EditorPrefs.SetString(Config.TranslateFolderPrefsKey, _translateFeedbackPath);
+            EditorPrefs.SetString(MultiLanguageConfig.TranslateFolderPrefsKey, _translateFeedbackPath);
         }
 
         private void OnGUI()

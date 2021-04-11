@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Editor.MultiLanguage.Scripts.func.builder;
-using Editor.MultiLanguage.Scripts.func.checker;
-using Editor.MultiLanguage.Scripts.func.collector;
-using Editor.MultiLanguage.Scripts.tool;
+using MultiLanguage.Scripts.func.builder;
+using MultiLanguage.Scripts.func.checker;
+using MultiLanguage.Scripts.func.collector;
+using MultiLanguage.Scripts.tool;
 using UnityEditor;
-using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
+using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
-namespace Editor.MultiLanguage.Scripts.func
+namespace MultiLanguage.Scripts.func
 {
     /// <summary>
     /// 导出翻译到csv文件
@@ -92,7 +92,7 @@ namespace Editor.MultiLanguage.Scripts.func
         {
             //1.更新原始文件：原始文件有的，Using没有的，写进去，原始文件没有的，Using有的，从Using删除
             var rawFieldDic = CollectRawFiles.Collect();
-            var filePath = Path.Combine(_fullSummaryDir, Config.CsvNameSummaryUsing);
+            var filePath = Path.Combine(_fullSummaryDir, MultiLanguageConfig.CsvNameSummaryUsing);
             var usingTal = CsvOperater.ReadSummaryFile(filePath);
             //提取所有using中的key值
             var usingList = new List<string>();
@@ -137,7 +137,7 @@ namespace Editor.MultiLanguage.Scripts.func
             //2.更新翻译需求表：Using中有的，已翻译文件中没有的，需要翻译，已翻译文件中有的，Using没有的，从已翻译中删除（被弃用：将这个已翻译的字段放到DiscardCache文件中，用于后续有需求的话从里面找回）
             var needTransList = new List<CsvFieldInfo>();
             var discardList = new List<CsvFieldInfo>();
-            var translatedPath = Path.Combine(_fullSummaryDir, Config.CsvNameSummaryTranslated);
+            var translatedPath = Path.Combine(_fullSummaryDir, MultiLanguageConfig.CsvNameSummaryTranslated);
             var translatedTbl = CsvOperater.ReadSummaryFile(translatedPath);
             for (var i = 0; i < usingTbl.Count; i++)
             {
@@ -192,7 +192,7 @@ namespace Editor.MultiLanguage.Scripts.func
                 if (needTransList.Count > 0)
                 {
                     var version = _rules.translateVersion;
-                    var writeFilePath = Path.Combine(_fullTranslatingDir, Config.CsvNameSummaryTranslating);
+                    var writeFilePath = Path.Combine(_fullTranslatingDir, MultiLanguageConfig.CsvNameSummaryTranslating);
                     writeFilePath = string.Format(writeFilePath, version);
                     if (!File.Exists(writeFilePath))
                     {
@@ -221,7 +221,7 @@ namespace Editor.MultiLanguage.Scripts.func
             {
                 CsvOperater.WriteSummaryFile(translatedTbl, translatedPath);
 
-                var discardPath = Path.Combine(_fullSummaryDir, Config.CsvNameDiscardCache);
+                var discardPath = Path.Combine(_fullSummaryDir, MultiLanguageConfig.CsvNameDiscardCache);
                 var table = CsvOperater.ReadSummaryFile(discardPath);
                 for (var i = 0; i < discardList.Count; i++)
                 {

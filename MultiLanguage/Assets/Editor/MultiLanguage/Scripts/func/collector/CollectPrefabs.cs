@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Editor.MultiLanguage.Scripts.tool;
+using MultiLanguage.Scripts.tool;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
-using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
+using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
-namespace Editor.MultiLanguage.Scripts.func.collector
+namespace MultiLanguage.Scripts.func.collector
 {
     /// <summary>
     /// prefab收集器
@@ -89,7 +89,7 @@ namespace Editor.MultiLanguage.Scripts.func.collector
             var rules = MultiLanguageAssetsManager.GetRules();
             var fullRawDir = FileTool.GetFullPath(rules.rawDirectory);
 
-            var savePath = Path.Combine(fullRawDir, Config.CsvNameRawUi);
+            var savePath = Path.Combine(fullRawDir, MultiLanguageConfig.CsvNameRawUi);
             var table = new CsvTable();
             var basicSupport = rules.supports[rules.basicSupportIndex];
             foreach (var kv in uiStrDic)

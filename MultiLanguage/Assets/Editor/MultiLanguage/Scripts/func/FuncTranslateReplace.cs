@@ -1,11 +1,11 @@
 ﻿using System.IO;
-using Editor.MultiLanguage.Scripts.func.builder;
-using Editor.MultiLanguage.Scripts.tool;
+using MultiLanguage.Scripts.func.builder;
+using MultiLanguage.Scripts.tool;
 using UnityEditor;
 using UnityEngine;
-using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
+using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
-namespace Editor.MultiLanguage.Scripts.func
+namespace MultiLanguage.Scripts.func
 {
     /// <summary>
     /// 更新翻译
@@ -40,8 +40,8 @@ namespace Editor.MultiLanguage.Scripts.func
 
             var rules = MultiLanguageAssetsManager.GetRules();
             var fullTranslatedPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory),
-                Config.CsvNameSummaryTranslated);
-            var fullUsingPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory), Config.CsvNameSummaryUsing);
+                MultiLanguageConfig.CsvNameSummaryTranslated);
+            var fullUsingPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory), MultiLanguageConfig.CsvNameSummaryUsing);
             //反馈table
             var feedbackTbl = CsvOperater.ReadSummaryFile(translateFilePath);
             //转换为dic来查询，写的时候还是用tal写 CsvTable引用类型

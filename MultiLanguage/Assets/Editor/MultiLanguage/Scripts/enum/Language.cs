@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Editor.MultiLanguage.Scripts
+namespace MultiLanguage.Scripts
 {
     /// <summary>
     /// 语言类型定义

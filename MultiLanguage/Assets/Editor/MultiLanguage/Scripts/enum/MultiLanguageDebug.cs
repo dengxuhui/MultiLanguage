@@ -1,4 +1,4 @@
-﻿namespace Editor.MultiLanguage.Scripts
+﻿namespace MultiLanguage.Scripts
 {
     /// <summary>
     /// 多语言调试相关宏

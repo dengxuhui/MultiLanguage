@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Editor.MultiLanguage.Scripts
+namespace MultiLanguage.Scripts
 {
     /// <summary>
     /// 多语言工具静态配置

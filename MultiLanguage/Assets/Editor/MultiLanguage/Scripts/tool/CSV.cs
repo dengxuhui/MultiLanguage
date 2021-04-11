@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEditor;
 
-namespace Editor.MultiLanguage.Scripts.tool
+namespace MultiLanguage.Scripts.tool
 {
     /// <summary>
     /// csv文件操作工具

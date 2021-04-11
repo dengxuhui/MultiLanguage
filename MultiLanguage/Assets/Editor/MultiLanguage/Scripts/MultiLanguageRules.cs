@@ -3,7 +3,7 @@ using UnityEngine;
 
 // ReSharper disable All
 
-namespace Editor.MultiLanguage.Scripts
+namespace MultiLanguage.Scripts
 {
     /// <summary>
     /// 多语言配置文件

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using Editor.MultiLanguage.Scripts.tool;
 using Excel;
+using MultiLanguage.Scripts.tool;
 using UnityEngine;
-using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
+using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
-namespace Editor.MultiLanguage.Scripts.func.collector
+namespace MultiLanguage.Scripts.func.collector
 {
     /// <summary>
     /// 配置表收集器
@@ -59,7 +59,7 @@ namespace Editor.MultiLanguage.Scripts.func.collector
             var fullRawDir = FileTool.GetFullPath(rules.rawDirectory);
 
 
-            var savePath = Path.Combine(fullRawDir, Config.CsvNameRawConfig);
+            var savePath = Path.Combine(fullRawDir, MultiLanguageConfig.CsvNameRawConfig);
             var table = new CsvTable();
             var baseSupport = rules.supports[rules.basicSupportIndex];
             foreach (var kv in xlsxStrDic)
@@ -140,7 +140,7 @@ namespace Editor.MultiLanguage.Scripts.func.collector
                 string[] colNameAry = colName.Split(':');
                 //类型是string类型，以#m_开头 才需要写入本地化文件
                 if (colNameAry.Length < 2
-                    || colNameAry[1] != Config.XlsxMultiLanguageKey)
+                    || colNameAry[1] != MultiLanguageConfig.XlsxMultiLanguageKey)
                 {
                     continue;
                 }

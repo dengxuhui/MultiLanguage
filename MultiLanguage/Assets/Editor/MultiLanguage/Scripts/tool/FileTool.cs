@@ -2,10 +2,10 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
+using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 // ReSharper disable All
 
-namespace Editor.MultiLanguage.Scripts.tool
+namespace MultiLanguage.Scripts.tool
 {
     /// <summary>
     /// 文件操作工具
@@ -47,7 +47,7 @@ namespace Editor.MultiLanguage.Scripts.tool
         /// <returns></returns>
         public static string FromRawKeyToSummaryKey(string rawFileName, string rawKey)
         {
-            Config.FieldFormatDic.TryGetValue(rawFileName, out var format);
+            MultiLanguageConfig.FieldFormatDic.TryGetValue(rawFileName, out var format);
             if (string.IsNullOrEmpty(format))
             {
                 return rawFileName + "_" + rawKey;

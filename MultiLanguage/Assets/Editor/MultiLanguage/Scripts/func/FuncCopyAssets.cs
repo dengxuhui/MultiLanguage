@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using Editor.MultiLanguage.Scripts.tool;
-using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
+using MultiLanguage.Scripts.tool;
+using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
-namespace Editor.MultiLanguage.Scripts.func
+namespace MultiLanguage.Scripts.func
 {
     /// <summary>
     /// 拷贝资源到运行时
@@ -17,7 +17,7 @@ namespace Editor.MultiLanguage.Scripts.func
             {
                 var support = supports[i];
                 var abbr = string.IsNullOrEmpty(support.abbr) ? support.language.ToString() : support.abbr;
-                var name = string.Format(Config.BuildLanguageFormat, abbr);
+                var name = string.Format(MultiLanguageConfig.BuildLanguageFormat, abbr);
                 var srcPath = Path.Combine(FileTool.GetFullPath(rules.buildDirectory), name);
                 var targetPath = Path.Combine(FileTool.GetFullPath(rules.runtimeAssetsDirectory), name);
                 if (!File.Exists(srcPath))
