@@ -41,6 +41,7 @@ namespace MultiLanguage.Scripts.func.collector
                 var filePath = uiFiles[i];
                 if (filePath == null) continue;
                 var uiName = Path.GetFileNameWithoutExtension(filePath);
+                filePath = filePath.Replace("\\", "/");
                 var szBuildFileSrc = filePath.Replace(Application.dataPath, "Assets");
                 var go = AssetDatabase.LoadAssetAtPath(szBuildFileSrc, typeof(object)) as GameObject;
                 progressCallBack?.Invoke(0.6f, $"导出ui字符串中，检索:{uiName}...");

@@ -177,8 +177,8 @@ namespace MultiLanguage.Scripts.func.collector
             for (var i = 0; i < ignoreArray.Length; i++)
             {
                 var data = ignoreArray[i];
-                var path = data.path.Replace("\\", "/");
-                path = Path.Combine(root, path);
+                var path = Path.Combine(root, data.path);
+                path = path.Replace("\\", "/");
                 if (data.ignoreType == IgnoreType.Directory)
                 {
                     dirIgnoreList.Add(path);
@@ -192,18 +192,18 @@ namespace MultiLanguage.Scripts.func.collector
             for (var i = 0; i < files.Count; i++)
             {
                 var xlsxPath = files[i];
-                xlsxPath = xlsxPath.Replace("\\", "/");
                 var xlsxDir = Path.GetDirectoryName(xlsxPath);
                 if (string.IsNullOrEmpty(xlsxDir))
                 {
                     continue;
                 }
+                xlsxDir = xlsxDir.Replace("\\", "/");
 
                 var valid = true;
                 //按具体文件名忽略
-                for (var i1 = 0; i1 < pathIgnoreList.Count; i1++)
+                for (var j = 0; j < pathIgnoreList.Count; j++)
                 {
-                    if (xlsxPath == pathIgnoreList[i1])
+                    if (xlsxPath == pathIgnoreList[j])
                     {
                         valid = false;
                         break;
@@ -211,9 +211,9 @@ namespace MultiLanguage.Scripts.func.collector
                 }
 
                 //按路径忽略
-                for (var i1 = 0; i1 < dirIgnoreList.Count; i1++)
+                for (var j = 0; j < dirIgnoreList.Count; j++)
                 {
-                    if (xlsxDir.IndexOf(dirIgnoreList[i], StringComparison.Ordinal) >= 0)
+                    if (xlsxDir.IndexOf(dirIgnoreList[j], StringComparison.Ordinal) >= 0)
                     {
                         valid = false;
                         break;
