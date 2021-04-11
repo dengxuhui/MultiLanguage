@@ -47,16 +47,96 @@ namespace MultiLanguage.Scripts
         /// 土耳其语
         /// </summary>
         Turkish,
-    }
 
-    /// <summary>
-    /// 字段状态
-    /// </summary>
-    public static class FieldState
-    {
-        public const string Add = "Add";
-        public const string Modify = "Modify";
-        public const string Translated = "Translated";
+        /// <summary>
+        /// 西班牙语
+        /// </summary>
+        Spanish,
+
+        /// <summary>
+        /// 法语
+        /// </summary>
+        French,
+
+        /// <summary>
+        /// 韩语
+        /// </summary>
+        Korean,
+
+        /// <summary>
+        /// 印度尼西亚
+        /// </summary>
+        Indonesian,
+
+        /// <summary>
+        /// 匈牙利
+        /// </summary>
+        Hugarian,
+
+        /// <summary>
+        /// 他加禄语
+        /// </summary>
+        Tagalog,
+
+        /// <summary>
+        /// 越南文
+        /// </summary>
+        Vietnamese,
+
+        /// <summary>
+        /// 马来语
+        /// </summary>
+        BahasaMelayu,
+
+        /// <summary>
+        /// 捷克文
+        /// </summary>
+        Czech,
+
+        /// <summary>
+        /// 罗马尼亚语
+        /// </summary>
+        Romanian,
+
+        /// <summary>
+        /// 阿拉伯
+        /// </summary>
+        Arabic,
+
+        /// <summary>
+        /// 缅甸
+        /// </summary>
+        Burmese,
+
+        /// <summary>
+        /// 印地语
+        /// </summary>
+        Hindi,
+
+        /// <summary>
+        /// 葡萄牙语
+        /// </summary>
+        POR,
+
+        /// <summary>
+        /// 德语
+        /// </summary>
+        German,
+
+        /// <summary>
+        /// 波兰语
+        /// </summary>
+        Polish,
+
+        /// <summary>
+        /// 高棉语
+        /// </summary>
+        Khmer,
+
+        /// <summary>
+        /// 荷兰语
+        /// </summary>
+        Dutch
     }
 
     /// <summary>
@@ -100,9 +180,10 @@ namespace MultiLanguage.Scripts
             {
                 return;
             }
+
             foreach (var kv in _contents)
             {
-                action.Invoke(kv.Key,kv.Value);
+                action.Invoke(kv.Key, kv.Value);
             }
         }
     }
