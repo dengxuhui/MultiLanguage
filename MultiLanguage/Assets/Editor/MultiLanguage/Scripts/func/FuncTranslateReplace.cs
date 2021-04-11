@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using Editor.MultiLanguage.Scripts.func.Builder;
+using Editor.MultiLanguage.Scripts.func.builder;
 using Editor.MultiLanguage.Scripts.tool;
 using UnityEditor;
 using UnityEngine;

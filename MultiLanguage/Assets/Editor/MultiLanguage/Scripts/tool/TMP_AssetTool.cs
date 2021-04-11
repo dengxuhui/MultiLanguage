@@ -1,6 +1,12 @@
 ﻿// ReSharper disable All
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using UnityEngine;
+using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace Editor.MultiLanguage.Scripts.tool
 {
@@ -31,8 +37,66 @@ namespace Editor.MultiLanguage.Scripts.tool
                     return supports[i].tmpFont;
                 }
             }
+
             Debug.LogError($"Can not find [{language.ToString()}] in multi language support language array!!!!");
             return TMP_Font.Common;
+        }
+
+        /// <summary>
+        /// 更新TMP .asset资源
+        /// </summary>
+        /// <param name="usingTbl"></param>
+        /// <param name="progressCallBack"></param>
+        public static void UpdateTMP_Asset(CsvTable usingTbl, Action<float, string> progressCallBack)
+        {
+            if (usingTbl == null || usingTbl.Count <= 0)
+            {
+                return;
+            }
+
+            var rules = MultiLanguageAssetsManager.GetRules();
+            //先生成字符集
+            var sdfFontDic = new Dictionary<TMP_Font, Dictionary<char, char>>();
+            for (var i = 0; i < usingTbl.Count; i++)
+            {
+                var fieldInfo = usingTbl[i];
+                fieldInfo.Walk((lang, content) =>
+                {
+                    var tmpFont = TMP_AssetTool.GetTMP_Font(lang);
+                    sdfFontDic.TryGetValue(tmpFont, out var charDic);
+                    if (charDic == null)
+                    {
+                        charDic = new Dictionary<char, char>();
+                        sdfFontDic.Add(tmpFont, charDic);
+                    }
+
+                    var charArray = content.ToCharArray();
+                    for (var i1 = 0; i1 < charArray.Length; i1++)
+                    {
+                        var cc = charArray[i1];
+                        if (charDic.ContainsKey(cc)) continue;
+                        charDic.Add(cc, cc);
+                    }
+                });
+            }
+
+            var saveFullPath = FileTool.GetFullPath(rules.fontDirectory);
+            FileTool.TryMakeDir(saveFullPath);
+
+            foreach (var kv in sdfFontDic)
+            {
+                Config.SdfCharFileNameDic.TryGetValue(kv.Key, out var f);
+                var sdfFileName = $"{f}{Config.SdfCharFileExtension}";
+                var sdfFp = Path.Combine(saveFullPath, sdfFileName);
+                var writeStr = string.Join("", kv.Value.Values.ToArray());
+                using (var sw = new StreamWriter(sdfFp, false, Encoding.Unicode))
+                {
+                    sw.WriteLine(writeStr);
+                    sw.Flush();
+                    sw.Close();
+                    sw.Dispose();
+                }
+            }
         }
     }
 }

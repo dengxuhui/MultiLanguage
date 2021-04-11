@@ -15,7 +15,7 @@ namespace Editor.MultiLanguage.Scripts.func.collector
     /// </summary>
     public static class CollectXlsxs
     {
-        public static Dictionary<string, string> Collect(Action<float, string> progressCb = null)
+        public static Dictionary<string, string> Collect(Action<float, string> progressCallBack = null)
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var rootDir = Path.GetDirectoryName(Application.dataPath);
@@ -37,11 +37,39 @@ namespace Editor.MultiLanguage.Scripts.func.collector
             for (var i = 0; i < allXlsxList.Count; i++)
             {
                 var path = allXlsxList[i];
-                progressCb.Invoke(0.8f, $"读取配置->{path}");
                 ReadXlsxFile(ref xlsxStrDic, path);
             }
 
             return xlsxStrDic;
+        }
+
+        /// <summary>
+        /// 更新xlsx原始导出文件
+        /// </summary>
+        /// <param name="progressCallBack">进度回调</param>
+        public static void UpdateRawFile(Action<float, string> progressCallBack = null) 
+        {
+            var xlsxStrDic = CollectXlsxs.Collect(progressCallBack);
+            if (xlsxStrDic == null || xlsxStrDic.Count <= 0)
+            {
+                return;
+            }
+
+            var rules = MultiLanguageAssetsManager.GetRules();
+            var fullRawDir = FileTool.GetFullPath(rules.rawDirectory);
+
+
+            var savePath = Path.Combine(fullRawDir, Config.CsvNameRawConfig);
+            var table = new CsvTable();
+            var baseSupport = rules.supports[rules.basicSupportIndex];
+            foreach (var kv in xlsxStrDic)
+            {
+                var field = new CsvFieldInfo {Name = kv.Key};
+                field.SetValue(baseSupport.language, kv.Value);
+                table.AddField(field);
+            }
+
+            CsvOperater.WriteSingleFile(table, savePath);
         }
 
         #region private method

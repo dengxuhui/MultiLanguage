@@ -2,7 +2,7 @@
 using Editor.MultiLanguage.Scripts.tool;
 using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
 
-namespace Editor.MultiLanguage.Scripts.func.Builder
+namespace Editor.MultiLanguage.Scripts.func.builder
 {
     /// <summary>
     /// 所有语言导出工具

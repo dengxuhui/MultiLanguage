@@ -5,6 +5,7 @@ using Editor.MultiLanguage.Scripts.tool;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace Editor.MultiLanguage.Scripts.func.collector
 {
@@ -13,7 +14,12 @@ namespace Editor.MultiLanguage.Scripts.func.collector
     /// </summary>
     public static class CollectPrefabs
     {
-        public static Dictionary<string, string> Collect(Action<float, string> progressCb = null)
+        /// <summary>
+        /// 搜集prefab中需要本地化的字段
+        /// </summary>
+        /// <param name="progressCallBack"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> Collect(Action<float, string> progressCallBack = null)
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var directory = Path.GetDirectoryName(Application.dataPath);
@@ -37,7 +43,7 @@ namespace Editor.MultiLanguage.Scripts.func.collector
                 var uiName = Path.GetFileNameWithoutExtension(filePath);
                 var szBuildFileSrc = filePath.Replace(Application.dataPath, "Assets");
                 var go = AssetDatabase.LoadAssetAtPath(szBuildFileSrc, typeof(object)) as GameObject;
-                progressCb?.Invoke(0.6f, $"导出ui字符串中，检索:{uiName}...");
+                progressCallBack?.Invoke(0.6f, $"导出ui字符串中，检索:{uiName}...");
 
                 if (go == null)
                 {
@@ -66,6 +72,34 @@ namespace Editor.MultiLanguage.Scripts.func.collector
             }
 
             return uiStrDic;
+        }
+
+        /// <summary>
+        /// 更新原始文件
+        /// </summary>
+        /// <param name="progressCallBack"></param>
+        public static void UpdateRawFile(Action<float, string> progressCallBack = null)
+        {
+            var uiStrDic = CollectPrefabs.Collect(progressCallBack);
+            if (uiStrDic == null || uiStrDic.Count <= 0)
+            {
+                return;
+            }
+
+            var rules = MultiLanguageAssetsManager.GetRules();
+            var fullRawDir = FileTool.GetFullPath(rules.rawDirectory);
+
+            var savePath = Path.Combine(fullRawDir, Config.CsvNameRawUi);
+            var table = new CsvTable();
+            var basicSupport = rules.supports[rules.basicSupportIndex];
+            foreach (var kv in uiStrDic)
+            {
+                var field = new CsvFieldInfo {Name = kv.Key};
+                field.SetValue(basicSupport.language, kv.Value);
+                table.AddField(field);
+            }
+
+            CsvOperater.WriteSingleFile(table, savePath);
         }
     }
 }
