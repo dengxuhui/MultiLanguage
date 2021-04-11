@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using TMPro;
+using TMPro.EditorUtilities;
+using UnityEditor;
 using UnityEngine;
 using Config = Editor.MultiLanguage.Scripts.MultiLanguageConfig;
 
@@ -55,7 +58,8 @@ namespace Editor.MultiLanguage.Scripts.tool
             }
 
             var rules = MultiLanguageAssetsManager.GetRules();
-            //先生成字符集
+
+            #region 先收集并导出字符集
             var sdfFontDic = new Dictionary<TMP_Font, Dictionary<char, char>>();
             for (var i = 0; i < usingTbl.Count; i++)
             {
@@ -97,6 +101,17 @@ namespace Editor.MultiLanguage.Scripts.tool
                     sw.Dispose();
                 }
             }
+            
+
+            #endregion
+
+            OpenAssetCreatorWindow();
+        }
+
+        private static void OpenAssetCreatorWindow()
+        {
+            var settings = new FontAssetCreationSettings();
+            TMPro_FontAssetCreatorWindow.ShowFontAtlasCreatorWindow();
         }
     }
 }

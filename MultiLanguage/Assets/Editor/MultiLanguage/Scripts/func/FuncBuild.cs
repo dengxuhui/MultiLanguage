@@ -59,13 +59,13 @@ namespace Editor.MultiLanguage.Scripts.func
                 UpdateSummaryTranslateFile(usingTbl);
             }
 
+            AllLanguageBuilder.BuildAll(usingTbl);
+            
             //如果需要更新tmp
             if (updateTmp)
             {
                 TMP_AssetTool.UpdateTMP_Asset(usingTbl, Progress);
             }
-
-            AllLanguageBuilder.BuildAll(usingTbl);
 
             //最后刷新一下资源
             AssetDatabase.Refresh();

@@ -12,6 +12,10 @@ namespace Editor.MultiLanguage.Scripts
         /// </summary>
         public const string TranslateFolderPrefsKey = "TranslateFBPrefsKey";
 
+        /// <summary>
+        /// 与text mesh pro存储的设置对齐，导出asset先复写，再调用window
+        /// </summary>
+        public const string TMP_AssetCreationPrefsKey = "TextMeshPro.FontAssetCreator.RecentFontAssetCreationSettings.Container";
         #region 导出文件相关设置
 
         /// <summary>
