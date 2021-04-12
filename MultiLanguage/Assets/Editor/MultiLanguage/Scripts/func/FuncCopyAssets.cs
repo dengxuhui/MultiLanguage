@@ -21,6 +21,8 @@ namespace MultiLanguage.Scripts.func
                 return;
             }
 
+            EditorUtility.DisplayProgressBar("拷贝资源", "开始拷贝", 0.1f);
+
             tDir = Path.Combine(tDir, rules.runtimeAssetsDirectory);
             for (var i = 0; i < supports.Length; i++)
             {
@@ -29,6 +31,9 @@ namespace MultiLanguage.Scripts.func
                 var name = string.Format(MultiLanguageConfig.BuildLanguageFormat, abbr);
                 var srcPath = Path.Combine(FileTool.GetFullPath(rules.buildDirectory), name);
                 var targetPath = Path.Combine(tDir, name);
+                
+                EditorUtility.DisplayProgressBar("拷贝资源",$"{srcPath}",(0.9f * i + 0.1f));
+                
                 if (!File.Exists(srcPath))
                 {
                     continue;
@@ -40,9 +45,10 @@ namespace MultiLanguage.Scripts.func
                 }
                 FileTool.TryMakeDir(Path.GetDirectoryName(targetPath));
                 File.Copy(srcPath,targetPath);
-                
-                AssetDatabase.Refresh();
             }
+            AssetDatabase.Refresh();
+            EditorUtility.ClearProgressBar();
+            EditorUtility.DisplayDialog("拷贝到运行时", "拷贝完成", "OK");
         }
     }
 }
