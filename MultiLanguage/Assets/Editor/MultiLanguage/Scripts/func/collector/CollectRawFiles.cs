@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using MultiLanguage.Scripts.tool;
+using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace MultiLanguage.Scripts.func.collector
 {
@@ -36,6 +37,79 @@ namespace MultiLanguage.Scripts.func.collector
             }
 
             return rawDic;
+        }
+
+        /// <summary>
+        /// 将原始文件拷贝到使用中的总表文件
+        /// </summary>
+        /// <returns></returns>
+        public static CsvTable CopyToSummaryUsingFile()
+        {
+            var rule = MultiLanguageAssetsManager.GetRules();
+            var usingFilePath = Path.Combine(FileTool.GetFullPath(rule.summaryDirectory), Config.CsvNameSummaryUsing);
+            var usingTbl = CsvOperater.ReadSummaryFile(usingFilePath);
+            var usingDic = usingTbl.ToDictionary();
+
+            var allRawFieldDic = Collect();
+            var supports = rule.supports;
+
+            var add = new List<CsvFieldInfo>();
+            foreach (var kv in allRawFieldDic)
+            {
+                if (usingDic.ContainsKey(kv.Key))
+                {
+                    continue;
+                }
+
+                var a = new CsvFieldInfo {Name = kv.Key};
+                for (var i = 0; i < supports.Length; i++)
+                {
+                    a.SetValue(supports[i].language, kv.Value);
+                }
+
+                add.Add(a);
+            }
+
+            var delete = new List<string>();
+            foreach (var kv in usingDic)
+            {
+                if (allRawFieldDic.ContainsKey(kv.Key))
+                {
+                    continue;
+                }
+
+                delete.Add(kv.Key);
+            }
+
+            if (delete.Count <= 0 && add.Count <= 0)
+            {
+                return usingTbl;
+            }
+
+            if (delete.Count > 0)
+            {
+                for (var i = 0; i < delete.Count; i++)
+                {
+                    usingDic.Remove(delete[i]);
+                }
+            }
+
+            if (add.Count > 0)
+            {
+                for (var i = 0; i < add.Count; i++)
+                {
+                    usingDic.Add(add[i].Name, add[i]);
+                }
+            }
+
+            usingTbl = new CsvTable();
+            foreach (var kv in usingDic)
+            {
+                usingTbl.AddField(kv.Value);
+            }
+
+            CsvOperater.WriteSummaryFile(usingTbl, usingFilePath);
+            return usingTbl;
         }
     }
 }

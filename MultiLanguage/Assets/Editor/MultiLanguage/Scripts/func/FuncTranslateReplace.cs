@@ -41,7 +41,8 @@ namespace MultiLanguage.Scripts.func
             var rules = MultiLanguageAssetsManager.GetRules();
             var fullTranslatedPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory),
                 MultiLanguageConfig.CsvNameSummaryTranslated);
-            var fullUsingPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory), MultiLanguageConfig.CsvNameSummaryUsing);
+            var fullUsingPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory),
+                MultiLanguageConfig.CsvNameSummaryUsing);
             //反馈table
             var feedbackTbl = CsvOperater.ReadSummaryFile(translateFilePath);
             //转换为dic来查询，写的时候还是用tal写 CsvTable引用类型
@@ -52,6 +53,7 @@ namespace MultiLanguage.Scripts.func
             //using table
             var usingTbl = CsvOperater.ReadSummaryFile(fullUsingPath);
             var usingDic = usingTbl.ToDictionary();
+            //获取所有翻译中的文件，删除其中已经翻译的字段
             for (var i = 0; i < feedbackTbl.Count; i++)
             {
                 var feedbackField = feedbackTbl[i];
@@ -85,9 +87,12 @@ namespace MultiLanguage.Scripts.func
 
             CsvOperater.WriteSummaryFile(usingTbl, fullUsingPath);
             CsvOperater.WriteSummaryFile(translatedTbl, fullTranslatedPath);
-            
+
+            //构建新的翻译需求表
+            TranslationNeedsBuilder.Build(usingTbl, translatedTbl);
+
             //导出使用表
-            AllLanguageBuilder.BuildAll(usingTbl);
+            AllLanguageBuilder.Build(usingTbl);
         }
     }
 }

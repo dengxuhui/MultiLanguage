@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using MultiLanguage.Scripts.tool;
 using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
@@ -13,7 +14,8 @@ namespace MultiLanguage.Scripts.func.builder
         /// 导出所有语言
         /// </summary>
         /// <param name="summaryUsingTbl">使用中的总表</param>
-        public static void BuildAll(CsvTable summaryUsingTbl)
+        /// <param name="progressCallBack">进度回调</param>
+        public static void Build(CsvTable summaryUsingTbl, Action<float, string> progressCallBack = null)
         {
             if (summaryUsingTbl == null || summaryUsingTbl.Count <= 0)
             {
