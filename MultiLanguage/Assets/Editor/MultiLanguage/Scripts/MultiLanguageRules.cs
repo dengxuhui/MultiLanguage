@@ -14,6 +14,10 @@ namespace MultiLanguage.Scripts
         public string uiPrefabDirectory = "";
 
         [Tooltip("配置根目录")] public string configDirectory = "";
+        /// <summary>
+        /// 自定义csv文件
+        /// </summary>
+        public string[] customCsvs = new string[0];
 
         /// <summary>
         ///运行时资源存储目录
