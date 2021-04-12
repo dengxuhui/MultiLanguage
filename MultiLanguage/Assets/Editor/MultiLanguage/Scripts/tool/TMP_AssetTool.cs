@@ -110,7 +110,7 @@ namespace MultiLanguage.Scripts.tool
 
         private static void OpenAssetCreatorWindow()
         {
-            var settings = new FontAssetCreationSettings();
+            // var settings = new FontAssetCreationSettings();
             TMPro_FontAssetCreatorWindow.ShowFontAtlasCreatorWindow();
         }
     }

@@ -37,7 +37,6 @@ namespace MultiLanguage.Scripts.func
                 return;
             }
             //将反馈的文件写入已翻译文档中，如果已翻译文档中存在字段，覆盖。再将使用中的字段覆盖。Build语言分表,删除翻译中的字段
-
             var rules = MultiLanguageAssetsManager.GetRules();
             var fullTranslatedPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory),
                 MultiLanguageConfig.CsvNameSummaryTranslated);
@@ -60,7 +59,7 @@ namespace MultiLanguage.Scripts.func
                 usingDic.TryGetValue(feedbackField.Name, out var usingField);
                 if (usingField == null)
                 {
-                    Debug.LogError(
+                    Debug.LogWarning(
                         $"feedback field can not find in using summary file,field name is:{feedbackField.Name}");
                     continue;
                 }
@@ -95,6 +94,7 @@ namespace MultiLanguage.Scripts.func
             AllLanguageBuilder.Build(usingTbl);
             
             AssetDatabase.Refresh();
+            EditorUtility.DisplayDialog("更新翻译", "更新完成", "OK");
         }
     }
 }

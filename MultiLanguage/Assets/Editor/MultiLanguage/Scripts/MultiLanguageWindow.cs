@@ -26,7 +26,6 @@ namespace MultiLanguage.Scripts
         #region 翻译导入相关
 
         private string _translateFeedbackPath;
-        private string _translateFolder;
 
         #endregion
 
@@ -63,7 +62,7 @@ namespace MultiLanguage.Scripts
 
         private void SelectTranslateFile()
         {
-            _translateFeedbackPath = EditorUtility.OpenFilePanelWithFilters("选择翻译反馈总表（.csv文件）", _translateFolder,
+            _translateFeedbackPath = EditorUtility.OpenFilePanelWithFilters("选择翻译反馈总表（.csv文件）", null,
                 new string[] {"csv","csv"});
             EditorPrefs.SetString(MultiLanguageConfig.TranslateFolderPrefsKey, _translateFeedbackPath);
         }
