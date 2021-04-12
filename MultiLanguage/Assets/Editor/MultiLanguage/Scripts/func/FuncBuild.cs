@@ -16,8 +16,10 @@ namespace MultiLanguage.Scripts.func
     {
         public static void Start(bool exportTranslate, bool updateTmp, bool updateFromPrefab, bool updateFromXlsx)
         {
+            Progress(0.1f,"检查资源");
             //执行检查
             Checker.DoCheck();
+            Progress(0.2f,"更新原始Raw文件");
             if (updateFromPrefab)
             {
                 CollectPrefabs.UpdateRawFile();
@@ -30,6 +32,7 @@ namespace MultiLanguage.Scripts.func
 
             CollectCustomCsv();
 
+            Progress(0.5f,"更新Summary总表文件");
             var usingTbl = CollectRawFiles.CopyToSummaryUsingFile();
             //更新翻译需求表
             if (exportTranslate)
@@ -37,9 +40,11 @@ namespace MultiLanguage.Scripts.func
                 TranslationNeedsBuilder.Build(usingTbl, null, null);
                 CollectDiscardField.Collect(usingTbl, null);
             }
+            Progress(0.8f,"从Summary Using表Build文件");
 
             AllLanguageBuilder.Build(usingTbl);
 
+            Progress(0.9f,"build完成，报错文件，更新TMP");
             //如果需要更新tmp
             if (updateTmp)
             {
@@ -49,6 +54,7 @@ namespace MultiLanguage.Scripts.func
             //最后刷新一下资源
             AssetDatabase.Refresh();
             EditorUtility.ClearProgressBar();
+            EditorUtility.DisplayDialog("完成", "一键导出完成", "OK");
         }
 
         private static void Progress(float progress, string info = "")

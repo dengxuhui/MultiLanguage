@@ -87,7 +87,6 @@ namespace MultiLanguage.Scripts
                 Debug.Log("start build language....");
                 FuncBuild.Start(_exportTranslate, _updateTMP_Asset, _updateFromPrefab, _updateFromXlsx);
                 Debug.Log("complete build language....");
-                EditorUtility.DisplayDialog("完成", "一键导出完成", "OK");
             }
 
             EditorGUILayout.EndToggleGroup();
