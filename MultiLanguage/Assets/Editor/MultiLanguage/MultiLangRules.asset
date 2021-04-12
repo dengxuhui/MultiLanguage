@@ -18,8 +18,8 @@ MonoBehaviour:
   ignoreXlsxArray:
   - ignoreType: 0
     path: Config/Title
-  - ignoreType: 1
-    path: Config/Prop.xlsx
+  - ignoreType: 0
+    path: Config/Guide
   supports:
   - language: 0
     abbr: CN
@@ -64,7 +64,7 @@ MonoBehaviour:
     abbr: 
     tmpFont: 0
   basicSupportIndex: 0
-  translateVersion: 8
+  translateVersion: 12
   rawDirectory: Editor/MultiLanguage/Assets/Raw/
   buildDirectory: Editor/MultiLanguage/Assets/Build/
   summaryDirectory: Editor/MultiLanguage/Assets/Summary/
