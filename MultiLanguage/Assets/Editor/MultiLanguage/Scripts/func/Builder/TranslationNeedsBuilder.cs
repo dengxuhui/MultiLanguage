@@ -92,8 +92,18 @@ namespace MultiLanguage.Scripts.func.builder
                     }
                 }
 
-                //回写翻译需求
-                CsvOperater.WriteSummaryFile(csvTbl, existNeedsFiles[i]);
+                if (csvTbl.Count <= 0)
+                {
+                    if (File.Exists(existNeedsFiles[i]))
+                    {
+                        File.Delete(existNeedsFiles[i]);
+                    }
+                }
+                else
+                {
+                    //回写翻译需求
+                    CsvOperater.WriteSummaryFile(csvTbl, existNeedsFiles[i]);       
+                }
             }
 
             //3.写新的翻译需求
