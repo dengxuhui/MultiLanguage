@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce947308742476c924025bd0f34d202, type: 3}
   m_Name: MultiLangRules
   m_EditorClassIdentifier: 
-  uiPrefabDirectory: Assets/AssetsPackage/UI/Prefabs
-  configDirectory: Config/
+  prefabDirectory: Assets/AssetsPackage/UI/Prefabs/
+  xlsxDirectory: Config/
+  customCsvs:
+  - Assets/Document/ShowMessage.csv
   runtimeAssetsDirectory: Assets/AssetsPackage/Config
-  ignoreXlsxArray:
+  ignoreXlsxs:
   - ignoreType: 0
-    path: Config/Title
-  - ignoreType: 0
-    path: Config/Guide
+    path: Config/Guide/
+  - ignoreType: 1
+    path: Config/Prop.xlsx
   supports:
   - language: 0
     abbr: CN
@@ -64,7 +66,7 @@ MonoBehaviour:
     abbr: 
     tmpFont: 0
   basicSupportIndex: 0
-  translateVersion: 12
+  translateVersion: 14
   rawDirectory: Editor/MultiLanguage/Assets/Raw/
   buildDirectory: Editor/MultiLanguage/Assets/Build/
   summaryDirectory: Editor/MultiLanguage/Assets/Summary/

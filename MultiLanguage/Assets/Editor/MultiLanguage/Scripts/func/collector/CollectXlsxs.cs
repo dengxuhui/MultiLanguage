@@ -19,12 +19,12 @@ namespace MultiLanguage.Scripts.func.collector
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var rootDir = Path.GetDirectoryName(Application.dataPath);
-            if (string.IsNullOrEmpty(rootDir) || string.IsNullOrEmpty(rules.configDirectory))
+            if (string.IsNullOrEmpty(rootDir) || string.IsNullOrEmpty(rules.xlsxDirectory))
             {
                 return null;
             }
 
-            var dir = Path.Combine(rootDir, rules.configDirectory);
+            var dir = Path.Combine(rootDir, rules.xlsxDirectory);
             if (!Directory.Exists(dir))
             {
                 return null;
@@ -171,7 +171,7 @@ namespace MultiLanguage.Scripts.func.collector
         private static void FilterXlsxPaths(ref List<string> files, string root)
         {
             var rules = MultiLanguageAssetsManager.GetRules();
-            var ignoreArray = rules.ignoreXlsxArray;
+            var ignoreArray = rules.ignoreXlsxs;
             var pathIgnoreList = new List<string>();
             var dirIgnoreList = new List<string>();
             for (var i = 0; i < ignoreArray.Length; i++)

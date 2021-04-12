@@ -23,12 +23,12 @@ namespace MultiLanguage.Scripts.func.collector
         {
             var rules = MultiLanguageAssetsManager.GetRules();
             var directory = Path.GetDirectoryName(Application.dataPath);
-            if (string.IsNullOrEmpty(directory) || string.IsNullOrEmpty(rules.uiPrefabDirectory))
+            if (string.IsNullOrEmpty(directory) || string.IsNullOrEmpty(rules.prefabDirectory))
             {
                 return null;
             }
 
-            var prefabDir = Path.Combine(directory, rules.uiPrefabDirectory);
+            var prefabDir = Path.Combine(directory, rules.prefabDirectory);
             if (!Directory.Exists(prefabDir))
             {
                 return null;

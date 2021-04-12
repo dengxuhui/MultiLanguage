@@ -11,9 +11,9 @@ namespace MultiLanguage.Scripts
     public class MultiLanguageRules : ScriptableObject
     {
         [Header("文件目录相关设置（相对Assets父级目录）")] [Tooltip("ui根目录")]
-        public string uiPrefabDirectory = "";
+        public string prefabDirectory = "";
 
-        [Tooltip("配置根目录")] public string configDirectory = "";
+        [Tooltip("配置根目录")] public string xlsxDirectory = "";
         /// <summary>
         /// 自定义csv文件
         /// </summary>
@@ -27,7 +27,7 @@ namespace MultiLanguage.Scripts
         /// <summary>
         /// 忽略数据
         /// </summary>
-        public IgnoreData[] ignoreXlsxArray = new IgnoreData[0];
+        public IgnoreData[] ignoreXlsxs = new IgnoreData[0];
 
         [Header("支持语言列表配置")] public SupportLanguage[] supports = new SupportLanguage[0];
         [Header("基础语言在Supports数组中索引")] public int basicSupportIndex = 0;
