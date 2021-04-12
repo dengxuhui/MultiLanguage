@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 // ReSharper disable All
@@ -51,6 +52,20 @@ namespace MultiLanguage.Scripts
         #endregion
     }
 
+    [CustomEditor(typeof(MultiLanguageRules))]
+    public class MultiLanguageRuleEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            var t = (MultiLanguageRules) target;
+            base.OnInspectorGUI();
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(t);
+                AssetDatabase.SaveAssets();
+            }
+        }
+    }
     /// <summary>
     /// 支持语言
     /// </summary>

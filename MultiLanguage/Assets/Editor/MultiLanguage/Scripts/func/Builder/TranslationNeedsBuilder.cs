@@ -123,6 +123,7 @@ namespace MultiLanguage.Scripts.func.builder
                     CsvOperater.WriteSummaryFile(writeTable, writeFilePath);
                     rules.translateVersion++;
                     EditorUtility.SetDirty(rules);
+                    AssetDatabase.SaveAssets();
                 }
                 else
                 {
