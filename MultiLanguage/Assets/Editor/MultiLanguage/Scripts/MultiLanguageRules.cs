@@ -59,10 +59,12 @@ namespace MultiLanguage.Scripts
         {
             var t = (MultiLanguageRules) target;
             base.OnInspectorGUI();
-            if (GUI.changed)
+            if (GUILayout.Button("保存"))
             {
-                EditorUtility.SetDirty(t);
-                AssetDatabase.SaveAssets();
+                if (GUI.changed)
+                {
+                    AssetDatabase.SaveAssets();       
+                }
             }
         }
     }
