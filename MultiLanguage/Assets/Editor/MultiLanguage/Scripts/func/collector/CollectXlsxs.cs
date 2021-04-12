@@ -171,7 +171,7 @@ namespace MultiLanguage.Scripts.func.collector
         private static void FilterXlsxPaths(ref List<string> files, string root)
         {
             var rules = MultiLanguageAssetsManager.GetRules();
-            var ignoreArray = rules.ignoreDataArray;
+            var ignoreArray = rules.ignoreXlsxArray;
             var pathIgnoreList = new List<string>();
             var dirIgnoreList = new List<string>();
             for (var i = 0; i < ignoreArray.Length; i++)

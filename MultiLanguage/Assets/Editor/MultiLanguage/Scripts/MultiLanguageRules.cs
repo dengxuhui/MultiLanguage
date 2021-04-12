@@ -23,7 +23,7 @@ namespace MultiLanguage.Scripts
         /// <summary>
         /// 忽略数据
         /// </summary>
-        public IgnoreData[] ignoreDataArray = new IgnoreData[0];
+        public IgnoreData[] ignoreXlsxArray = new IgnoreData[0];
 
         [Header("支持语言列表配置")] public SupportLanguage[] supports = new SupportLanguage[0];
         [Header("基础语言在Supports数组中索引")] public int basicSupportIndex = 0;
