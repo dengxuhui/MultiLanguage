@@ -12,20 +12,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce947308742476c924025bd0f34d202, type: 3}
   m_Name: MultiLangRules
   m_EditorClassIdentifier: 
-  baseLanguage:
-    language: 0
-    abbr: CN
+  uiPrefabDirectory: Assets/AssetsPackage/UI/Prefabs
+  configDirectory: Config/
+  runtimeAssetsDirectory: Assets/AssetsPackage/Config
+  ignoreDataArray:
+  - ignoreType: 0
+    path: Config/Title/
+  - ignoreType: 1
+    path: Config/Prop.xlsx
   supports:
   - language: 0
     abbr: CN
+    tmpFont: 0
   - language: 1
     abbr: CNTraditional
+    tmpFont: 0
   - language: 2
     abbr: EN
+    tmpFont: 0
+  - language: 9
+    abbr: 
+    tmpFont: 0
+  - language: 22
+    abbr: 
+    tmpFont: 0
+  - language: 11
+    abbr: 
+    tmpFont: 0
   - language: 4
-    abbr: Japan
+    abbr: 
+    tmpFont: 0
+  - language: 10
+    abbr: 
+    tmpFont: 0
+  - language: 21
+    abbr: 
+    tmpFont: 0
+  - language: 3
+    abbr: 
+    tmpFont: 0
+  - language: 8
+    abbr: 
+    tmpFont: 0
+  - language: 5
+    abbr: 
+    tmpFont: 0
+  - language: 7
+    abbr: 
+    tmpFont: 0
+  - language: 14
+    abbr: 
+    tmpFont: 0
+  basicSupportIndex: 0
   translateVersion: 7
   rawDirectory: Editor/MultiLanguage/Assets/Raw/
   buildDirectory: Editor/MultiLanguage/Assets/Build/
   summaryDirectory: Editor/MultiLanguage/Assets/Summary/
   translatingDirectory: Editor/MultiLanguage/Assets/Translating/
+  fontDirectory: Editor/MultiLanguage/Assets/Font/
