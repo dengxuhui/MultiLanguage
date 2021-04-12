@@ -64,7 +64,7 @@ namespace MultiLanguage.Scripts
         private void SelectTranslateFile()
         {
             _translateFeedbackPath = EditorUtility.OpenFilePanelWithFilters("选择翻译反馈总表（.csv文件）", _translateFolder,
-                new string[] {"csv"});
+                new string[] {"csv","csv"});
             EditorPrefs.SetString(MultiLanguageConfig.TranslateFolderPrefsKey, _translateFeedbackPath);
         }
 
