@@ -93,6 +93,8 @@ namespace MultiLanguage.Scripts.func
 
             //导出使用表
             AllLanguageBuilder.Build(usingTbl);
+            
+            AssetDatabase.Refresh();
         }
     }
 }
