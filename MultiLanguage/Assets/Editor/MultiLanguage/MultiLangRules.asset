@@ -15,9 +15,9 @@ MonoBehaviour:
   uiPrefabDirectory: Assets/AssetsPackage/UI/Prefabs
   configDirectory: Config/
   runtimeAssetsDirectory: Assets/AssetsPackage/Config
-  ignoreDataArray:
+  ignoreXlsxArray:
   - ignoreType: 0
-    path: Config/Title/
+    path: Config/Title
   - ignoreType: 1
     path: Config/Prop.xlsx
   supports:
@@ -64,7 +64,7 @@ MonoBehaviour:
     abbr: 
     tmpFont: 0
   basicSupportIndex: 0
-  translateVersion: 7
+  translateVersion: 8
   rawDirectory: Editor/MultiLanguage/Assets/Raw/
   buildDirectory: Editor/MultiLanguage/Assets/Build/
   summaryDirectory: Editor/MultiLanguage/Assets/Summary/

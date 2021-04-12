@@ -76,11 +76,16 @@ namespace MultiLanguage.Scripts.func.builder
                         csvTbl.RemoveAt(i1);
                         i1--;
                     }
+                    else if (!usingDic.ContainsKey(csvTbl[i1].Name))
+                    {
+                        csvTbl.RemoveAt(i1);
+                        i1--;
+                    }
                 }
 
                 for (var i1 = 0; i1 < needs.Count; i1++)
                 {
-                    if (csvDic.ContainsKey(needs[i].Name))
+                    if (csvDic.ContainsKey(needs[i1].Name))
                     {
                         needs.RemoveAt(i1);
                         i1--;
