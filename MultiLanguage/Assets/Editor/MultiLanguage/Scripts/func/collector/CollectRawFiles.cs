@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using MultiLanguage.Scripts.tool;
-using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace MultiLanguage.Scripts.func.collector
 {
@@ -46,7 +45,7 @@ namespace MultiLanguage.Scripts.func.collector
         public static CsvTable CopyToSummaryUsingFile()
         {
             var rule = MultiLanguageAssetsManager.GetRules();
-            var usingFilePath = Path.Combine(FileTool.GetFullPath(rule.summaryDirectory), Config.CsvNameSummaryUsing);
+            var usingFilePath = Path.Combine(FileTool.GetFullPath(rule.summaryDirectory), MultiLanguageConfig.CsvNameSummaryUsing);
             var usingTbl = CsvOperater.ReadSummaryFile(usingFilePath);
             var usingDic = usingTbl.ToDictionary();
 

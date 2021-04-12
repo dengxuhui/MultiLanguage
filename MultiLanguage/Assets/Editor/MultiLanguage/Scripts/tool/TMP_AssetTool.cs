@@ -9,7 +9,6 @@ using TMPro;
 using TMPro.EditorUtilities;
 using UnityEditor;
 using UnityEngine;
-using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace MultiLanguage.Scripts.tool
 {

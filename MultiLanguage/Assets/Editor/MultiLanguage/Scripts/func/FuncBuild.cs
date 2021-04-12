@@ -5,7 +5,6 @@ using MultiLanguage.Scripts.func.collector;
 using MultiLanguage.Scripts.tool;
 using UnityEditor;
 using UnityEngine;
-using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace MultiLanguage.Scripts.func
 {

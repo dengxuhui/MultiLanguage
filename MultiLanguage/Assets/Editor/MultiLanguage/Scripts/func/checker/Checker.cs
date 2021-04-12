@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using MultiLanguage.Scripts.tool;
 using UnityEditor;
-using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace MultiLanguage.Scripts.func.checker
 {

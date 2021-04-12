@@ -6,7 +6,6 @@ using System.Linq;
 using Excel;
 using MultiLanguage.Scripts.tool;
 using UnityEngine;
-using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace MultiLanguage.Scripts.func.collector
 {

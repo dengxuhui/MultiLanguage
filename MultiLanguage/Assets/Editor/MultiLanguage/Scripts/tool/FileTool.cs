@@ -2,7 +2,6 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 // ReSharper disable All
 
 namespace MultiLanguage.Scripts.tool

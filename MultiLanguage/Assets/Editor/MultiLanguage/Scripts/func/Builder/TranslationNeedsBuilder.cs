@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using MultiLanguage.Scripts.tool;
 using UnityEditor;
-using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace MultiLanguage.Scripts.func.builder
 {
@@ -28,7 +27,7 @@ namespace MultiLanguage.Scripts.func.builder
             var rules = MultiLanguageAssetsManager.GetRules();
             if (usingTbl == null)
             {
-                var usingPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory), Config.CsvNameSummaryUsing);
+                var usingPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory), MultiLanguageConfig.CsvNameSummaryUsing);
                 usingTbl = CsvOperater.ReadSummaryFile(usingPath);
             }
 
@@ -40,7 +39,7 @@ namespace MultiLanguage.Scripts.func.builder
             if (translatedTbl == null)
             {
                 var translatedPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory),
-                    Config.CsvNameSummaryTranslated);
+                    MultiLanguageConfig.CsvNameSummaryTranslated);
                 translatedTbl = CsvOperater.ReadSummaryFile(translatedPath);
             }
 
@@ -51,7 +50,7 @@ namespace MultiLanguage.Scripts.func.builder
 
             var translatingDir = FileTool.GetFullPath(rules.translatingDirectory);
             var existNeedsFiles = Directory.GetFiles(translatingDir,
-                string.Format(Config.CsvNameSummaryTranslating, "*"),
+                string.Format(MultiLanguageConfig.CsvNameSummaryTranslating, "*"),
                 SearchOption.AllDirectories);
             //1.找出翻译需求
             foreach (var kv in usingDic)

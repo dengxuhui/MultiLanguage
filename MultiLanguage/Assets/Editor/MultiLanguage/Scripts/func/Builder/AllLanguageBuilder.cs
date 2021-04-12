@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using MultiLanguage.Scripts.tool;
-using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace MultiLanguage.Scripts.func.builder
 {

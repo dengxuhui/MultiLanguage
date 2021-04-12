@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using MultiLanguage.Scripts.tool;
-using Config = MultiLanguage.Scripts.MultiLanguageConfig;
 
 namespace MultiLanguage.Scripts.func.collector
 {
@@ -21,12 +20,12 @@ namespace MultiLanguage.Scripts.func.collector
             var rules = MultiLanguageAssetsManager.GetRules();
             if (usingTbl == null)
             {
-                var usingPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory), Config.CsvNameSummaryUsing);
+                var usingPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory), MultiLanguageConfig.CsvNameSummaryUsing);
                 usingTbl = CsvOperater.ReadSummaryFile(usingPath);
             }
 
             var translatedPath = Path.Combine(FileTool.GetFullPath(rules.summaryDirectory),
-                Config.CsvNameSummaryTranslated);
+                MultiLanguageConfig.CsvNameSummaryTranslated);
             var translatedTbl = CsvOperater.ReadSummaryFile(translatedPath);
 
             if (translatedTbl == null || translatedTbl.Count <= 0)
@@ -53,7 +52,7 @@ namespace MultiLanguage.Scripts.func.collector
             {
                 CsvOperater.WriteSummaryFile(translatedTbl, translatedPath);
                 var discardPath =
-                    Path.Combine(FileTool.GetFullPath(rules.summaryDirectory), Config.CsvNameDiscardCache);
+                    Path.Combine(FileTool.GetFullPath(rules.summaryDirectory), MultiLanguageConfig.CsvNameDiscardCache);
                 var discardTbl = CsvOperater.ReadSummaryFile(discardPath);
                 for (var i = 0; i < discardList.Count; i++)
                 {
