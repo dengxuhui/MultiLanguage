@@ -19,51 +19,12 @@ MonoBehaviour:
   runtimeAssetsDirectory: Assets/AssetsPackage/Config
   ignoreXlsxs:
   - ignoreType: 0
-    path: Config/Guide/
+    path: Config/IgnoreDir/
   - ignoreType: 1
-    path: Config/Prop.xlsx
+    path: Config/test_export_file.xlsx
   supports:
   - language: 0
     abbr: CN
-    tmpFont: 0
-  - language: 1
-    abbr: CNTraditional
-    tmpFont: 0
-  - language: 2
-    abbr: EN
-    tmpFont: 0
-  - language: 9
-    abbr: 
-    tmpFont: 0
-  - language: 22
-    abbr: 
-    tmpFont: 0
-  - language: 11
-    abbr: 
-    tmpFont: 0
-  - language: 4
-    abbr: 
-    tmpFont: 0
-  - language: 10
-    abbr: 
-    tmpFont: 0
-  - language: 21
-    abbr: 
-    tmpFont: 0
-  - language: 3
-    abbr: 
-    tmpFont: 0
-  - language: 8
-    abbr: 
-    tmpFont: 0
-  - language: 5
-    abbr: 
-    tmpFont: 0
-  - language: 7
-    abbr: 
-    tmpFont: 0
-  - language: 14
-    abbr: 
     tmpFont: 0
   basicSupportIndex: 0
   translateVersion: 15
