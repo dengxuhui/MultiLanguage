@@ -46,16 +46,19 @@ namespace MultiLanguage.Scripts.func.collector
         {
             var rule = MultiLanguageAssetsManager.GetRules();
             var usingFilePath = Path.Combine(FileTool.GetFullPath(rule.summaryDirectory), MultiLanguageConfig.CsvNameSummaryUsing);
+            var translatedFilePath = Path.Combine(FileTool.GetFullPath(rule.summaryDirectory),
+                MultiLanguageConfig.CsvNameSummaryTranslated);
             var usingTbl = CsvOperater.ReadSummaryFile(usingFilePath);
             var usingDic = usingTbl.ToDictionary();
-
+            var translatedDic = CsvOperater.ReadSummaryFile(translatedFilePath).ToDictionary();
+            
             var allRawFieldDic = Collect();
             var supports = rule.supports;
 
             var add = new List<CsvFieldInfo>();
             foreach (var kv in allRawFieldDic)
             {
-                if (usingDic.ContainsKey(kv.Key))
+                if (usingDic.ContainsKey(kv.Key) && translatedDic.ContainsKey(kv.Key))
                 {
                     continue;
                 }
@@ -97,7 +100,7 @@ namespace MultiLanguage.Scripts.func.collector
             {
                 for (var i = 0; i < add.Count; i++)
                 {
-                    usingDic.Add(add[i].Name, add[i]);
+                    usingDic[add[i].Name] = add[i];
                 }
             }
 

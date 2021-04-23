@@ -21,12 +21,12 @@ namespace MultiLanguage.Scripts.func
             Progress(0.2f,"更新原始Raw文件");
             if (updateFromPrefab)
             {
-                CollectPrefabs.UpdateRawFile();
+                CollectPrefabs.UpdateRawFile(Progress);
             }
 
             if (updateFromXlsx)
             {
-                CollectXlsxs.UpdateRawFile();
+                CollectXlsxs.UpdateRawFile(Progress);
             }
 
             CollectCustomCsv();

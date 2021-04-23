@@ -36,6 +36,7 @@ namespace MultiLanguage.Scripts.func.collector
             for (var i = 0; i < allXlsxList.Count; i++)
             {
                 var path = allXlsxList[i];
+                progressCallBack?.Invoke(0.8f,$"读取配置档文件：{path}");
                 ReadXlsxFile(ref xlsxStrDic, path);
             }
 
