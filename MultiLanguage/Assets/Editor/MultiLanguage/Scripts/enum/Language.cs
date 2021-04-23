@@ -186,5 +186,32 @@ namespace MultiLanguage.Scripts
                 action.Invoke(kv.Key, kv.Value);
             }
         }
+
+        /// <summary>
+        /// 当前语言数量
+        /// </summary>
+        /// <returns></returns>
+        public int Count()
+        {
+            return _contents.Count;
+        }
+
+        /// <summary>
+        /// 是否与当前支持语言列表匹配
+        /// </summary>
+        /// <param name="supports"></param>
+        /// <returns></returns>
+        public bool IsMatchSupports(SupportLanguage[] supports)
+        {
+            for (var i = 0; i < supports.Length; i++)
+            {
+                if (!_contents.ContainsKey(supports[i].language))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

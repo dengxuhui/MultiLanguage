@@ -45,24 +45,47 @@ namespace MultiLanguage.Scripts.func.collector
         public static CsvTable CopyToSummaryUsingFile()
         {
             var rule = MultiLanguageAssetsManager.GetRules();
-            var usingFilePath = Path.Combine(FileTool.GetFullPath(rule.summaryDirectory), MultiLanguageConfig.CsvNameSummaryUsing);
+            var usingFilePath = Path.Combine(FileTool.GetFullPath(rule.summaryDirectory),
+                MultiLanguageConfig.CsvNameSummaryUsing);
             var translatedFilePath = Path.Combine(FileTool.GetFullPath(rule.summaryDirectory),
                 MultiLanguageConfig.CsvNameSummaryTranslated);
             var usingTbl = CsvOperater.ReadSummaryFile(usingFilePath);
             var usingDic = usingTbl.ToDictionary();
             var translatedDic = CsvOperater.ReadSummaryFile(translatedFilePath).ToDictionary();
-            
+
             var allRawFieldDic = Collect();
             var supports = rule.supports;
-
             var add = new List<CsvFieldInfo>();
             foreach (var kv in allRawFieldDic)
             {
                 if (usingDic.ContainsKey(kv.Key) && translatedDic.ContainsKey(kv.Key))
                 {
-                    continue;
+                    var usingField = usingDic[kv.Key];
+                    if (usingField.IsMatchSupports(supports))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        //添加了新的语言，只把新增语言替换为基础语言
+                        var c = new CsvFieldInfo {Name = kv.Key};
+                        for (int i = 0; i < supports.Length; i++)
+                        {
+                            usingField.TryGetValue(supports[i].language,out var v);
+                            if (string.IsNullOrEmpty(v))
+                            {
+                                v = kv.Value;
+                            }
+
+                            c.SetValue(supports[i].language, v);
+                        }
+
+                        add.Add(c);
+                        continue;
+                    }
                 }
 
+                //全新
                 var a = new CsvFieldInfo {Name = kv.Key};
                 for (var i = 0; i < supports.Length; i++)
                 {
