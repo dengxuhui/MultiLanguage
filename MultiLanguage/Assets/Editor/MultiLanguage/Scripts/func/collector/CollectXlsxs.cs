@@ -181,6 +181,10 @@ namespace MultiLanguage.Scripts.func.collector
                 path = path.Replace("\\", "/");
                 if (data.ignoreType == IgnoreType.Directory)
                 {
+                    if (path.LastIndexOf("/") == path.Length - 1)
+                    {
+                        path = path.Remove(path.Length - 1);
+                    }
                     dirIgnoreList.Add(path);
                 }
                 else if (data.ignoreType == IgnoreType.File)

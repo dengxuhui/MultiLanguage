@@ -21,7 +21,7 @@ MonoBehaviour:
   - ignoreType: 0
     path: Config/IgnoreDir/
   - ignoreType: 1
-    path: Config/test_export_file.xlsx
+    path: Config/test_ingnore_file.xlsx
   supports:
   - language: 0
     abbr: CN
