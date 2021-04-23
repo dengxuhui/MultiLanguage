@@ -26,8 +26,11 @@ MonoBehaviour:
   - language: 0
     abbr: CN
     tmpFont: 0
+  - language: 2
+    abbr: EN
+    tmpFont: 0
   basicSupportIndex: 0
-  translateVersion: 22
+  translateVersion: 23
   rawDirectory: Editor/MultiLanguage/Assets/Raw/
   buildDirectory: Editor/MultiLanguage/Assets/Build/
   summaryDirectory: Editor/MultiLanguage/Assets/Summary/
