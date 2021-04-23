@@ -121,7 +121,12 @@ namespace MultiLanguage.Scripts.tool
                     fieldInfo.Name = name;
                     for (int j = 1; j < kv.Length; j++)
                     {
-                        var lang = paresLangSeq[j - 1];
+                        var index = j - 1;
+                        if (index >= paresLangSeq.Length)
+                        {
+                            break;
+                        }
+                        var lang = paresLangSeq[index];
                         fieldInfo.SetValue(lang, kv[j]);
                     }
 
