@@ -30,7 +30,7 @@ MonoBehaviour:
     abbr: EN
     tmpFont: 0
   basicSupportIndex: 0
-  translateVersion: 16
+  translateVersion: 18
   rawDirectory: Editor/MultiLanguage/Assets/Raw/
   buildDirectory: Editor/MultiLanguage/Assets/Build/
   summaryDirectory: Editor/MultiLanguage/Assets/Summary/

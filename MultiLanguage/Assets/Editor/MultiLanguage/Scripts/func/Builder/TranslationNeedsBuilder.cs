@@ -45,6 +45,7 @@ namespace MultiLanguage.Scripts.func.builder
 
             var needs = new List<CsvFieldInfo>();
 
+            var supports = rules.supports;
             var usingDic = usingTbl.ToDictionary();
             var translatedDic = translatedTbl.ToDictionary();
 
@@ -55,7 +56,7 @@ namespace MultiLanguage.Scripts.func.builder
             //1.找出翻译需求
             foreach (var kv in usingDic)
             {
-                if (translatedDic.ContainsKey(kv.Key))
+                if (translatedDic.ContainsKey(kv.Key) && translatedDic[kv.Key].IsMatchSupports(supports))
                 {
                     continue;
                 }
