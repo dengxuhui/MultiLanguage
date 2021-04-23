@@ -203,6 +203,10 @@ namespace MultiLanguage.Scripts
         /// <returns></returns>
         public bool IsMatchSupports(SupportLanguage[] supports)
         {
+            if (_contents.Count != supports.Length)
+            {
+                return false;
+            }
             for (var i = 0; i < supports.Length; i++)
             {
                 if (!_contents.ContainsKey(supports[i].language))
