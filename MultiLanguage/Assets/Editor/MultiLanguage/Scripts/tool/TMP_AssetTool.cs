@@ -83,6 +83,49 @@ namespace MultiLanguage.Scripts.tool
                 });
             }
 
+            #region 写默认字符集
+            for (var i = 0; i < rules.defaultChars.Length; i++)
+            {
+                var data = rules.defaultChars[i];
+                if (!sdfFontDic.ContainsKey(data.Font) || string.IsNullOrEmpty(data.Path))
+                {
+                    continue;
+                }
+                var tDir = Path.GetDirectoryName(Application.dataPath);
+                if (string.IsNullOrEmpty(tDir))
+                {
+                    continue;
+                }
+                var fullPath = Path.Combine(tDir, data.Path);
+                if (!File.Exists(fullPath))
+                {
+                    continue;
+                }
+
+                var charDic = sdfFontDic[data.Font];
+                using (var stream = File.Open(fullPath,FileMode.Open,FileAccess.Read,FileShare.ReadWrite) )
+                {
+                    var sr = new StreamReader(stream);
+                    var text = sr.ReadToEnd();
+                    sr.Close();
+                    sr.Dispose();
+
+                    if (string.IsNullOrEmpty(text))
+                    {
+                        continue;
+                    }
+                    var charArray = text.ToCharArray();
+                    for (var i1 = 0; i1 < charArray.Length; i1++)
+                    {
+                        var cc = charArray[i1];
+                        if (charDic.ContainsKey(cc)) continue;
+                        charDic.Add(cc, cc);
+                    }
+                }
+            }
+
+            #endregion
+            
             var saveFullPath = FileTool.GetFullPath(rules.fontDirectory);
             FileTool.TryMakeDir(saveFullPath);
 

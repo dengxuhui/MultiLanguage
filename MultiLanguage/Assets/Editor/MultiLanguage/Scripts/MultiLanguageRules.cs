@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -29,10 +30,12 @@ namespace MultiLanguage.Scripts
         /// 忽略数据
         /// </summary>
         public IgnoreData[] ignoreXlsxs = new IgnoreData[0];
-
+        /// <summary>
+        /// 默认字符配置
+        /// </summary>
+        public TMP_DefaultChar[] defaultChars = new TMP_DefaultChar[0];
         [Header("支持语言列表配置")] public SupportLanguage[] supports = new SupportLanguage[0];
         [Header("基础语言在Supports数组中索引")] public int basicSupportIndex = 0;
-
         #region 隐藏属性
 
         /// <summary>
@@ -139,5 +142,18 @@ namespace MultiLanguage.Scripts
         /// 泰语
         /// </summary>
         Thai,
+    }
+
+    [Serializable]
+    public class TMP_DefaultChar
+    {
+        /// <summary>
+        /// 字体
+        /// </summary>
+        public TMP_Font Font;
+        /// <summary>
+        /// 路径名，与Assets同级目录，App.dataPath父级目录
+        /// </summary>
+        public string Path;
     }
 }
