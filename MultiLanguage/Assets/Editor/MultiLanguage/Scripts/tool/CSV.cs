@@ -35,7 +35,7 @@ namespace MultiLanguage.Scripts.tool
                 sr.Dispose();
 
                 CsvTable tbl = new CsvTable();
-                string[] rows = text.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+                string[] rows = text.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
                 if (rows.Length <= 0)
                 {
                     return tbl;
@@ -82,7 +82,7 @@ namespace MultiLanguage.Scripts.tool
                 var text = sr.ReadToEnd();
                 sr.Close();
                 sr.Dispose();
-                string[] rows = text.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+                string[] rows = text.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
 
                 CsvTable tbl = new CsvTable();
                 //第一行为文件头

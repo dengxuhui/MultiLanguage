@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using MultiLanguage.Scripts.tool;
@@ -84,7 +85,7 @@ namespace MultiLanguage.Scripts.func.checker
                 for (var i = 0; i < needFiles.Count; i++)
                 {
                     sb.Append(needFiles[i]);
-                    sb.Append("\r\n");
+                    sb.Append(Environment.NewLine);
                 }
 
                 EditorUtility.DisplayDialog("中途导入的文件缺失", sb.ToString(), "OK");
