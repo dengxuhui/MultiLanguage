@@ -114,6 +114,7 @@ namespace MultiLanguage.Scripts.func.builder
                 writeFilePath = string.Format(writeFilePath, version);
                 if (!File.Exists(writeFilePath))
                 {
+                    needs = SortTool.SortCsvFieldList(needs);
                     var writeTable = new CsvTable();
                     for (var i = 0; i < needs.Count; i++)
                     {

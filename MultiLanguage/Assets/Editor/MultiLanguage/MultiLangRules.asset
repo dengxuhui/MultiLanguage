@@ -22,6 +22,9 @@ MonoBehaviour:
     path: Config/IgnoreDir/
   - ignoreType: 1
     path: Config/test_ingnore_file.xlsx
+  defaultChars:
+  - Font: 0
+    Path: 
   supports:
   - language: 0
     abbr: CN
@@ -30,7 +33,7 @@ MonoBehaviour:
     abbr: EN
     tmpFont: 0
   basicSupportIndex: 0
-  translateVersion: 23
+  translateVersion: 27
   rawDirectory: Editor/MultiLanguage/Assets/Raw/
   buildDirectory: Editor/MultiLanguage/Assets/Build/
   summaryDirectory: Editor/MultiLanguage/Assets/Summary/
