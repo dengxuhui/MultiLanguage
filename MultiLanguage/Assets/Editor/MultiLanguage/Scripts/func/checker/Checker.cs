@@ -35,7 +35,7 @@ namespace MultiLanguage.Scripts.func.checker
             FileTool.TryMakeDir(FileTool.GetFullPath(rules.summaryDirectory));
             FileTool.TryMakeDir(FileTool.GetFullPath(rules.translatingDirectory));
         }
-        
+
         /// <summary>
         /// 检查当前正在使用的总表文件
         /// </summary>
@@ -104,7 +104,7 @@ namespace MultiLanguage.Scripts.func.checker
 
             return midWayUse;
         }
-        
+
         /// <summary>
         /// 检查已翻译表
         /// </summary>
@@ -131,7 +131,7 @@ namespace MultiLanguage.Scripts.func.checker
                 CsvOperater.WriteEmptySummaryFile(filePath);
             }
         }
-        
+
         /// <summary>
         /// 从已编译好的文件中反向生成Raw文件，一般用于中途使用改工具才会用到这个方法
         /// </summary>
@@ -148,35 +148,52 @@ namespace MultiLanguage.Scripts.func.checker
             var fullBuildDir = FileTool.GetFullPath(rules.buildDirectory);
             var supports = rules.supports;
             var saveTable = new CsvTable();
-            for (var i = 0; i < supports.Length; i++)
+            var allLangDic = new Dictionary<Language, Dictionary<string, CsvFieldInfo>>();
+            Dictionary<string, CsvFieldInfo> baseSupportDic = null;
+            for (int i = 0; i < supports.Length; i++)
             {
                 var language = supports[i].language;
                 var abbr = string.IsNullOrEmpty(supports[i].abbr) ? language.ToString() : supports[i].abbr;
                 var fileName = string.Format(MultiLanguageConfig.BuildLanguageFormat, abbr);
                 var fullPath = Path.Combine(fullBuildDir, fileName);
-                var singleTable = CsvOperater.ReadSingleFile(fullPath, language);
-                var index = 0;
-                for (int j = 0; j < singleTable.Count; j++)
+                var singleDic = CsvOperater.ReadSingleFile(fullPath, language).ToDictionary();
+                if (i == rules.basicSupportIndex)
                 {
-                    var singleFieldInfo = singleTable[j];
-                    if (MultiLanguageConfig.BlackRawKey.Contains(singleFieldInfo.Name))
-                    {
-                        continue;
-                    }
-
-                    var fieldInfo = saveTable[index];
-                    if (fieldInfo == null)
-                    {
-                        fieldInfo = new CsvFieldInfo {Name = singleFieldInfo.Name};
-                        saveTable.AddField(fieldInfo);
-                    }
-
-                    singleFieldInfo.TryGetValue(language, out var content);
-                    fieldInfo.SetValue(language, content);
-                    index++;
+                    baseSupportDic = singleDic;
                 }
+
+                allLangDic.Add(language, singleDic);
             }
 
+            foreach (var kv in baseSupportDic)
+            {
+                var language = kv.Key;
+                CsvFieldInfo baseFieldInfo = kv.Value;
+                if (MultiLanguageConfig.BlackRawKey.Contains(baseFieldInfo.Name))
+                {
+                    continue;
+                }
+
+                var saveFieldInfo = new CsvFieldInfo {Name = baseFieldInfo.Name};
+                saveTable.AddField(saveFieldInfo);
+                for (int i = 0; i < supports.Length; i++)
+                {
+                    var readLanguage = supports[i].language;
+                    allLangDic[readLanguage].TryGetValue(baseFieldInfo.Name, out var singleInfo);
+                    if (singleInfo != null)
+                    {
+                        singleInfo.TryGetValue(readLanguage, out var content);
+                        if (content == null)
+                        {
+                            saveFieldInfo.SetValue(readLanguage, string.Empty);
+                        }
+                        else
+                        {
+                            saveFieldInfo.SetValue(readLanguage, content);
+                        }
+                    }
+                }
+            }
             CsvOperater.WriteSummaryFile(saveTable, filePath);
         }
 

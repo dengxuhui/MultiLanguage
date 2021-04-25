@@ -200,10 +200,11 @@ namespace MultiLanguage.Scripts
         /// 是否与当前支持语言列表匹配
         /// </summary>
         /// <param name="supports"></param>
+        /// <param name="compareCount">是否比较Content数量</param>
         /// <returns></returns>
-        public bool IsMatchSupports(SupportLanguage[] supports)
+        public bool IsMatchSupports(SupportLanguage[] supports,bool compareCount)
         {
-            if (_contents.Count != supports.Length)
+            if (compareCount && _contents.Count != supports.Length)
             {
                 return false;
             }

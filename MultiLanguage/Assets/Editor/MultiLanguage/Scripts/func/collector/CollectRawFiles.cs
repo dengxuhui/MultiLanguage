@@ -49,21 +49,38 @@ namespace MultiLanguage.Scripts.func.collector
                 MultiLanguageConfig.CsvNameSummaryUsing);
             var translatedFilePath = Path.Combine(FileTool.GetFullPath(rule.summaryDirectory),
                 MultiLanguageConfig.CsvNameSummaryTranslated);
-            var usingTbl = CsvOperater.ReadSummaryFile(usingFilePath);
-            var usingDic = usingTbl.ToDictionary();
+            var usingDic = CsvOperater.ReadSummaryFile(usingFilePath).ToDictionary();
             var translatedDic = CsvOperater.ReadSummaryFile(translatedFilePath).ToDictionary();
-
             var allRawFieldDic = Collect();
             var supports = rule.supports;
-            var add = new List<CsvFieldInfo>();
+            var rTbl = new CsvTable();
+
+            #region 先删除在Raw文件没有用到的字段
+            var delete = new List<string>();
+            foreach (var kv in usingDic)
+            {
+                if (allRawFieldDic.ContainsKey(kv.Key))
+                {
+                    continue;
+                }
+                delete.Add(kv.Key);
+            }
+            if (delete.Count > 0)
+            {
+                for (var i = 0; i < delete.Count; i++)
+                {
+                    usingDic.Remove(delete[i]);
+                }
+            }
+            #endregion
             foreach (var kv in allRawFieldDic)
             {
                 if (usingDic.ContainsKey(kv.Key) && translatedDic.ContainsKey(kv.Key))
                 {
                     var usingField = usingDic[kv.Key];
-                    if (usingField.IsMatchSupports(supports))
+                    if (usingField.IsMatchSupports(supports,true))
                     {
-                        continue;
+                        rTbl.AddField(usingField);
                     }
                     else
                     {
@@ -80,61 +97,22 @@ namespace MultiLanguage.Scripts.func.collector
                             c.SetValue(supports[i].language, v);
                         }
 
-                        add.Add(c);
-                        continue;
+                        rTbl.AddField(c);
                     }
                 }
-
-                //全新
-                var a = new CsvFieldInfo {Name = kv.Key};
-                for (var i = 0; i < supports.Length; i++)
+                else
                 {
-                    a.SetValue(supports[i].language, kv.Value);
-                }
-
-                add.Add(a);
-            }
-
-            var delete = new List<string>();
-            foreach (var kv in usingDic)
-            {
-                if (allRawFieldDic.ContainsKey(kv.Key))
-                {
-                    continue;
-                }
-
-                delete.Add(kv.Key);
-            }
-
-            if (delete.Count <= 0 && add.Count <= 0)
-            {
-                return usingTbl;
-            }
-
-            if (delete.Count > 0)
-            {
-                for (var i = 0; i < delete.Count; i++)
-                {
-                    usingDic.Remove(delete[i]);
+                    //全新
+                    var a = new CsvFieldInfo {Name = kv.Key};
+                    for (var i = 0; i < supports.Length; i++)
+                    {
+                        a.SetValue(supports[i].language, kv.Value);
+                    }
+                    rTbl.AddField(a);
                 }
             }
-
-            if (add.Count > 0)
-            {
-                for (var i = 0; i < add.Count; i++)
-                {
-                    usingDic[add[i].Name] = add[i];
-                }
-            }
-
-            usingTbl = new CsvTable();
-            foreach (var kv in usingDic)
-            {
-                usingTbl.AddField(kv.Value);
-            }
-
-            CsvOperater.WriteSummaryFile(usingTbl, usingFilePath);
-            return usingTbl;
+            CsvOperater.WriteSummaryFile(rTbl, usingFilePath);
+            return rTbl;
         }
     }
 }

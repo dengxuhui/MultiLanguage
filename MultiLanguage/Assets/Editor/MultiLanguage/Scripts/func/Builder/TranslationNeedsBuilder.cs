@@ -56,7 +56,7 @@ namespace MultiLanguage.Scripts.func.builder
             //1.找出翻译需求
             foreach (var kv in usingDic)
             {
-                if (translatedDic.ContainsKey(kv.Key) && translatedDic[kv.Key].IsMatchSupports(supports))
+                if (translatedDic.ContainsKey(kv.Key) && translatedDic[kv.Key].IsMatchSupports(supports,false))
                 {
                     continue;
                 }
@@ -114,7 +114,7 @@ namespace MultiLanguage.Scripts.func.builder
                 writeFilePath = string.Format(writeFilePath, version);
                 if (!File.Exists(writeFilePath))
                 {
-                    needs = SortTool.SortCsvFieldList(needs);
+                    // needs = SortTool.SortCsvFieldList(needs);
                     var writeTable = new CsvTable();
                     for (var i = 0; i < needs.Count; i++)
                     {
